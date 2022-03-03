@@ -1,0 +1,26 @@
+Make a CSS hexagon
+Try to programatically make rings of hexagons
+Add framework just in case
+Consider using gradients for colors instead of 8-bit
+
+Make something similar to a data structure:
+  Check how many children a hexagon has
+  Fill or block the hexagon depending on its children
+
+
+<div class="ring" data-full="false">
+  <div class="hexagon" data-full="false">
+  </div>
+  <div class="hexagon" data-full="false">
+  </div>
+</div>
+
+Have an easter egg (?) with hexadecimals
+
+##################################################
+
+Layout
+https://www.nicepng.com/maxp/u2q8r5e6u2e6y3u2/
+
+Making hexagons:
+https://jtauber.github.io/articles/css-hexagon.html

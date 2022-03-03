@@ -1,0 +1,10 @@
+@import "hexagon.css";
+
+.flare_star {
+  position: relative;
+
+  background-color: #D3D3D3;
+  margin: 0px auto;
+  width: 900px;
+  height: 600px;
+}

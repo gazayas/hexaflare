@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Hexaflare</title>
+
+    <!-- JavaScript -->
+
+    <!-- CSS -->
+    <link href="../css/application.css" rel="stylesheet" type="text/css" media="all">
+  </head>
+  <body>
+    <div id="hexaflare"><!-- Curious if this should be a canvas -->
+      <div class="flare_star">
+
+        <div class="core" data-full="false">
+          <!-- The general structure for hexagons. -->
+          <div class="hexagon"
+                data-x="0"
+                data-y="0"
+                data-full="false"
+                data-attached-to-main-cluster="false">
+            <div class="hexagon_top"></div>
+            <div class="hexagon_center"></div>
+            <div class="hexagon_bottom"></div>
+          </div>
+        </div>
+
+        <!-- the next ring appears here -->
+
+        <!-- Then the next ring, and so on -->
+        </div>
+
+        <!-- Have a timer over here on the right side of the board -->
+        <!-- Then the next clusters (display 3 to 4) -->
+      </div>
+
+      <script>
+        var core = document.getElementsByClassName("core")[0]
+        var core_hexagon = core.querySelector(".hexagon")
+
+        var x = core_hexagon.dataset["x"]
+        var y = core_hexagon.dataset["y"]
+
+        var new_hexagon = document.createElement("div")
+        new_hexagon.classList.add("hexagon")
+        new_hexagon.style.position = "absolute"
+        new_hexagon.dataset["x"] = parseInt(x) + 42
+        new_hexagon.dataset["y"] = parseInt(y)
+        new_hexagon.style.left = new_hexagon.dataset["x"] + "px"
+        new_hexagon.style.top = (parseInt(y)) + "px"
+
+        var hexagon_top = document.createElement("div")
+        hexagon_top.classList.add("hexagon_top")
+        var hexagon_center = document.createElement("div")
+        hexagon_center.classList.add("hexagon_center")
+        var hexagon_bottom = document.createElement("div")
+        hexagon_bottom.classList.add("hexagon_bottom")
+
+        new_hexagon.appendChild(hexagon_top)
+        new_hexagon.appendChild(hexagon_center)
+        new_hexagon.appendChild(hexagon_bottom)
+
+        document.getElementsByClassName("core")[0].appendChild(new_hexagon)
+      </script>
+  </body>
+</html>
