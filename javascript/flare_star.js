@@ -28,6 +28,7 @@ function ringCorners(flare_star, ring_level) {
   return ring_corners
 }
 
+// Returns a boolean
 function isCorner(flare_star, ring_level, value) {
   var ring = ringCorners(flare_star, ring_level)
   return ring.includes(value)
@@ -50,28 +51,40 @@ function findParentCornerInRing(flare_star, ring_level, value) {
 
 // Returns the position that the corner is in.
 function cornerPosition(flare_star, ring_level, value) {
+
+  // TODO: First check if the value is a corner.
+  // If not, return null
   var ring_corners = ringCorners(flare_star, ring_level)
   return ring_corners.indexOf(value)
 }
 
-// If corner: Value - Level Difference * Corner Position
-// If side: TODO
+function ringLength(flare_star, ring_level) {
+  return flare_star[ring_level].length
+}
+
+// Finding a corner parent: Value - Level Difference * Corner Position
+// Finding side parents:
+//    Right Parent: Value - (Level Difference * Parent Corner Position)
+//    Left Parent:  Value - (Level Difference * Parent Corner Position) - 1
+// level_difference here is 1 because, in Hexaflare,
+// we are only concerned with finding the parent one level up.
 function findParentRingParents(flare_star, ring_level, value) {
-  // Only one value if the value is a corner.
+  var level_difference = 1
+
   if(isCorner(flare_star, ring_level, value)) {
-    var level_difference = 1 // We're only searching for the direct parent, so we just use 1.
-    return value - level_difference * cornerPosition(flare_star, ring_level, value)
+    return [value - level_difference * cornerPosition(flare_star, ring_level, value)]
   } else {
-    var level_difference = 1 // We're only searching for the direct parent, so we just use 1.
     var current_value_parent = findParentCornerInRing(flare_star, ring_level, value)
-    var larger_parent = value - level_difference * cornerPosition(flare_star, ring_level, current_value_parent)
-    var smaller_parent = larger_parent - 1
+    var right_parent = value - level_difference * cornerPosition(flare_star, ring_level, current_value_parent)
+    var left_parent = right_parent - 1
 
-    // From here, all we need to do is search the parent ring to see if the new calculation has the value
-    // If not, put in either the highest value of the ring, or the lowest value, respectively
+    // At the end of a ring, the hexagon's parent on the right is the first initial corner,
+    // so we loop the back to the beginning of the array (which in this case will always be one).
+    var parent_ring_length = ringLength(flare_star, ring_level - 1)
+    if(right_parent > parent_ring_length) {
+      right_parent -= parent_ring_length
+    }
 
-    // Since we're finding hexagons, we should probably return them as hexagons
-    // hexagon = {"ring": 2, "value": 4}, etc.
-    return [smaller_parent, larger_parent]
+    return [left_parent, right_parent] // TODO: hexagon = {"ring": 2, "value": 4}
   }
 }
