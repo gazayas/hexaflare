@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <title>Hexaflare</title>
 
-    <!-- JavaScript -->
-
     <!-- CSS -->
     <link href="../css/application.css" rel="stylesheet" type="text/css" media="all">
   </head>
@@ -35,33 +33,14 @@
         <!-- Then the next clusters (display 3 to 4) -->
       </div>
 
-      <script>
-        var core = document.getElementsByClassName("core")[0]
-        var core_hexagon = core.querySelector(".hexagon")
+      <!-- JavaScript -->
+      <script src="../javascript/flare_star.js"></script>
+      <script src="../javascript/hexagon.js"></script>
 
-        var x = core_hexagon.dataset["x"]
-        var y = core_hexagon.dataset["y"]
-
-        var new_hexagon = document.createElement("div")
-        new_hexagon.classList.add("hexagon")
-        new_hexagon.style.position = "absolute"
-        new_hexagon.dataset["x"] = parseInt(x) + 42
-        new_hexagon.dataset["y"] = parseInt(y)
-        new_hexagon.style.left = new_hexagon.dataset["x"] + "px"
-        new_hexagon.style.top = (parseInt(y)) + "px"
-
-        var hexagon_top = document.createElement("div")
-        hexagon_top.classList.add("hexagon_top")
-        var hexagon_center = document.createElement("div")
-        hexagon_center.classList.add("hexagon_center")
-        var hexagon_bottom = document.createElement("div")
-        hexagon_bottom.classList.add("hexagon_bottom")
-
-        new_hexagon.appendChild(hexagon_top)
-        new_hexagon.appendChild(hexagon_center)
-        new_hexagon.appendChild(hexagon_bottom)
-
-        document.getElementsByClassName("core")[0].appendChild(new_hexagon)
+      <script type="text/javascript">
+        // Only worry about creating 1 ring for now.
+        var flare_star = generateFlareStar(6)
+        generateFlareStarUI(numberOfRings(flare_star))
       </script>
   </body>
 </html>

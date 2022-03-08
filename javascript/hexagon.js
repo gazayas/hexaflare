@@ -7,12 +7,9 @@ function hexagonDetails() {
   var hex_center_width = "25px"
   var hex_center_height = "40px"
 
+  // TODO: Add the space inbetween hexagons here too
+
   var side_position = ""
 
   // Get all hexagons and set the styles
-}
-
-// Create a div here and return to generateRingLayout() to append to ring
-// x and y should go to data-x and data-y
-function generateHexagon(side_position, x, y) {
 }

@@ -10,7 +10,7 @@
 
 .hexagon_top {
   width: 0;
-  border-bottom: 10px solid navy;
+  border-bottom: 10px solid silver;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
 }
@@ -18,12 +18,12 @@
 .hexagon_center {
   height: 25px;
   width: 40px;
-  background-color: navy;
+  background-color: silver;
 }
 
 .hexagon_bottom {
   width: 0;
-  border-top: 10px solid navy;
+  border-top: 10px solid silver;
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
 }

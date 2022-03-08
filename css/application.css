@@ -1,9 +1,15 @@
 @import "hexagon.css";
 
+/* TODO: Put body color and flare star background color in one place */
+
+body {
+  background-color: #111;
+}
+
 .flare_star {
   position: relative;
 
-  background-color: #D3D3D3;
+  background-color: #111;
   margin: 0px auto;
   width: 900px;
   height: 600px;

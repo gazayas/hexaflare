@@ -4,6 +4,7 @@ function generateFlareStar(number_of_rings) {
   var flare_star = [[core]]
 
   // The rings start from the second step
+  // TODO: Change name of variable `level` to `depth`
   level = core + number_of_rings
 
   for(var i = 1; i < level; i++) {
@@ -15,6 +16,140 @@ function generateFlareStar(number_of_rings) {
     flare_star[i] = ring
   }
   return flare_star
+}
+
+// We should run this when pressing the start button.
+function generateFlareStarUI(number_of_rings) {
+  var core = document.getElementsByClassName("core")[0]
+  var core_hexagon = core.querySelector(".hexagon")
+
+  var x = core_hexagon.dataset["x"]
+  var y = core_hexagon.dataset["y"]
+
+  for(var i = 1; i <= number_of_rings; i++) {
+    var number_of_side_hexagons_under_parent_corner = i - 1
+    for(var corner_hex_position = 1; corner_hex_position <= 6; corner_hex_position++){
+      // Create corner
+      var corner_hex_div =  document.createElement("div")
+      corner_hex_div.classList.add("hexagon")
+      corner_hex_div.classList.add("corner")
+      corner_hex_div.style.position = "absolute"
+
+      // Add dataset values
+      // data-ring-level
+      // data-value
+      // data-x
+      // data-y
+
+      // Create hexagon parts
+      var hexagon_top = document.createElement("div")
+      var hexagon_center = document.createElement("div")
+      var hexagon_bottom = document.createElement("div")
+      hexagon_top.classList.add("hexagon_top")
+      hexagon_center.classList.add("hexagon_center")
+      hexagon_bottom.classList.add("hexagon_bottom")
+
+      var new_dimensions = newCornerDimensions(corner_hex_position, i)
+      corner_hex_div.dataset["x"] = parseInt(x) + new_dimensions[0]
+      corner_hex_div.dataset["y"] = parseInt(y) + new_dimensions[1]
+      corner_hex_div.style.left = corner_hex_div.dataset["x"] + "px"
+      corner_hex_div.style.top = corner_hex_div.dataset["y"] + "px"
+
+      corner_hex_div.appendChild(hexagon_top)
+      corner_hex_div.appendChild(hexagon_center)
+      corner_hex_div.appendChild(hexagon_bottom)
+
+      // TODO: Should we be appending this to the core?
+      // I want to append it to its own ring
+      document.getElementsByClassName("core")[0].appendChild(corner_hex_div)
+
+      var previous_hex_dimensions = [corner_hex_div.dataset["x"], corner_hex_div["y"]]
+
+      // Create sides here before moving on to the new corner
+      for(var current_side_number = 1; current_side_number <= number_of_side_hexagons_under_parent_corner; current_side_number++) {
+        var side_hex_div =  document.createElement("div")
+        side_hex_div.classList.add("hexagon")
+        side_hex_div.classList.add("side")
+        side_hex_div.style.position = "absolute"
+
+        // Add dataset values
+        // data-ring-level
+        // data-value
+        // data-x
+        // data-y
+
+        // Create hexagon parts
+        var hexagon_top = document.createElement("div")
+        var hexagon_center = document.createElement("div")
+        var hexagon_bottom = document.createElement("div")
+        hexagon_top.classList.add("hexagon_top")
+        hexagon_center.classList.add("hexagon_center")
+        hexagon_bottom.classList.add("hexagon_bottom")
+
+        var new_side_dimensions = newSideDimensions(corner_hex_position, current_side_number, i)
+        side_hex_div.dataset["x"] = parseInt(x) + new_side_dimensions[0]
+        side_hex_div.dataset["y"] = parseInt(y) + new_side_dimensions[1]
+        side_hex_div.style.left = side_hex_div.dataset["x"] + "px"
+        side_hex_div.style.top = side_hex_div.dataset["y"] + "px"
+
+        side_hex_div.appendChild(hexagon_top)
+        side_hex_div.appendChild(hexagon_center)
+        side_hex_div.appendChild(hexagon_bottom)
+
+        previous_hex_dimensions = [side_hex_div.dataset["x"], side_hex_div.dataset["y"]]
+
+        // TODO: Should we be appending this to the core?
+        // I want to append it to its own ring
+        document.getElementsByClassName("core")[0].appendChild(side_hex_div)
+      }
+    }
+  } // End of ring for loop
+}
+
+// It might BEHOOVE ME to write a function for calculating the pixels
+// Return new dimensions for creating the next corner.
+function newCornerDimensions(corner_position, ring_level) {
+  switch (corner_position) {
+    case 1:
+      return [ring_level * -42, 0]
+    case 2:
+      return [ring_level * -21, ring_level * -38]
+    case 3:
+      return [ring_level * 21, ring_level * -38]
+    case 4:
+      return [ring_level * 42, 0]
+    case 5:
+      return [ring_level * 21, ring_level * 38]
+    case 6:
+      return [ring_level * -21, ring_level * 38]
+    default:
+      break;
+  }
+}
+
+function newSideDimensions(corner_position, current_side_number, ring_level) {
+  console.log(ring_level);
+  switch(corner_position) {
+    case 1:
+      return [ring_level * -42 + (42 / 2 * current_side_number), -38 * current_side_number]
+    case 2:
+      return [(ring_level * -21) + (42 * current_side_number), ring_level * -38]
+    case 3:
+      return [ring_level * 42 + (-42 / 2 * current_side_number), -38 * current_side_number]
+    case 4:
+      return [ring_level * 42 + (-42 / 2 * current_side_number), 38 * current_side_number]
+    case 5:
+      return [(ring_level * 21) + (-42 * current_side_number), ring_level * 38]
+    case 6:
+      return [ring_level * -42 + (42 / 2 * current_side_number), 38 * current_side_number]
+    default:
+      break;
+  }
+}
+
+function numberOfRings(flare_star) {
+  var core = 1
+  return flare_star.length - core
 }
 
 // Ring Level * Corner Position + 1
