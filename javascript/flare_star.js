@@ -98,8 +98,7 @@ function generateFlareStarUI(number_of_rings) {
 
         previous_hex_dimensions = [side_hex_div.dataset["x"], side_hex_div.dataset["y"]]
 
-        // TODO: Should we be appending this to the core?
-        // I want to append it to its own ring
+        // TODO: Append it to its own ring
         document.getElementsByClassName("core")[0].appendChild(side_hex_div)
       }
     }

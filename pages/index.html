@@ -8,39 +8,35 @@
     <link href="../css/application.css" rel="stylesheet" type="text/css" media="all">
   </head>
   <body>
-    <div id="hexaflare"><!-- Curious if this should be a canvas -->
+    <!-- Change this to .container or #main_screen -->
+    <div id="hexaflare">
       <div class="flare_star">
-
         <div class="core" data-full="false">
           <!-- The general structure for hexagons. -->
-          <div class="hexagon"
-                data-x="0"
-                data-y="0"
-                data-full="false"
-                data-attached-to-main-cluster="false">
+          <div class="hexagon" data-x="0" data-y="0" data-full="false" data-attached-to-main-cluster="false">
             <div class="hexagon_top"></div>
             <div class="hexagon_center"></div>
             <div class="hexagon_bottom"></div>
           </div>
         </div>
 
-        <!-- the next ring appears here -->
+        <!-- the first ring appears here -->
 
         <!-- Then the next ring, and so on -->
-        </div>
-
-        <!-- Have a timer over here on the right side of the board -->
-        <!-- Then the next clusters (display 3 to 4) -->
       </div>
 
-      <!-- JavaScript -->
-      <script src="../javascript/flare_star.js"></script>
-      <script src="../javascript/hexagon.js"></script>
+      <!-- Have a timer over here on the right side of the board -->
+      <!-- Then the next clusters (display 3 to 4) -->
+    </div>
 
-      <script type="text/javascript">
-        // Only worry about creating 1 ring for now.
-        var flare_star = generateFlareStar(6)
-        generateFlareStarUI(numberOfRings(flare_star))
-      </script>
+    <!-- JavaScript -->
+    <script src="../javascript/application.js"></script>
+    <script src="../javascript/flare_star.js"></script>
+    <script src="../javascript/hexagon.js"></script>
+
+    <script type="text/javascript">
+      var flare_star = generateFlareStar(6)
+      generateFlareStarUI(numberOfRings(flare_star))
+    </script>
   </body>
 </html>
