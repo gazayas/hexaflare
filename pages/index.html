@@ -37,6 +37,13 @@
     <script type="text/javascript">
       var flare_star = generateFlareStar(6)
       generateFlareStarUI(numberOfRings(flare_star))
+
+      var core = document.getElementsByClassName("core")[0]
+      // TODO: You know what to do (- -)b
+      var topy = (window.innerHeight / 2) - 38
+      var leftx = (window.innerWidth / 2.25) // ???
+      core.style.top = topy + "px"
+      core.style.left = leftx + "px"
     </script>
   </body>
 </html>
