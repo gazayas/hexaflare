@@ -1,15 +1,21 @@
-// Get .hexagon, .hexagon_left_side and .hexagon_right_side and set values
-function hexagonDetails() {
-  var color = "navy"
-  var hex_borders = "10px"
-  var invisible_borders = "20px"
+function applyHexagonDimensions() {
+  var top_divs = document.getElementsByClassName("hexagon_top")
+  var center_divs = document.getElementsByClassName("hexagon_center")
+  var bottom_divs = document.getElementsByClassName("hexagon_bottom")
 
-  var hex_center_width = "25px"
-  var hex_center_height = "40px"
+  var invisible_style = HEX_INVISIBLE_BORDERS + "px solid transparent"
 
-  // TODO: Add the space inbetween hexagons here too
+  for(var i = 0; i < top_divs.length; i++) {
+    top_divs[i].style.borderBottom = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + HEX_COLOR
+    top_divs[i].style.borderLeft = invisible_style
+    top_divs[i].style.borderRight = invisible_style
 
-  var side_position = ""
+    center_divs[i].style.height = HEX_CENTER_HEIGHT + "px"
+    center_divs[i].style.width = HEX_CENTER_WIDTH + "px"
+    center_divs[i].style.backgroundColor = HEX_COLOR
 
-  // Get all hexagons and set the styles
+    bottom_divs[i].style.borderTop = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + HEX_COLOR
+    bottom_divs[i].style.borderLeft = invisible_style
+    bottom_divs[i].style.borderRight = invisible_style
+  }
 }

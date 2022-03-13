@@ -42,17 +42,23 @@
     <script src="../javascript/hexagon.js"></script>
 
     <script type="text/javascript">
+      // In pixels
+      var HEX_CENTER_WIDTH = 40
+      var HEX_CENTER_HEIGHT = 25
+      var HEX_TOP_BOTTOM_BORDER_HEIGHT = 10
+      var HEX_INVISIBLE_BORDERS = 20
+      var HEX_TOTAL_HEIGHT = HEX_CENTER_HEIGHT + (HEX_TOP_BOTTOM_BORDER_HEIGHT * 2)
+      var X_BORDER_COMPENSATION = 3
+      var Y_BORDER_COMPENSATION = 6
+      var HEX_COLOR = "silver"
+
+      // Used when moving up/down the flare star
+      // and when moving star clusters down child hexagons
       var FLIP_FACTOR = -1
 
       var flare_star = generateFlareStar(6)
       generateFlareStarUI(numberOfRings(flare_star))
-
-      var core = document.getElementsByClassName("core")[0]
-      // TODO: You know what to do (- -)b
-      var topy = (window.innerHeight / 2) - 38
-      var leftx = (window.innerWidth / 2.25) // ???
-      core.style.top = topy + "px"
-      core.style.left = leftx + "px"
+      applyHexagonDimensions()
     </script>
   </body>
 </html>

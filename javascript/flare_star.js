@@ -110,17 +110,17 @@ function generateFlareStarUI(number_of_rings) {
 function newCornerDimensions(corner_position, ring_level) {
   switch (corner_position) {
     case 1:
-      return [ring_level * -42, 0]
+      return [ring_level * -(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION), 0]
     case 2:
-      return [ring_level * -21, ring_level * -38]
+      return [ring_level * -((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2), ring_level * -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
     case 3:
-      return [ring_level * 21, ring_level * -38]
+      return [ring_level * ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2), ring_level * -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
     case 4:
-      return [ring_level * 42, 0]
+      return [ring_level * (HEX_CENTER_WIDTH + X_BORDER_COMPENSATION), 0]
     case 5:
-      return [ring_level * 21, ring_level * 38]
+      return [ring_level * ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2), ring_level * (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
     case 6:
-      return [ring_level * -21, ring_level * 38]
+      return [ring_level * -((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2), ring_level * (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
     default:
       break;
   }
@@ -130,20 +130,30 @@ function newSideDimensions(corner_position, current_side_number, ring_level) {
   console.log(ring_level);
   switch(corner_position) {
     case 1:
-      return [ring_level * -42 + (42 / 2 * current_side_number), -38 * current_side_number]
+      return [ring_level * -(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) + ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION) * current_side_number]
     case 2:
-      return [(ring_level * -21) + (42 * current_side_number), ring_level * -38]
+      return [(ring_level * -((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2)) + ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) * current_side_number), ring_level * -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
     case 3:
-      return [ring_level * 42 + (-42 / 2 * current_side_number), -38 * current_side_number]
+      return [ring_level * (HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) + (-(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION) * current_side_number]
     case 4:
-      return [ring_level * 42 + (-42 / 2 * current_side_number), 38 * current_side_number]
+      return [ring_level * (HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) + (-(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION) * current_side_number]
     case 5:
-      return [(ring_level * 21) + (-42 * current_side_number), ring_level * 38]
+      return [(ring_level * (HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2) + (-(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) * current_side_number), ring_level * (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
     case 6:
-      return [ring_level * -42 + (42 / 2 * current_side_number), 38 * current_side_number]
+      return [ring_level * -(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) + ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION) * current_side_number]
     default:
       break;
   }
+}
+
+
+// TODO: Implement to clean up newCornerDimensions and newSideDimensions
+function newX() {
+    return HEX_CENTER_WIDTH + X_BORDER_COMPENSATION
+}
+
+function newY() {
+  return HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION
 }
 
 function numberOfRings(flare_star) {
@@ -185,7 +195,6 @@ function findParentCornerInRing(flare_star, ring_level, value) {
 
 // Returns the position that the corner is in.
 function cornerPosition(flare_star, ring_level, value) {
-
   // TODO: First check if the value is a corner.
   // If not, return null
   var ring_corners = ringCorners(flare_star, ring_level)
