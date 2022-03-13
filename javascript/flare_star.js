@@ -110,17 +110,17 @@ function generateFlareStarUI(number_of_rings) {
 function newCornerDimensions(corner_position, ring_level) {
   switch (corner_position) {
     case 1:
-      return [ring_level * -(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION), 0]
+      return [ring_level * -(HEX_CENTER_WIDTH + HEX_X_BORDER), 0]
     case 2:
-      return [ring_level * -((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2), ring_level * -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
+      return [ring_level * -((HEX_CENTER_WIDTH + HEX_X_BORDER) / 2), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_BORDER)]
     case 3:
-      return [ring_level * ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2), ring_level * -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
+      return [ring_level * ((HEX_CENTER_WIDTH + HEX_X_BORDER) / 2), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_BORDER)]
     case 4:
-      return [ring_level * (HEX_CENTER_WIDTH + X_BORDER_COMPENSATION), 0]
+      return [ring_level * (HEX_CENTER_WIDTH + HEX_X_BORDER), 0]
     case 5:
-      return [ring_level * ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2), ring_level * (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
+      return [ring_level * ((HEX_CENTER_WIDTH + HEX_X_BORDER) / 2), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_BORDER)]
     case 6:
-      return [ring_level * -((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2), ring_level * (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
+      return [ring_level * -((HEX_CENTER_WIDTH + HEX_X_BORDER) / 2), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_BORDER)]
     default:
       break;
   }
@@ -130,17 +130,17 @@ function newSideDimensions(corner_position, current_side_number, ring_level) {
   console.log(ring_level);
   switch(corner_position) {
     case 1:
-      return [ring_level * -(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) + ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION) * current_side_number]
+      return [ring_level * -(HEX_CENTER_WIDTH + HEX_X_BORDER) + ((HEX_CENTER_WIDTH + HEX_X_BORDER) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - HEX_Y_BORDER) * current_side_number]
     case 2:
-      return [(ring_level * -((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2)) + ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) * current_side_number), ring_level * -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
+      return [(ring_level * -((HEX_CENTER_WIDTH + HEX_X_BORDER) / 2)) + ((HEX_CENTER_WIDTH + HEX_X_BORDER) * current_side_number), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_BORDER)]
     case 3:
-      return [ring_level * (HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) + (-(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION) * current_side_number]
+      return [ring_level * (HEX_CENTER_WIDTH + HEX_X_BORDER) + (-(HEX_CENTER_WIDTH + HEX_X_BORDER) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - HEX_Y_BORDER) * current_side_number]
     case 4:
-      return [ring_level * (HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) + (-(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION) * current_side_number]
+      return [ring_level * (HEX_CENTER_WIDTH + HEX_X_BORDER) + (-(HEX_CENTER_WIDTH + HEX_X_BORDER) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - HEX_Y_BORDER) * current_side_number]
     case 5:
-      return [(ring_level * (HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2) + (-(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) * current_side_number), ring_level * (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION)]
+      return [(ring_level * (HEX_CENTER_WIDTH + HEX_X_BORDER) / 2) + (-(HEX_CENTER_WIDTH + HEX_X_BORDER) * current_side_number), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_BORDER)]
     case 6:
-      return [ring_level * -(HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) + ((HEX_CENTER_WIDTH + X_BORDER_COMPENSATION) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION) * current_side_number]
+      return [ring_level * -(HEX_CENTER_WIDTH + HEX_X_BORDER) + ((HEX_CENTER_WIDTH + HEX_X_BORDER) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - HEX_Y_BORDER) * current_side_number]
     default:
       break;
   }
@@ -149,11 +149,11 @@ function newSideDimensions(corner_position, current_side_number, ring_level) {
 
 // TODO: Implement to clean up newCornerDimensions and newSideDimensions
 function newX() {
-    return HEX_CENTER_WIDTH + X_BORDER_COMPENSATION
+    return HEX_CENTER_WIDTH + HEX_X_BORDER
 }
 
 function newY() {
-  return HEX_TOTAL_HEIGHT - Y_BORDER_COMPENSATION
+  return HEX_TOTAL_HEIGHT - HEX_Y_BORDER
 }
 
 function numberOfRings(flare_star) {
