@@ -36,21 +36,3 @@
   border-left: 20px solid transparent;
   border-right: 20px solid transparent;
 }
-
-.cursor .hexagon {
-  position: absolute;
-  top: 0;
-}
-.cursor .hexagon_center {
-  height: 25px;
-  width: 40px;
-  background-color: navy;
-  z-index: 3;
-}
-
-.cursor .hexagon_bottom {
-  width: 0;
-  border-top: 10px solid navy;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-}
