@@ -26,8 +26,9 @@ function generateFlareStarUI(number_of_rings) {
   var x = core_hexagon.dataset["x"]
   var y = core_hexagon.dataset["y"]
 
-  for(var i = 1; i <= number_of_rings; i++) {
-    var number_of_side_hexagons_under_parent_corner = i - 1
+  for(var ring = 1; ring <= number_of_rings; ring++) {
+    var number_of_side_hexagons_under_parent_corner = ring - 1
+
     for(var corner_hex_position = 1; corner_hex_position <= 6; corner_hex_position++){
       // Create corner
       var corner_hex_div =  document.createElement("div")
@@ -49,7 +50,7 @@ function generateFlareStarUI(number_of_rings) {
       hexagon_center.classList.add("hexagon_center")
       hexagon_bottom.classList.add("hexagon_bottom")
 
-      var new_dimensions = newCornerDimensions(corner_hex_position, i)
+      var new_dimensions = newCornerDimensions(corner_hex_position, ring)
       corner_hex_div.dataset["x"] = parseInt(x) + new_dimensions[0]
       corner_hex_div.dataset["y"] = parseInt(y) + new_dimensions[1]
       corner_hex_div.style.left = corner_hex_div.dataset["x"] + "px"
@@ -86,7 +87,7 @@ function generateFlareStarUI(number_of_rings) {
         hexagon_center.classList.add("hexagon_center")
         hexagon_bottom.classList.add("hexagon_bottom")
 
-        var new_side_dimensions = newSideDimensions(corner_hex_position, current_side_number, i)
+        var new_side_dimensions = newSideDimensions(corner_hex_position, current_side_number, ring)
         side_hex_div.dataset["x"] = parseInt(x) + new_side_dimensions[0]
         side_hex_div.dataset["y"] = parseInt(y) + new_side_dimensions[1]
         side_hex_div.style.left = side_hex_div.dataset["x"] + "px"
