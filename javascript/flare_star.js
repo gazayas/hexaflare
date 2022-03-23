@@ -83,17 +83,17 @@ function generateHexagon(ring, corner_hex_position, hexagon_type, current_side_n
 function newCornerDimensions(corner_position, ring_level) {
   switch (corner_position) {
     case 1:
-      return [ring_level * -(HEX_CENTER_WIDTH + HEX_X_MARGIN), 0]
+      return [ring_level * -(REAL_X), 0]
     case 2:
-      return [ring_level * -((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN)]
+      return [ring_level * -(REAL_X / 2), ring_level * -(REAL_Y)]
     case 3:
-      return [ring_level * ((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN)]
+      return [ring_level * (REAL_X / 2), ring_level * -(REAL_Y)]
     case 4:
-      return [ring_level * (HEX_CENTER_WIDTH + HEX_X_MARGIN), 0]
+      return [ring_level * REAL_X, 0]
     case 5:
-      return [ring_level * ((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN)]
+      return [ring_level * (REAL_X / 2), ring_level * REAL_Y]
     case 6:
-      return [ring_level * -((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN)]
+      return [ring_level * -(REAL_X / 2), ring_level * REAL_Y]
     default:
       break;
   }
@@ -102,30 +102,20 @@ function newCornerDimensions(corner_position, ring_level) {
 function newSideDimensions(corner_position, current_side_number, ring_level) {
   switch(corner_position) {
     case 1:
-      return [ring_level * -(HEX_CENTER_WIDTH + HEX_X_MARGIN) + ((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) * current_side_number]
+      return [ring_level * -(REAL_X) + (REAL_X / 2 * current_side_number), -(REAL_Y) * current_side_number]
     case 2:
-      return [(ring_level * -((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2)) + ((HEX_CENTER_WIDTH + HEX_X_MARGIN) * current_side_number), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN)]
+      return [(ring_level * -(REAL_X / 2)) + (REAL_X * current_side_number), ring_level * -(REAL_Y)]
     case 3:
-      return [ring_level * (newX() / 2) + (newX() / 2 * current_side_number), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) + (newY() * current_side_number)]
+      return [ring_level * (REAL_X / 2) + (REAL_X / 2 * current_side_number), ring_level * -(REAL_Y) + (REAL_Y * current_side_number)]
     case 4:
-      return [ring_level * (HEX_CENTER_WIDTH + HEX_X_MARGIN) + (-(HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) * current_side_number]
+      return [ring_level * (REAL_X) + (-(REAL_X) / 2 * current_side_number), REAL_Y * current_side_number]
     case 5:
-      return [(ring_level * (HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2) + (-(HEX_CENTER_WIDTH + HEX_X_MARGIN) * current_side_number), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN)]
+      return [(ring_level * REAL_X / 2) + (-(REAL_X) * current_side_number), ring_level * REAL_Y]
     case 6:
-      return [ring_level * (-(newX() / 2)) - (newX() / 2 * current_side_number), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) - (newY() * current_side_number)]
+      return [ring_level * (-(REAL_X / 2)) - (REAL_X / 2 * current_side_number), ring_level * REAL_Y - (REAL_Y * current_side_number)]
     default:
       break;
   }
-}
-
-// TODO: Just make this as a constant: REAL_X
-// TODO: Implement to clean up newCornerDimensions and newSideDimensions
-function newX() {
-    return HEX_CENTER_WIDTH + HEX_X_MARGIN
-}
-
-function newY() {
-  return HEX_TOTAL_HEIGHT - HEX_Y_MARGIN
 }
 
 function numberOfRings(flare_star) {
