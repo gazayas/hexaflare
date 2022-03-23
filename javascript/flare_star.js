@@ -23,87 +23,59 @@ function generateFlareStarUI(number_of_rings) {
   var core = document.getElementsByClassName("core")[0]
   var core_hexagon = core.querySelector(".hexagon")
 
-  var x = core_hexagon.dataset["x"]
-  var y = core_hexagon.dataset["y"]
-
   for(var ring = 1; ring <= number_of_rings; ring++) {
-    var number_of_side_hexagons_under_parent_corner = ring - 1
-
     for(var corner_hex_position = 1; corner_hex_position <= 6; corner_hex_position++){
-      // Create corner
-      var corner_hex_div =  document.createElement("div")
-      corner_hex_div.classList.add("hexagon")
-      corner_hex_div.classList.add("corner")
-      corner_hex_div.style.position = "absolute"
-
-      // Add dataset values
-      // data-ring-level
-      // data-value
-      // data-x
-      // data-y
-
-      // Create hexagon parts
-      var hexagon_top = document.createElement("div")
-      var hexagon_center = document.createElement("div")
-      var hexagon_bottom = document.createElement("div")
-      hexagon_top.classList.add("hexagon_top")
-      hexagon_center.classList.add("hexagon_center")
-      hexagon_bottom.classList.add("hexagon_bottom")
-
-      var new_dimensions = newCornerDimensions(corner_hex_position, ring)
-      corner_hex_div.dataset["x"] = parseInt(x) + new_dimensions[0]
-      corner_hex_div.dataset["y"] = parseInt(y) + new_dimensions[1]
-      corner_hex_div.style.left = corner_hex_div.dataset["x"] + "px"
-      corner_hex_div.style.top = corner_hex_div.dataset["y"] + "px"
-
-      corner_hex_div.appendChild(hexagon_top)
-      corner_hex_div.appendChild(hexagon_center)
-      corner_hex_div.appendChild(hexagon_bottom)
-
-      // TODO: Should we be appending this to the core?
-      // I want to append it to its own ring
-      document.getElementsByClassName("core")[0].appendChild(corner_hex_div)
-
-      var previous_hex_dimensions = [corner_hex_div.dataset["x"], corner_hex_div["y"]]
-
-      // Create sides here before moving on to the new corner
-      for(var current_side_number = 1; current_side_number <= number_of_side_hexagons_under_parent_corner; current_side_number++) {
-        var side_hex_div =  document.createElement("div")
-        side_hex_div.classList.add("hexagon")
-        side_hex_div.classList.add("side")
-        side_hex_div.style.position = "absolute"
-
-        // Add dataset values
-        // data-ring-level
-        // data-value
-        // data-x
-        // data-y
-
-        // Create hexagon parts
-        var hexagon_top = document.createElement("div")
-        var hexagon_center = document.createElement("div")
-        var hexagon_bottom = document.createElement("div")
-        hexagon_top.classList.add("hexagon_top")
-        hexagon_center.classList.add("hexagon_center")
-        hexagon_bottom.classList.add("hexagon_bottom")
-
-        var new_side_dimensions = newSideDimensions(corner_hex_position, current_side_number, ring)
-        side_hex_div.dataset["x"] = parseInt(x) + new_side_dimensions[0]
-        side_hex_div.dataset["y"] = parseInt(y) + new_side_dimensions[1]
-        side_hex_div.style.left = side_hex_div.dataset["x"] + "px"
-        side_hex_div.style.top = side_hex_div.dataset["y"] + "px"
-
-        side_hex_div.appendChild(hexagon_top)
-        side_hex_div.appendChild(hexagon_center)
-        side_hex_div.appendChild(hexagon_bottom)
-
-        previous_hex_dimensions = [side_hex_div.dataset["x"], side_hex_div.dataset["y"]]
-
-        // TODO: Append it to its own ring
-        document.getElementsByClassName("core")[0].appendChild(side_hex_div)
-      }
+      generateHexagon(ring, corner_hex_position, "corner")
     }
-  } // End of ring for loop
+  }
+}
+
+function generateHexagon(ring, corner_hex_position, hexagon_type, current_side_number = 1) {
+  var hex_div =  document.createElement("div")
+  hex_div.classList.add("hexagon")
+  hex_div.classList.add(hexagon_type)
+  hex_div.style.position = "absolute"
+
+  // Add dataset values
+  // data-ring-level
+  // data-value
+  // data-x
+  // data-y
+
+  if(hexagon_type == "corner") {
+    var new_dimensions = newCornerDimensions(corner_hex_position, ring)
+  } else if (hexagon_type == "side") {
+    var new_dimensions = newSideDimensions(corner_hex_position, current_side_number, ring)
+  }
+
+  // Always relative to the core, whose x and y are always 0.
+  hex_div.dataset["x"] = 0 + new_dimensions[0]
+  hex_div.dataset["y"] = 0 + new_dimensions[1]
+  hex_div.style.left = hex_div.dataset["x"] + "px"
+  hex_div.style.top = hex_div.dataset["y"] + "px"
+
+  // Create hexagon parts
+  var hexagon_top = document.createElement("div")
+  var hexagon_center = document.createElement("div")
+  var hexagon_bottom = document.createElement("div")
+  hexagon_top.classList.add("hexagon_top")
+  hexagon_center.classList.add("hexagon_center")
+  hexagon_bottom.classList.add("hexagon_bottom")
+  hex_div.appendChild(hexagon_top)
+  hex_div.appendChild(hexagon_center)
+  hex_div.appendChild(hexagon_bottom)
+
+  // TODO: Should we be appending this to the core?
+  // I want to append it to its own ring
+  document.getElementsByClassName("core")[0].appendChild(hex_div)
+
+  // Generate the side hexagons for each corner
+  if (hexagon_type == "corner") {
+    var number_of_side_hexagons_under_parent_corner = ring - 1
+    for(current_side_number; current_side_number <= number_of_side_hexagons_under_parent_corner; current_side_number++) {
+      generateHexagon(ring, corner_hex_position, "side", current_side_number)
+    }
+  }
 }
 
 // It might BEHOOVE ME to write a function for calculating the pixels
@@ -128,7 +100,6 @@ function newCornerDimensions(corner_position, ring_level) {
 }
 
 function newSideDimensions(corner_position, current_side_number, ring_level) {
-  console.log(ring_level);
   switch(corner_position) {
     case 1:
       return [ring_level * -(HEX_CENTER_WIDTH + HEX_X_MARGIN) + ((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) * current_side_number]
@@ -146,7 +117,6 @@ function newSideDimensions(corner_position, current_side_number, ring_level) {
       break;
   }
 }
-
 
 // TODO: Implement to clean up newCornerDimensions and newSideDimensions
 function newX() {
