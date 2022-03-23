@@ -25,22 +25,17 @@ function generateFlareStarUI(number_of_rings) {
 
   for(var ring = 1; ring <= number_of_rings; ring++) {
     for(var corner_hex_position = 1; corner_hex_position <= 6; corner_hex_position++){
-      generateHexagon(ring, corner_hex_position, "corner")
+      var value = getValue(ring, corner_hex_position)
+      generateHexagon(ring, value, corner_hex_position, "corner")
     }
   }
 }
 
-function generateHexagon(ring, corner_hex_position, hexagon_type, current_side_number = 1) {
+function generateHexagon(ring, value, corner_hex_position, hexagon_type, current_side_number = 1) {
   var hex_div =  document.createElement("div")
   hex_div.classList.add("hexagon")
   hex_div.classList.add(hexagon_type)
   hex_div.style.position = "absolute"
-
-  // Add dataset values
-  // data-ring-level
-  // data-value
-  // data-x
-  // data-y
 
   if(hexagon_type == "corner") {
     var new_dimensions = newCornerDimensions(corner_hex_position, ring)
@@ -51,6 +46,10 @@ function generateHexagon(ring, corner_hex_position, hexagon_type, current_side_n
   // Always relative to the core, whose x and y are always 0.
   hex_div.dataset["x"] = 0 + new_dimensions[0]
   hex_div.dataset["y"] = 0 + new_dimensions[1]
+
+  // Add dataset values
+  hex_div.dataset["ring_level"] = ring
+  hex_div.dataset["value"] = value
   hex_div.style.left = hex_div.dataset["x"] + "px"
   hex_div.style.top = hex_div.dataset["y"] + "px"
 
@@ -73,7 +72,8 @@ function generateHexagon(ring, corner_hex_position, hexagon_type, current_side_n
   if (hexagon_type == "corner") {
     var number_of_side_hexagons_under_parent_corner = ring - 1
     for(current_side_number; current_side_number <= number_of_side_hexagons_under_parent_corner; current_side_number++) {
-      generateHexagon(ring, corner_hex_position, "side", current_side_number)
+      value = getValue(ring, corner_hex_position, current_side_number)
+      generateHexagon(ring, value, corner_hex_position, "side", current_side_number)
     }
   }
 }
@@ -121,6 +121,12 @@ function newSideDimensions(corner_position, current_side_number, ring_level) {
 function numberOfRings(flare_star) {
   var core = 1
   return flare_star.length - core
+}
+
+// TODO: Double check this. Make simpler if needed.
+// Gets value within Flare Star structure
+function getValue(ring, corner_position, side_position = 0) {
+  return (ring * (corner_position - 1)) + 1 + side_position;
 }
 
 // Ring Level * Corner Position + 1
