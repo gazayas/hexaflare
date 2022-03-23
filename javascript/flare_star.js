@@ -20,18 +20,22 @@ function generateFlareStar(number_of_rings) {
 
 // We should run this when pressing the start button.
 function generateFlareStarUI(number_of_rings) {
-  var core = document.getElementsByClassName("core")[0]
-  var core_hexagon = core.querySelector(".hexagon")
-
   for(var ring = 1; ring <= number_of_rings; ring++) {
+    var ring_div = document.createElement("div")
+    ring_div.classList.add("ring")
+    ring_div.style.position = "absolute"
+    ring_div.dataset["level"] = ring
+    var flare_star_div = document.getElementsByClassName("flare_star")[0]
+    flare_star_div.appendChild(ring_div)
+
     for(var corner_hex_position = 1; corner_hex_position <= 6; corner_hex_position++){
       var value = getValue(ring, corner_hex_position)
-      generateHexagon(ring, value, corner_hex_position, "corner")
+      generateHexagon(ring_div, ring, value, corner_hex_position, "corner")
     }
   }
 }
 
-function generateHexagon(ring, value, corner_hex_position, hexagon_type, current_side_number = 1) {
+function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_type, current_side_number = 1) {
   var hex_div =  document.createElement("div")
   hex_div.classList.add("hexagon")
   hex_div.classList.add(hexagon_type)
@@ -66,14 +70,14 @@ function generateHexagon(ring, value, corner_hex_position, hexagon_type, current
 
   // TODO: Should we be appending this to the core?
   // I want to append it to its own ring
-  document.getElementsByClassName("core")[0].appendChild(hex_div)
+  ring_div.appendChild(hex_div)
 
   // Generate the side hexagons for each corner
   if (hexagon_type == "corner") {
     var number_of_side_hexagons_under_parent_corner = ring - 1
     for(current_side_number; current_side_number <= number_of_side_hexagons_under_parent_corner; current_side_number++) {
       value = getValue(ring, corner_hex_position, current_side_number)
-      generateHexagon(ring, value, corner_hex_position, "side", current_side_number)
+      generateHexagon(ring_div, ring, value, corner_hex_position, "side", current_side_number)
     }
   }
 }
