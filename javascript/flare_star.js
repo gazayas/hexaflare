@@ -78,7 +78,7 @@ function generateHexagon(ring, corner_hex_position, hexagon_type, current_side_n
   }
 }
 
-// It might BEHOOVE ME to write a function for calculating the pixels
+// TODO: This could use some refactoring. Refer to the calculations in cases 3 and 6 in newSideDimensions.
 // Return new dimensions for creating the next corner.
 function newCornerDimensions(corner_position, ring_level) {
   switch (corner_position) {
@@ -106,18 +106,19 @@ function newSideDimensions(corner_position, current_side_number, ring_level) {
     case 2:
       return [(ring_level * -((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2)) + ((HEX_CENTER_WIDTH + HEX_X_MARGIN) * current_side_number), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN)]
     case 3:
-      return [ring_level * (HEX_CENTER_WIDTH + HEX_X_MARGIN) + (-(HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2 * current_side_number), -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) * current_side_number]
+      return [ring_level * (newX() / 2) + (newX() / 2 * current_side_number), ring_level * -(HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) + (newY() * current_side_number)]
     case 4:
       return [ring_level * (HEX_CENTER_WIDTH + HEX_X_MARGIN) + (-(HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) * current_side_number]
     case 5:
       return [(ring_level * (HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2) + (-(HEX_CENTER_WIDTH + HEX_X_MARGIN) * current_side_number), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN)]
     case 6:
-      return [ring_level * -(HEX_CENTER_WIDTH + HEX_X_MARGIN) + ((HEX_CENTER_WIDTH + HEX_X_MARGIN) / 2 * current_side_number), (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) * current_side_number]
+      return [ring_level * (-(newX() / 2)) - (newX() / 2 * current_side_number), ring_level * (HEX_TOTAL_HEIGHT - HEX_Y_MARGIN) - (newY() * current_side_number)]
     default:
       break;
   }
 }
 
+// TODO: Just make this as a constant: REAL_X
 // TODO: Implement to clean up newCornerDimensions and newSideDimensions
 function newX() {
     return HEX_CENTER_WIDTH + HEX_X_MARGIN
