@@ -15,3 +15,7 @@ body {
 
   background-color: #111;
 }
+
+.corona {
+  opacity: 0.15;
+}

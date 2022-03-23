@@ -33,6 +33,30 @@ function generateFlareStarUI(number_of_rings) {
       generateHexagon(ring_div, ring, value, corner_hex_position, "corner")
     }
   }
+
+  // Get the last 4 rings to make the Corona
+  var corona_indices = []
+  for(var i = 0; i < number_of_rings; i++) { corona_indices[i] = i + 1 }
+  for(i = 0; i < number_of_rings - 4; i++) { corona_indices.shift() }
+  var flare_star_div = document.getElementsByClassName("flare_star")[0]
+  var rings = flare_star_div.children
+  var corona_rings = [
+    rings[corona_indices[0]],
+    rings[corona_indices[1]],
+    rings[corona_indices[2]],
+    rings[corona_indices[3]]
+  ]
+
+  // Apply corona class to all hexagons
+  for(i = 0; i < corona_rings.length; i++) {
+    corona_rings[i].classList.add("corona")
+
+    // TODO: We may not need this
+    // var corona_ring_hexagons = corona_rings[i].children
+    // for(var j = 0; j < corona_ring_hexagons.length; j++) {
+    //   corona_ring_hexagons[j].classList.add("corona")
+    // }
+  }
 }
 
 function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_type, current_side_number = 1) {
