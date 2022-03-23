@@ -19,3 +19,14 @@ function applyHexagonDimensions() {
     bottom_divs[i].style.borderRight = invisible_style
   }
 }
+
+// At this stage, we're only searching by coordinates in Corona
+// We might need to do this in gravityPull as well,
+// but for that we can potentially make an if statement to save on power
+function searchByCoordinates(x, y, corona = true) {
+  if(corona) {
+    // Search with corona rings only
+  } else {
+    // Search flare star rings only
+  }
+}

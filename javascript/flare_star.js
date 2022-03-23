@@ -57,6 +57,14 @@ function generateFlareStarUI(number_of_rings) {
     //   corona_ring_hexagons[j].classList.add("corona")
     // }
   }
+
+  // Generate the cursor at the first hexagon in the Corona
+  // Let's keep it invisible for now
+  var cursor_div = document.createElement("div")
+  cursor_div.classList.add("cursor")
+  cursor_div.style.position = "absolute"
+  var first_corona_ring = document.getElementsByClassName("ring")[number_of_rings - 4]
+  first_corona_ring.children[0].appendChild(cursor_div)
 }
 
 function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_type, current_side_number = 1) {
