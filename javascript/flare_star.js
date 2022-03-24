@@ -58,25 +58,31 @@ function generateFlareStarUI(number_of_rings) {
     // }
   }
 
-  // Generate the cursor at the first hexagon in the Corona
-  // Let's keep it invisible for now
+  // Generate the cursor at the first hexagon in the Corona.
+  // It is not a hexagon itself, but refers to the hexagon it's nested inside.
+  var first_corona_ring = document.getElementsByClassName("ring")[number_of_rings - 4]
   var cursor_div = document.createElement("div")
   cursor_div.classList.add("cursor")
   cursor_div.style.position = "absolute"
-  var first_corona_ring = document.getElementsByClassName("ring")[number_of_rings - 4]
   first_corona_ring.children[0].appendChild(cursor_div)
+
 }
 
-function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_type, current_side_number = 1) {
+function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_type, current_side_number = 1, append_to = false) {
   var hex_div =  document.createElement("div")
   hex_div.classList.add("hexagon")
   hex_div.classList.add(hexagon_type)
   hex_div.style.position = "absolute"
 
-  if(hexagon_type == "corner") {
+  if(hexagon_type == "corner" || hexagon_type == "cursor") {
+    hex_div.classList.add("background_hexagon")
     var new_dimensions = newCornerDimensions(corner_hex_position, ring)
   } else if (hexagon_type == "side") {
+    hex_div.classList.add("background_hexagon")
     var new_dimensions = newSideDimensions(corner_hex_position, current_side_number, ring)
+  } else if (hexagon_type == "star") {
+    hex_div.classList.add("floating_cluster")
+    new_dimensions = [0, 0]
   }
 
   // Always relative to the core, whose x and y are always 0.
@@ -100,9 +106,11 @@ function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_typ
   hex_div.appendChild(hexagon_center)
   hex_div.appendChild(hexagon_bottom)
 
-  // TODO: Should we be appending this to the core?
-  // I want to append it to its own ring
-  ring_div.appendChild(hex_div)
+  if(append_to) {
+    append_to.appendChild(hex_div)
+  } else {
+    ring_div.appendChild(hex_div)
+  }
 
   // Generate the side hexagons for each corner
   if (hexagon_type == "corner") {

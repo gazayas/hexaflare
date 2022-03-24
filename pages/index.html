@@ -14,13 +14,6 @@
         <div class="core" data-full="false">
           <!-- The general structure for hexagons. -->
           <div class="hexagon" data-x="0" data-y="0" data-full="false" data-attached-to-main-cluster="false">
-
-            <div class="hexagon cursor">
-                <div class="hexagon_top"></div>
-                <div class="hexagon_center"></div>
-                <div class="hexagon_bottom"></div>
-            </div>
-
             <div class="hexagon_top"></div>
             <div class="hexagon_center"></div>
             <div class="hexagon_bottom"></div>
@@ -38,15 +31,23 @@
     <script src="../javascript/flare_star.js"></script>
     <script src="../javascript/hexagon.js"></script>
 
+    <!-- Star Clusters -->
+    <script src="../javascript/star_clusters/jewel_data.js"></script>
+    <script src="../javascript/star_clusters/jewel.js"></script>
+
+    <script src="../javascript/star_cluster.js">
+
+    </script>
+
     <script type="text/javascript">
       // In pixels
-      var HEX_CENTER_WIDTH = 40
-      var HEX_CENTER_HEIGHT = 25
-      var HEX_TOP_BOTTOM_BORDER_HEIGHT = 10
-      var HEX_INVISIBLE_BORDERS = 20 // Extends top and bottom triangles horizontally
+      var HEX_CENTER_WIDTH = 30
+      var HEX_CENTER_HEIGHT = 18
+      var HEX_TOP_BOTTOM_BORDER_HEIGHT = 7
+      var HEX_INVISIBLE_BORDERS = 15 // Extends top and bottom triangles horizontally
       var HEX_TOTAL_HEIGHT = HEX_CENTER_HEIGHT + (HEX_TOP_BOTTOM_BORDER_HEIGHT * 2)
       var HEX_X_MARGIN = 4
-      var HEX_Y_MARGIN = 6 // Use a negative number for greater distance
+      var HEX_Y_MARGIN = 3 // Use a negative number for greater distance
       var REAL_X = HEX_CENTER_WIDTH + HEX_X_MARGIN
       var REAL_Y = HEX_TOTAL_HEIGHT - HEX_Y_MARGIN
       var HEX_COLOR = "silver"
@@ -57,6 +58,9 @@
       var flare_star = generateFlareStar(10)
       generateFlareStarUI(numberOfRings(flare_star))
       applyHexagonDimensions()
+
+      // To test out, eventually make the first Jewel Star Cluster here
+      generateStarCluster("Jewel")
     </script>
   </body>
 </html>

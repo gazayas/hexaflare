@@ -16,6 +16,8 @@ body {
   background-color: #111;
 }
 
-.corona {
+.corona .background_hexagon .hexagon_top,
+.corona .background_hexagon .hexagon_center,
+.corona .background_hexagon .hexagon_bottom {
   opacity: 0.15;
 }
