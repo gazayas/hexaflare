@@ -1,22 +1,27 @@
-function applyHexagonDimensions() {
-  var top_divs = document.getElementsByClassName("hexagon_top")
-  var center_divs = document.getElementsByClassName("hexagon_center")
-  var bottom_divs = document.getElementsByClassName("hexagon_bottom")
-
+function applyHexagonDimensions(hexagon_class_name, color, options = {}) {
+  var top_divs = document.querySelectorAll(`.${hexagon_class_name} .hexagon_top`)
+  var center_divs = document.querySelectorAll(`.${hexagon_class_name} .hexagon_center`)
+  var bottom_divs = document.querySelectorAll(`.${hexagon_class_name} .hexagon_bottom`)
   var invisible_style = HEX_INVISIBLE_BORDERS + "px solid transparent"
 
   for(var i = 0; i < top_divs.length; i++) {
-    top_divs[i].style.borderBottom = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + HEX_COLOR
+    top_divs[i].style.borderBottom = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + color
     top_divs[i].style.borderLeft = invisible_style
     top_divs[i].style.borderRight = invisible_style
 
     center_divs[i].style.height = HEX_CENTER_HEIGHT + "px"
     center_divs[i].style.width = HEX_CENTER_WIDTH + "px"
-    center_divs[i].style.backgroundColor = HEX_COLOR
+    center_divs[i].style.backgroundColor = color
 
-    bottom_divs[i].style.borderTop = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + HEX_COLOR
+    bottom_divs[i].style.borderTop = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + color
     bottom_divs[i].style.borderLeft = invisible_style
     bottom_divs[i].style.borderRight = invisible_style
+
+    if(options["opacity"]) {
+      top_divs[i].style.opacity = options["opacity"]
+      center_divs[i].style.opacity = options["opacity"]
+      bottom_divs[i].style.opacity = options["opacity"]
+    }
   }
 }
 
@@ -32,41 +37,17 @@ function applyHexagonDimensions() {
 function generateStarsfromData(star_cluster_data, reference_div) {
   var cursor_hexagon = reference_div.parentNode
 
-  // Cycle through all the hexagons
+  // Cycle through all the hexagons in the data
   for(var i = 1; i <= Object.keys(star_cluster_data).length; i++) {
-    // Get the coordinates from the map
     var coordinates = getCoordinatesByMap(star_cluster_data[`hexagon_${i}`]["initialization_map"], cursor_hexagon)
-
-    // Search the hexagon by the coordinates that the map returns
     var hexagon_div = searchByCoordinates(coordinates, false)
-
-    // Call generateHexagon => append_to is the hexagon found with the coordinates
     generateHexagon(null, null, null, null, "star", 1, hexagon_div)
   }
 
   var floating_cluster = document.getElementsByClassName("floating_cluster")
 
   // Apply background
-  // TODO: applyHexagonDimensions() needs to be refactored: applyHexagonDimensions(hexagons, color, opacity)
-  var invisible_style = HEX_INVISIBLE_BORDERS + "px solid transparent"
-  for (var i = 0; i < floating_cluster.length; i++) {
-    // Get floating cluster hexagon parts
-    console.log(floating_cluster[i].querySelector(".hexagon_top"))
-    floating_cluster[i].querySelector(".hexagon_top").style.borderBottom = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + "navy"
-    floating_cluster[i].querySelector(".hexagon_top").style.borderLeft = invisible_style
-    floating_cluster[i].querySelector(".hexagon_top").style.borderRight = invisible_style
-    floating_cluster[i].querySelector(".hexagon_top").style.opacity = 1
-
-    floating_cluster[i].querySelector(".hexagon_center").style.height = HEX_CENTER_HEIGHT + "px"
-    floating_cluster[i].querySelector(".hexagon_center").style.width = HEX_CENTER_WIDTH + "px"
-    floating_cluster[i].querySelector(".hexagon_center").style.backgroundColor = "navy"
-    floating_cluster[i].querySelector(".hexagon_center").style.opacity = 1
-
-    floating_cluster[i].querySelector(".hexagon_bottom").style.borderTop = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + "navy"
-    floating_cluster[i].querySelector(".hexagon_bottom").style.borderLeft = invisible_style
-    floating_cluster[i].querySelector(".hexagon_bottom").style.borderRight = invisible_style
-    floating_cluster[i].querySelector(".hexagon_bottom").style.opacity = 1
-  }
+  applyHexagonDimensions("floating_cluster", "blue", {"opacity": 1})
 }
 
 function getCoordinatesByMap(hexagon_map, reference_div) {

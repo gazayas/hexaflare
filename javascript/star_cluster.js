@@ -1,6 +1,3 @@
-// Make sure this comes after all the star clusters in
-// index.html so everything is read properly
-
 // https://en.wikipedia.org/wiki/List_of_open_clusters)
 const STAR_CLUSTER_NAMES = [
   "Jewel", // Cross
@@ -22,42 +19,38 @@ function randomStarClusterType() {
 }
 
 function generateStarCluster(star_cluster_type) {
-  // TODO: Randomize star_cluster_type. For now, it's "Jewel"
-
-  // Go through each Jewel hexagon and create it according to it's initialization_map
   var cursor_div = document.getElementsByClassName("cursor")[0]
   var data = null
   switch (star_cluster_type) {
     case "Jewel":
-      var data = JEWEL_DATA
+      data = JEWEL_DATA
       break;
     case "Pleiades":
-      var data = PLEIADES_DATA
+      data = PLEIADES_DATA
       break;
     case "Alpha":
-      var data = ALPHA_DATA
+      data = ALPHA_DATA
       break;
     case "Lambda":
-      var data = LAMBDA_DATA
+      data = LAMBDA_DATA
       break;
     case "Pi":
-      var data = PI_DATA
+      data = PI_DATA
       break;
     case "Omicron":
-      var data = OMICRON_DATA
+      data = OMICRON_DATA
       break;
     case "Pearl":
-      var data = PEARL_DATA
+      data = PEARL_DATA
       break;
     case "Blanco":
-      var data = BLANCO_DATA
+      data = BLANCO_DATA
       break;
     case "Butterfly":
-      var data = BUTTERFLY_DATA
+      data = BUTTERFLY_DATA
       break;
     default:
   }
-
   generateStarsfromData(data, cursor_div)
 }
 
