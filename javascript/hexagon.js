@@ -103,9 +103,8 @@ function getCoordinatesByMap(hexagon_map, reference_div) {
         break;
       default:
     }
-
-    return [new_x, new_y]
   }
+  return [new_x, new_y]
 }
 
 // At this stage, we're only searching by coordinates in Corona

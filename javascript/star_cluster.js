@@ -15,7 +15,10 @@ const STAR_CLUSTER_NAMES = [
 ]
 
 function randomStarClusterType() {
-  // return random value from STAR_CLUSTER_NAMES
+  var min = 1
+  var max = STAR_CLUSTER_NAMES.length
+  var idx = Math.floor(Math.random() * (max + 1 - min) ) + min
+  return STAR_CLUSTER_NAMES[idx - 1]
 }
 
 function generateStarCluster(star_cluster_type) {
@@ -27,6 +30,30 @@ function generateStarCluster(star_cluster_type) {
   switch (star_cluster_type) {
     case "Jewel":
       var data = JEWEL_DATA
+      break;
+    case "Pleiades":
+      var data = PLEIADES_DATA
+      break;
+    case "Alpha":
+      var data = ALPHA_DATA
+      break;
+    case "Lambda":
+      var data = LAMBDA_DATA
+      break;
+    case "Pi":
+      var data = PI_DATA
+      break;
+    case "Omicron":
+      var data = OMICRON_DATA
+      break;
+    case "Pearl":
+      var data = PEARL_DATA
+      break;
+    case "Blanco":
+      var data = BLANCO_DATA
+      break;
+    case "Butterfly":
+      var data = BUTTERFLY_DATA
       break;
     default:
   }
