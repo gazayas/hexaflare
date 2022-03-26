@@ -11,7 +11,7 @@ const PI_DATA = {
     }
   },
   "hexagon_2": {
-    "initialization_map": [["down_left", 1]],
+    "initialization_map": [["left", 1]],
     "rotation_pattern": {
       "turn_1": null,
       "turn_2": null,
@@ -22,7 +22,7 @@ const PI_DATA = {
     }
   },
   "hexagon_3": {
-    "initialization_map": [["down_left", 2]],
+    "initialization_map": [["left", 1], ["up_left", 1]],
     "rotation_pattern": {
       "turn_1": null,
       "turn_2": null,
@@ -33,7 +33,7 @@ const PI_DATA = {
     }
   },
   "hexagon_4": {
-    "initialization_map": [["up_left", 1]],
+    "initialization_map": [["left", 1], ["up_left", 2]],
     "rotation_pattern": {
       "turn_1": null,
       "turn_2": null,
