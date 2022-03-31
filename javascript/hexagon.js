@@ -25,31 +25,6 @@ function applyHexagonDimensions(hexagon_class_name, color, options = {}) {
   }
 }
 
-// Example:
-// var hexagon_map = [
-//   ["left", 2],
-//   ["down_left", 1]
-// ]
-//
-// We calculate the x and y for each direction one hexagon at a time.
-// So the example here means move 2 hexagons left, and 1 hexagon down left.
-// That's where we'll put the hexagon next.
-function generateStarsfromData(star_cluster_data, reference_div) {
-  var cursor_hexagon = reference_div.parentNode
-
-  // Cycle through all the hexagons in the data
-  for(var i = 1; i <= Object.keys(star_cluster_data).length; i++) {
-    var coordinates = getCoordinatesByMap(star_cluster_data[`hexagon_${i}`]["initialization_map"], cursor_hexagon)
-    var hexagon_div = searchByCoordinates(coordinates, false)
-    generateHexagon(null, null, null, null, "star", 1, hexagon_div)
-  }
-
-  var floating_cluster = document.getElementsByClassName("floating_cluster")
-
-  // Apply background
-  applyHexagonDimensions("floating_cluster", "blue", {"opacity": 1})
-}
-
 function getCoordinatesByMap(hexagon_map, reference_div) {
   var new_x = parseInt(reference_div.dataset["x"])
   var new_y = parseInt(reference_div.dataset["y"])
@@ -92,9 +67,9 @@ function getCoordinatesByMap(hexagon_map, reference_div) {
 // We might need to do this in gravityPull as well,
 // but for that we can potentially make an if statement to save on power
 function searchByCoordinates(coordinates, corona = true) {
-  if(corona) {
+  // if(corona) {
     // Search with corona rings only
-  } else {
+  // } else {
     var background_hexagon_div = null
     var background_hexagons = document.getElementsByClassName("background_hexagon")
     for (var i = 0; i < background_hexagons.length; i++) {
@@ -103,5 +78,5 @@ function searchByCoordinates(coordinates, corona = true) {
         return background_hexagons[i]
       }
     }
-  }
+  // }
 }
