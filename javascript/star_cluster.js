@@ -11,12 +11,23 @@ const STAR_CLUSTER_NAMES = [
   "Butterfly" // Cup
 ]
 
+// These are used specifically for rotation patterns
 const DIRECTIONS = [
   "left",
   "up_left",
   "up_right",
   "right",
   "down_right",
+  "down_left"
+]
+
+// These are used specifically for moving star clusters along the Corona
+const MOVEMENT_DIRECTIONS = [
+  "up_right",
+  "right",
+  "down_right",
+  "down_left",
+  "left",
   "down_left"
 ]
 
@@ -42,7 +53,7 @@ function generateStarCluster(star_cluster_type) {
 // We calculate the x and y for each direction one hexagon at a time.
 // So the example here means move 2 hexagons left, and 1 hexagon down left.
 // That's where we'll put the hexagon next.
-function generateStarsfromData(star_cluster_data, star_cluster_type,reference_div) {
+function generateStarsfromData(star_cluster_data, star_cluster_type, reference_div) {
   var cursor_hexagon = reference_div.parentNode
 
   // TODO: We need to get rid of the initialization_map and just use position 1
@@ -63,7 +74,42 @@ function generateStarsfromData(star_cluster_data, star_cluster_type,reference_di
   applyHexagonDimensions("floating_cluster", "blue", {"opacity": 1})
 }
 
+function moveAlongCorona(direction, star_cluster, star_cluster_type) {
+  var cursor = document.getElementsByClassName("cursor")[0]
+  var old_corner_position = cursor.dataset["corner_position"]
+
+  var parent_hexagon = cursor.parentNode
+  var hexagon_value = parseInt(parent_hexagon.dataset["value"])
+  var ring_level = parseInt(parent_hexagon.dataset["ring_level"])
+  var last_value_in_ring = flare_star[ring_level].length
+
+  // Calculate the next value
+  if(direction == "counter-clockwise") {
+    var new_value = hexagon_value - 1
+    if(new_value == 0) {
+      new_value = last_value_in_ring
+    }
+  } else if (direction == "clockwise") {
+    var new_value = hexagon_value + 1
+    if(new_value > last_value_in_ring) {
+      new_value = 1
+    }
+  }
+
+  var hexagon_to_move_to = searchByRingLevelAndValue(ring_level, new_value)
+  var new_corner = cornerPosition(flare_star, ring_level, new_value) + 1
+  cursor.dataset["corner_position"] = new_corner
+  hexagon_to_move_to.appendChild(cursor)
+
+  // TODO: This is super hacky, but it works ¯\_(ツ)_/¯
+  // Would be better to redraw the star cluster itself
+  var reverse_direction = direction == "clockwise" ? "counter-clockwise" : "clockwise"
+  rotate(direction, star_cluster, star_cluster_type)
+  rotate(reverse_direction, star_cluster, star_cluster_type)
+}
+
 // TODO: If the star_cluster falls inside the inner flare_star, run this again until it's clear
+// Maybe I should just make rotations so it doesn't fall into the inner flare star in the first place
 function rotate(direction, star_cluster, star_cluster_type) {
   var data = getData(star_cluster_type)
   var cursor = document.getElementsByClassName("cursor")[0]

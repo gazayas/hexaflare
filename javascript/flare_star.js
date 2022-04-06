@@ -212,7 +212,20 @@ function cornerPosition(flare_star, ring_level, value) {
   // TODO: First check if the value is a corner.
   // If not, return null
   var ring_corners = ringCorners(flare_star, ring_level)
-  return ring_corners.indexOf(value)
+  if(isCorner(flare_star, ring_level, value)) {
+    return ring_corners.indexOf(value)
+  } else {
+    // Go through each of the ring corners and see if it's > or not
+    for (var i = 0; i < ring_corners.length; i++) {
+      if(i == 5) {
+        return ring_corners.indexOf(ring_corners[i])
+      } else {
+        if(ring_corners[i] < value && value < ring_corners[i + 1] ) {
+          return ring_corners.indexOf(ring_corners[i])
+        }
+      }
+    }
+  }
 }
 
 function ringLength(flare_star, ring_level) {

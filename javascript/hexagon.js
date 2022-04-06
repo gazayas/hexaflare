@@ -80,3 +80,13 @@ function searchByCoordinates(coordinates, corona = true) {
     }
   // }
 }
+
+function searchByRingLevelAndValue(ring_level, value) {
+  var background_hexagons = document.getElementsByClassName("background_hexagon")
+  for (var i = 0; i < background_hexagons.length; i++) {
+    if(parseInt(background_hexagons[i].dataset["ring_level"]) == ring_level &&
+       parseInt(background_hexagons[i].dataset["value"]) == value) {
+      return background_hexagons[i]
+    }
+  }
+}
