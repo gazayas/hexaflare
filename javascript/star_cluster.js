@@ -22,21 +22,9 @@ const DIRECTIONS = [
   "down_left"
 ]
 
-// These are used specifically for moving star clusters along the Corona
-const MOVEMENT_DIRECTIONS = [
-  "up_right",
-  "right",
-  "down_right",
-  "down_left",
-  "left",
-  "down_left"
-]
-
 function randomStarClusterType() {
-  var min = 1
-  var max = STAR_CLUSTER_NAMES.length
-  var idx = Math.floor(Math.random() * (max + 1 - min) ) + min
-  return STAR_CLUSTER_NAMES[idx - 1]
+  var idx = Math.floor(Math.random() * STAR_CLUSTER_NAMES.length)
+  return STAR_CLUSTER_NAMES[idx]
 }
 
 function generateStarCluster(star_cluster_type) {
@@ -45,20 +33,15 @@ function generateStarCluster(star_cluster_type) {
   generateStarsfromData(data, star_cluster_type, cursor_div)
 }
 
-// Example:
-// var hexagon_map = [
-//   ["left", 2],
-//   ["down_left", 1]
-// ]
-//
-// We calculate the x and y for each direction one hexagon at a time.
-// So the example here means move 2 hexagons left, and 1 hexagon down left.
-// That's where we'll put the hexagon next.
+// Star Clusters are always generated in their first position.
+// We generate each star according to its value `position_1`.
 function generateStarsfromData(star_cluster_data, star_cluster_type, reference_div) {
   var cursor_hexagon = reference_div.parentNode
+
+  // If the cursor is in a corner position other than `1`,
+  // we need to make sure the entire rotation pattern is turned accordingly.
   var new_rotation_pattern = getNewRotationPattern(null, star_cluster_type)
 
-  // Cycle through all the hexagons in the data
   for(var i = 1; i <= Object.keys(star_cluster_data).length; i++) {
     // TODO: I'm still not a fan of this, it should probably be changed sooner than later.
     if (new_rotation_pattern[i-1]["position_1"] == null) { new_rotation_pattern[i-1]["position_1"] = [null] }
@@ -68,7 +51,6 @@ function generateStarsfromData(star_cluster_data, star_cluster_type, reference_d
     generateHexagon(null, null, `hexagon_${i}`, null, "star", 1, hexagon_div)
   }
 
-  // Apply style
   applyHexagonDimensions("floating_cluster", "blue", {"opacity": 1})
 }
 
@@ -114,7 +96,6 @@ function rotate(direction, star_cluster, star_cluster_type) {
   var current_cursor_corner_position = cursor.dataset["corner_position"]
 
   for(var i = 1; i <= Object.keys(data).length; i++) {
-    // Get the star cluster by its value
     var star_cluster_to_rotate = null
     for (var l = 0; l < star_cluster.length; l++) {
       for (var m = 1; m <= star_cluster.length; m++) {
