@@ -10,9 +10,9 @@ const JEWEL_DATA = {
     "rotation_pattern": {
       "turn_1": null,
       "turn_2": [["down_left", 1]],
-      "turn_3": [["down_left", 1]],
+      "turn_3": null,
       "turn_4": [["left", 1]],
-      "turn_5": [["up_left", 1]],
+      "turn_5": [["down_left", 1]],
       "turn_6": [["up_left", 1]]
     }
   },
@@ -23,8 +23,8 @@ const JEWEL_DATA = {
       "turn_2": [["down_left", 1], ["left", 1]],
       "turn_3": [["left", 1]],
       "turn_4": [["up_left", 1]],
-      "turn_5": [["up_right", 1]],
-      "turn_6": null,
+      "turn_5": [["down_left", 1], ["left", 1]],
+      "turn_6": [["left", 1]],
     }
   },
   "hexagon_3": {
@@ -32,10 +32,10 @@ const JEWEL_DATA = {
     "rotation_pattern": {
       "turn_1": [["left", 1]],
       "turn_2": [["left", 1]],
-      "turn_3": null,
+      "turn_3": [["left", 1], ["up_left", 1]],
       "turn_4": null,
-      "turn_5": null,
-      "turn_6": [["left", 1]],
+      "turn_5": [["left", 1]],
+      "turn_6": [["left", 1], ["up_left", 1]],
     }
   },
   "hexagon_4": {
@@ -43,10 +43,10 @@ const JEWEL_DATA = {
     "rotation_pattern": {
       "turn_1": [["up_left", 1]],
       "turn_2": null,
-      "turn_3": [["down_right", 1]],
+      "turn_3": [["up_left", 1]],
       "turn_4": [["down_left", 1]],
-      "turn_5": [["left", 1]],
-      "turn_6": [["left", 1], ["up_left", 1]],
+      "turn_5": null,
+      "turn_6": null,
     }
   }
 }
