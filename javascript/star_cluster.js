@@ -1,5 +1,6 @@
 // https://en.wikipedia.org/wiki/List_of_open_clusters)
 const STAR_CLUSTER_NAMES = [
+  "Proxima",
   "Jewel", // Cross
   "Pleiades", // Straight
   "Alpha", // Pokes out in middle (Right)
@@ -208,6 +209,9 @@ function getNewDirectionByRevolvingOnRing(original_direction, corner_position) {
 
 function getData(star_cluster_type) {
   switch (star_cluster_type) {
+    case "Proxima":
+      return PROXIMA_DATA
+      break;
     case "Jewel":
       return JEWEL_DATA
       break;

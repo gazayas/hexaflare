@@ -32,6 +32,7 @@
     <script src="../javascript/hexagon.js"></script>
 
     <!-- Star Clusters -->
+    <script src="../javascript/star_clusters/proxima_data.js"></script>
     <script src="../javascript/star_clusters/jewel_data.js"></script>
     <script src="../javascript/star_clusters/pleiades_data.js"></script>
     <script src="../javascript/star_clusters/alpha_data.js"></script>
@@ -65,8 +66,8 @@
       generateFlareStarUI(numberOfRings(flare_star))
       applyHexagonDimensions("hexagon", HEX_COLOR)
 
-      // generateStarCluster(randomStarClusterType())
-      var star_cluster_name = "Butterfly"
+      // var star_cluster_name = randomStarClusterType()
+      var star_cluster_name = "Proxima"
       generateStarCluster(star_cluster_name)
       // get current star cluster
       var floating_cluster = document.getElementsByClassName("floating_cluster")
