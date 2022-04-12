@@ -56,17 +56,14 @@ function generateStarCluster(star_cluster_type) {
 // That's where we'll put the hexagon next.
 function generateStarsfromData(star_cluster_data, star_cluster_type, reference_div) {
   var cursor_hexagon = reference_div.parentNode
-
-  // TODO: We need to get rid of the initialization_map and just use position 1
-  var new_intialization_map = getNewRotationPattern(null, star_cluster_type)
+  var new_rotation_pattern = getNewRotationPattern(null, star_cluster_type)
 
   // Cycle through all the hexagons in the data
   for(var i = 1; i <= Object.keys(star_cluster_data).length; i++) {
     // TODO: I'm still not a fan of this, it should probably be changed sooner than later.
-    if (new_intialization_map[i-1]["turn_1"] == null) { new_intialization_map[i-1]["turn_1"] = [null] }
+    if (new_rotation_pattern[i-1]["position_1"] == null) { new_rotation_pattern[i-1]["position_1"] = [null] }
 
-    // var coordinates = getCoordinatesByMap(star_cluster_data[`hexagon_${i}`]["initialization_map"], cursor_hexagon);
-    var coordinates = getCoordinatesByMap(new_intialization_map[i-1]["turn_1"], cursor_hexagon)
+    var coordinates = getCoordinatesByMap(new_rotation_pattern[i-1]["position_1"], cursor_hexagon)
     var hexagon_div = searchByCoordinates(coordinates, false)
     generateHexagon(null, null, `hexagon_${i}`, null, "star", 1, hexagon_div)
   }
@@ -143,9 +140,7 @@ function rotate(direction, star_cluster, star_cluster_type) {
     // Before we rotate, we shift the star's rotation pattern according to the cursor's corner position.
     var new_rotation_pattern = getNewRotationPattern(star_cluster, star_cluster_type)
 
-    // TODO: Rotate according to new_rotation_pattern, not data
-    // var current_turn_map = data[`hexagon_${i}`]["rotation_pattern"][`turn_${current_rotation_position}`]
-    var current_turn_map = new_rotation_pattern[i - 1][`turn_${current_rotation_position}`]
+    var current_turn_map = new_rotation_pattern[i - 1][`position_${current_rotation_position}`]
     if(current_turn_map == null) { current_turn_map = [null] }
     var new_coordinates = getCoordinatesByMap(current_turn_map, cursor.parentNode)
     var new_hexagon = searchByCoordinates(new_coordinates)
@@ -167,21 +162,21 @@ function getNewRotationPattern(star_cluster, star_cluster_type) {
     var new_rotation_pattern = []
 
     // Here we loop through each position in the rotation pattern
-    for (var turn_num = 1; turn_num <= Object.keys(rotation_patterns).length; turn_num++) {
-      var turn = `turn_${turn_num}`
-      if(rotation_patterns[`turn_${turn_num}`] == null) {
+    for (var position_num = 1; position_num <= Object.keys(rotation_patterns).length; position_num++) {
+      var position = `position_${position_num}`
+      if(rotation_patterns[`position_${position_num}`] == null) {
         // The hexagon doesn't needed to be rotated, so we don't do anything here.
-        new_rotation_pattern.push([`turn_${turn_num}`, null])
+        new_rotation_pattern.push([`position_${position_num}`, null])
       } else {
         // The position inside the rotation pattern might be an array of several steps
         // i.e. - [["left", 1], ["up_left", 1]]
         // For that reason, we loop through those and update them here.
         var new_rotation_map = []
-        for (var k = 0; k < rotation_patterns[`turn_${turn_num}`].length; k++) {
-          var new_direction = getNewDirectionByRevolvingOnRing(rotation_patterns[`turn_${turn_num}`][k][0], current_cursor_corner_position)
-          new_rotation_map.push([new_direction, rotation_patterns[`turn_${turn_num}`][k][1]])
+        for (var k = 0; k < rotation_patterns[`position_${position_num}`].length; k++) {
+          var new_direction = getNewDirectionByRevolvingOnRing(rotation_patterns[`position_${position_num}`][k][0], current_cursor_corner_position)
+          new_rotation_map.push([new_direction, rotation_patterns[`position_${position_num}`][k][1]])
         }
-        new_rotation_pattern.push([`turn_${turn_num}`, new_rotation_map])
+        new_rotation_pattern.push([`position_${position_num}`, new_rotation_map])
       }
     }
     // var new_rotation_pattern = Object.fromEntries(new_rotation_pattern)
