@@ -41,13 +41,13 @@ function generateStarsfromData(star_cluster_data, star_cluster_type, reference_d
   // we need to make sure the entire rotation pattern of the star cluster is turned accordingly.
   var new_rotation_pattern = getNewRotationPattern(null, star_cluster_type)
 
-  for(var i = 1; i <= Object.keys(star_cluster_data).length; i++) {
+  for(var i = 0; i < Object.keys(star_cluster_data).length; i++) {
     // TODO: I'm still not a fan of this, it should probably be changed sooner than later.
-    if (new_rotation_pattern[i-1]["position_1"] == null) { new_rotation_pattern[i-1]["position_1"] = [null] }
+    if (new_rotation_pattern[i]["position_1"] == null) { new_rotation_pattern[i]["position_1"] = [null] }
 
-    var coordinates = getCoordinatesByMap(new_rotation_pattern[i-1]["position_1"], cursor_hexagon)
+    var coordinates = getCoordinatesByMap(new_rotation_pattern[i]["position_1"], cursor_hexagon)
     var hexagon_div = searchByCoordinates(coordinates, false)
-    generateHexagon(null, null, `hexagon_${i}`, null, "star", 1, hexagon_div)
+    generateHexagon(null, null, `hexagon_${i + 1}`, null, "star", 1, hexagon_div)
   }
 
   applyHexagonDimensions("floating_cluster", "blue", {"opacity": 1})
@@ -95,15 +95,13 @@ function rotate(direction, star_cluster, star_cluster_type) {
   var cursor = document.getElementsByClassName("cursor")[0]
   var current_cursor_corner_position = cursor.dataset["corner_position"]
 
-  // Move each star in the cluster one at a time.
+  // Rotate each star in the cluster one at a time.
   for(var i = 1; i <= Object.keys(data).length; i++) {
 
     // Get the proper star HTML element by matching with the hexagon number.
     var star_to_rotate = null
     for (var j = 0; j < star_cluster.length; j++) {
-      if(star_cluster[j].dataset["value"] == `hexagon_${i}`) {
-        star_to_rotate = star_cluster[j]
-      }
+      if(star_cluster[j].dataset["value"] == `hexagon_${i}`) { star_to_rotate = star_cluster[j] }
     }
 
     var current_rotation_position = parseInt(star_to_rotate.dataset["rotation_position"])
@@ -120,59 +118,57 @@ function rotate(direction, star_cluster, star_cluster_type) {
 
     // Before we rotate, we shift the star's rotation pattern according to the cursor's corner position.
     var new_rotation_pattern = getNewRotationPattern(star_cluster, star_cluster_type)
+    var new_rotation_map = new_rotation_pattern[i - 1][`position_${current_rotation_position}`]
 
-    var current_position = new_rotation_pattern[i - 1][`position_${current_rotation_position}`]
-
-    // TODO: Fix this line
-    if(current_position == null) { current_position = [null] }
-
-    var new_coordinates = getCoordinatesByMap(current_position, cursor.parentNode)
+    // Get the new hexagon and append the star to it to simulate the rotation
+    var new_coordinates = getCoordinatesByMap(new_rotation_map, cursor.parentNode)
     var new_hexagon = searchByCoordinates(new_coordinates)
     new_hexagon.appendChild(star_to_rotate)
   }
 }
 
-// Before we rotate, we need a new rotation pattern
-// according to the star cluster's cursor's corner position.
+// This method gets a star clusters' new rotation pattern
+// according to the cursor's corner position.
 function getNewRotationPattern(star_cluster, star_cluster_type) {
-  // TODO: Change to new_rotation_map,
-  // and change new_rotation_pattern to new_position below
-  var new_map = []
+  var new_rotation_pattern = []
 
   var data = getData(star_cluster_type)
   var cursor = document.getElementsByClassName("cursor")[0]
   var current_cursor_corner_position = cursor.dataset["corner_position"]
 
-  // Here we update each position in each hexagon's rotation pattern
+  // Here we update each position in each hexagon's rotation pattern.
   for(var i = 1; i <= Object.keys(data).length; i++) {
-    var rotation_patterns = data[`hexagon_${i}`]["rotation_pattern"] // TODO: Change name to `original_rotation_pattern`
-    var new_rotation_pattern = []
+    // We eventually turn this array into a hash (new_rotation_pattern) and return that.
+    // i.e. - [["position_1", [["left", 1]]]] → {"position_1": [["left", 1]]}
+    var new_rotation_pattern_ary = []
+    var original_rotation_pattern = data[`hexagon_${i}`]["rotation_pattern"]
 
-    // Here we loop through each position in the rotation pattern
-    for (var position_num = 1; position_num <= Object.keys(rotation_patterns).length; position_num++) {
+    // Here we loop through each position in the rotation pattern.
+    for (var position_num = 1; position_num <= Object.keys(original_rotation_pattern).length; position_num++) {
       var position = `position_${position_num}`
 
-      // If null, the hexagon doesn't needed to be rotated so we don't do anything here.
-      if(rotation_patterns[`position_${position_num}`] == null) {
-        new_rotation_pattern.push([`position_${position_num}`, null])
+      // If null, the hexagon doesn't needed to be rotated,
+      // so we just push the position_num and the null map.
+      if(original_rotation_pattern[`position_${position_num}`][0] == null) {
+        new_rotation_pattern_ary.push([`position_${position_num}`, [null]])
 
-      // The position inside the rotation pattern might be an array of several steps
+      // The map for each position might be an array of several steps
       // i.e. - [["left", 1], ["up_left", 1]]
       // For that reason, we loop through those and update them here.
       } else {
         var new_rotation_map = []
-        for (var k = 0; k < rotation_patterns[`position_${position_num}`].length; k++) {
-          var new_direction = getNewDirectionByRevolvingOnRing(rotation_patterns[`position_${position_num}`][k][0], current_cursor_corner_position)
-          new_rotation_map.push([new_direction, rotation_patterns[`position_${position_num}`][k][1]])
+        for (var map_direction_number = 0; map_direction_number < original_rotation_pattern[`position_${position_num}`].length; map_direction_number++) {
+          var new_direction = getNewDirectionByRevolvingOnRing(original_rotation_pattern[`position_${position_num}`][map_direction_number][0], current_cursor_corner_position)
+          new_rotation_map.push([new_direction, original_rotation_pattern[`position_${position_num}`][map_direction_number][1]])
         }
-        new_rotation_pattern.push([`position_${position_num}`, new_rotation_map])
+        new_rotation_pattern_ary.push([`position_${position_num}`, new_rotation_map])
       }
     }
 
     // fromEntries takes an array and makes it into a hash.
-    new_map.push(Object.fromEntries(new_rotation_pattern))
+    new_rotation_pattern.push(Object.fromEntries(new_rotation_pattern_ary))
   }
-  return new_map
+  return new_rotation_pattern
 }
 
 // TODO: Get according to Flare Star ID

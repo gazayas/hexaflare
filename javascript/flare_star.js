@@ -82,7 +82,8 @@ function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_typ
     var new_dimensions = newSideDimensions(corner_hex_position, current_side_number, ring)
   } else if (hexagon_type == "star") {
     hex_div.classList.add("floating_cluster")
-    // This should always be initialized with 1 because it refers to position_1 in its rotation pattern, aka the initialization_map
+    // This should always be initialized with 1 because it refers to position_1
+    // in its rotation pattern, aka the initialization_map
     hex_div.dataset["rotation_position"] = 1
     new_dimensions = [0, 0]
   }

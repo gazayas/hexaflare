@@ -1,12 +1,12 @@
 const PLEIADES_DATA = {
   "hexagon_1": {
     "rotation_pattern": {
-      "position_1": null,
-      "position_2": null,
-      "position_3": null,
+      "position_1": [null],
+      "position_2": [null],
+      "position_3": [null],
       "position_4": [["left", 3]],
-      "position_5": null,
-      "position_6": null
+      "position_5": [null],
+      "position_6": [null]
     }
   },
   "hexagon_2": {
@@ -34,7 +34,7 @@ const PLEIADES_DATA = {
       "position_1": [["left", 3]],
       "position_2": [["up_left", 3]],
       "position_3": [["up_right", 3]],
-      "position_4": null,
+      "position_4": [null],
       "position_5": [["down_right", 3]],
       "position_6": [["down_left", 3]],
     }
