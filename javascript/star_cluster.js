@@ -42,9 +42,6 @@ function generateStarsfromData(star_cluster_data, star_cluster_type, reference_d
   var new_rotation_pattern = getNewRotationPattern(null, star_cluster_type)
 
   for(var i = 0; i < Object.keys(star_cluster_data).length; i++) {
-    // TODO: I'm still not a fan of this, it should probably be changed sooner than later.
-    if (new_rotation_pattern[i]["position_1"] == null) { new_rotation_pattern[i]["position_1"] = [null] }
-
     var coordinates = getCoordinatesByMap(new_rotation_pattern[i]["position_1"], cursor_hexagon)
     var hexagon_div = searchByCoordinates(coordinates, false)
     generateHexagon(null, null, `hexagon_${i + 1}`, null, ["star"], 1, hexagon_div)
