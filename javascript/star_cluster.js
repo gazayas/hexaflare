@@ -88,8 +88,6 @@ function moveAlongCorona(direction, star_cluster, star_cluster_type) {
   rotate(reverse_direction, star_cluster, star_cluster_type)
 }
 
-// TODO: If the star_cluster falls inside the inner flare_star, run this again until it's clear
-// Maybe I should just make rotations so it doesn't fall into the inner flare star in the first place
 function rotate(direction, star_cluster, star_cluster_type) {
   var data = getData(star_cluster_type)
   var cursor = document.getElementsByClassName("cursor")[0]
