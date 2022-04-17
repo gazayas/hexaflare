@@ -5,8 +5,8 @@ const PLEIADES_DATA = {
       "position_2": [null],
       "position_3": [null],
       "position_4": [["left", 3]],
-      "position_5": [null],
-      "position_6": [null]
+      "position_5": [["up_left", 3]],
+      "position_6": [["up_right", 3]]
     }
   },
   "hexagon_2": {
@@ -15,8 +15,8 @@ const PLEIADES_DATA = {
       "position_2": [["up_left", 1]],
       "position_3": [["up_right", 1]],
       "position_4": [["left", 2]],
-      "position_5": [["down_right", 1]],
-      "position_6": [["down_left", 1]],
+      "position_5": [["up_left", 2]],
+      "position_6": [["up_right", 2]],
     }
   },
   "hexagon_3": {
@@ -25,8 +25,8 @@ const PLEIADES_DATA = {
       "position_2": [["up_left", 2]],
       "position_3": [["up_right", 2]],
       "position_4": [["left", 1]],
-      "position_5": [["down_right", 2]],
-      "position_6": [["down_left", 2]],
+      "position_5": [["up_left", 1]],
+      "position_6": [["up_right", 1]],
     }
   },
   "hexagon_4": {
@@ -35,8 +35,8 @@ const PLEIADES_DATA = {
       "position_2": [["up_left", 3]],
       "position_3": [["up_right", 3]],
       "position_4": [null],
-      "position_5": [["down_right", 3]],
-      "position_6": [["down_left", 3]],
+      "position_5": [null],
+      "position_6": [null],
     }
   }
 }
