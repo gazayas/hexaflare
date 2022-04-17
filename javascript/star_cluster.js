@@ -47,7 +47,7 @@ function generateStarsfromData(star_cluster_data, star_cluster_type, reference_d
 
     var coordinates = getCoordinatesByMap(new_rotation_pattern[i]["position_1"], cursor_hexagon)
     var hexagon_div = searchByCoordinates(coordinates, false)
-    generateHexagon(null, null, `hexagon_${i + 1}`, null, "star", 1, hexagon_div)
+    generateHexagon(null, null, `hexagon_${i + 1}`, null, ["star"], 1, hexagon_div)
   }
 
   applyHexagonDimensions("floating_cluster", "blue", {"opacity": 1})

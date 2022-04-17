@@ -30,7 +30,7 @@ function generateFlareStarUI(number_of_rings) {
 
     for(var corner_hex_position = 1; corner_hex_position <= 6; corner_hex_position++){
       var value = getValue(ring, corner_hex_position)
-      generateHexagon(ring_div, ring, value, corner_hex_position, "corner")
+      generateHexagon(ring_div, ring, value, corner_hex_position, ["corner"])
     }
   }
 
@@ -71,16 +71,18 @@ function generateFlareStarUI(number_of_rings) {
 function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_type, current_side_number = 1, append_to = false) {
   var hex_div =  document.createElement("div")
   hex_div.classList.add("hexagon")
-  hex_div.classList.add(hexagon_type)
+  for (var i = 0; i < hexagon_type.length; i++) { hex_div.classList.add(hexagon_type[i]) }
   hex_div.style.position = "absolute"
 
-  if(hexagon_type == "corner" || hexagon_type == "cursor") {
+  // TODO: For each hexagon_type, it probably doesn't need to be if else if,
+  // just `if` for each type so all the logic is added accordingly.
+  if(hexagon_type.includes("corner") || hexagon_type.includes("cursor")) {
     hex_div.classList.add("background_hexagon")
     var new_dimensions = newCornerDimensions(corner_hex_position, ring)
-  } else if (hexagon_type == "side") {
+  } else if (hexagon_type.includes("side")) {
     hex_div.classList.add("background_hexagon")
     var new_dimensions = newSideDimensions(corner_hex_position, current_side_number, ring)
-  } else if (hexagon_type == "star") {
+  } else if (hexagon_type.includes("star")) {
     hex_div.classList.add("floating_cluster")
     // This should always be initialized with 1 because it refers to position_1
     // in its rotation pattern, aka the initialization_map
@@ -116,11 +118,11 @@ function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_typ
   }
 
   // Generate the side hexagons for each corner
-  if (hexagon_type == "corner") {
+  if (hexagon_type.includes("corner")) {
     var number_of_side_hexagons_under_parent_corner = ring - 1
     for(current_side_number; current_side_number <= number_of_side_hexagons_under_parent_corner; current_side_number++) {
       value = getValue(ring, corner_hex_position, current_side_number)
-      generateHexagon(ring_div, ring, value, corner_hex_position, "side", current_side_number)
+      generateHexagon(ring_div, ring, value, corner_hex_position, ["side"], current_side_number)
     }
   }
 }
