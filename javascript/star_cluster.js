@@ -33,13 +33,12 @@ function generateStarCluster(star_cluster_type) {
   generateStarsfromData(data, star_cluster_type, cursor_div)
 }
 
-// Star Clusters are always generated in their first position.
-// We generate each star according to its value `position_1`.
+// When a star cluster is generated, each star is always generated in its first position, `position_1`.
 function generateStarsfromData(star_cluster_data, star_cluster_type, reference_div) {
   var cursor_hexagon = reference_div.parentNode
 
   // If the cursor is in a corner position other than `1`,
-  // we need to make sure the entire rotation pattern is turned accordingly.
+  // we need to make sure the entire rotation pattern of the star cluster is turned accordingly.
   var new_rotation_pattern = getNewRotationPattern(null, star_cluster_type)
 
   for(var i = 1; i <= Object.keys(star_cluster_data).length; i++) {
@@ -82,7 +81,8 @@ function moveAlongCorona(direction, star_cluster, star_cluster_type) {
   hexagon_to_move_to.appendChild(cursor)
 
   // TODO: This is super hacky, but it works ¯\_(ツ)_/¯
-  // Would be better to redraw the star cluster itself
+  // Would be better to redraw the star cluster itself.
+  // However, this isn't top priority.
   var reverse_direction = direction == "clockwise" ? "counter-clockwise" : "clockwise"
   rotate(direction, star_cluster, star_cluster_type)
   rotate(reverse_direction, star_cluster, star_cluster_type)
@@ -95,18 +95,18 @@ function rotate(direction, star_cluster, star_cluster_type) {
   var cursor = document.getElementsByClassName("cursor")[0]
   var current_cursor_corner_position = cursor.dataset["corner_position"]
 
+  // Move each star in the cluster one at a time.
   for(var i = 1; i <= Object.keys(data).length; i++) {
-    var star_cluster_to_rotate = null
-    for (var l = 0; l < star_cluster.length; l++) {
-      for (var m = 1; m <= star_cluster.length; m++) {
-        if(star_cluster[l].dataset["value"] == `hexagon_${i}`) {
-          star_cluster_to_rotate = star_cluster[l]
-        }
+
+    // Get the proper star HTML element by matching with the hexagon number.
+    var star_to_rotate = null
+    for (var j = 0; j < star_cluster.length; j++) {
+      if(star_cluster[j].dataset["value"] == `hexagon_${i}`) {
+        star_to_rotate = star_cluster[j]
       }
     }
 
-    // TODO: Double check rotation position and cursor corner position soon
-    var current_rotation_position = parseInt(star_cluster_to_rotate.dataset["rotation_position"])
+    var current_rotation_position = parseInt(star_to_rotate.dataset["rotation_position"])
 
     // Update rotation position for individual star
     if(direction == "clockwise") {
@@ -116,42 +116,50 @@ function rotate(direction, star_cluster, star_cluster_type) {
       current_rotation_position -= 1
       if(current_rotation_position == 0) { current_rotation_position = 6 }
     }
-    star_cluster_to_rotate.dataset["rotation_position"] = current_rotation_position
+    star_to_rotate.dataset["rotation_position"] = current_rotation_position
 
     // Before we rotate, we shift the star's rotation pattern according to the cursor's corner position.
     var new_rotation_pattern = getNewRotationPattern(star_cluster, star_cluster_type)
 
-    var current_turn_map = new_rotation_pattern[i - 1][`position_${current_rotation_position}`]
-    if(current_turn_map == null) { current_turn_map = [null] }
-    var new_coordinates = getCoordinatesByMap(current_turn_map, cursor.parentNode)
+    var current_position = new_rotation_pattern[i - 1][`position_${current_rotation_position}`]
+
+    // TODO: Fix this line
+    if(current_position == null) { current_position = [null] }
+
+    var new_coordinates = getCoordinatesByMap(current_position, cursor.parentNode)
     var new_hexagon = searchByCoordinates(new_coordinates)
-    new_hexagon.appendChild(star_cluster_to_rotate)
+    new_hexagon.appendChild(star_to_rotate)
   }
 }
 
-// Before we rotate, we need a new rotation pattern according to the
-// star cluster's cursor's corner position.
+// Before we rotate, we need a new rotation pattern
+// according to the star cluster's cursor's corner position.
 function getNewRotationPattern(star_cluster, star_cluster_type) {
-  var new_map = [] // TODO: Maybe could come up with a better name
+  // TODO: Change to new_rotation_map,
+  // and change new_rotation_pattern to new_position below
+  var new_map = []
+
   var data = getData(star_cluster_type)
   var cursor = document.getElementsByClassName("cursor")[0]
   var current_cursor_corner_position = cursor.dataset["corner_position"]
 
-  // Update the hexagons' rotation positions.
+  // Here we update each position in each hexagon's rotation pattern
   for(var i = 1; i <= Object.keys(data).length; i++) {
-    var rotation_patterns = data[`hexagon_${i}`]["rotation_pattern"] // rotation_pattern
+    var rotation_patterns = data[`hexagon_${i}`]["rotation_pattern"] // TODO: Change name to `original_rotation_pattern`
     var new_rotation_pattern = []
 
     // Here we loop through each position in the rotation pattern
     for (var position_num = 1; position_num <= Object.keys(rotation_patterns).length; position_num++) {
       var position = `position_${position_num}`
+
+      // If null, the hexagon doesn't needed to be rotated so we don't do anything here.
       if(rotation_patterns[`position_${position_num}`] == null) {
-        // The hexagon doesn't needed to be rotated, so we don't do anything here.
         new_rotation_pattern.push([`position_${position_num}`, null])
+
+      // The position inside the rotation pattern might be an array of several steps
+      // i.e. - [["left", 1], ["up_left", 1]]
+      // For that reason, we loop through those and update them here.
       } else {
-        // The position inside the rotation pattern might be an array of several steps
-        // i.e. - [["left", 1], ["up_left", 1]]
-        // For that reason, we loop through those and update them here.
         var new_rotation_map = []
         for (var k = 0; k < rotation_patterns[`position_${position_num}`].length; k++) {
           var new_direction = getNewDirectionByRevolvingOnRing(rotation_patterns[`position_${position_num}`][k][0], current_cursor_corner_position)
@@ -160,7 +168,8 @@ function getNewRotationPattern(star_cluster, star_cluster_type) {
         new_rotation_pattern.push([`position_${position_num}`, new_rotation_map])
       }
     }
-    // var new_rotation_pattern = Object.fromEntries(new_rotation_pattern)
+
+    // fromEntries takes an array and makes it into a hash.
     new_map.push(Object.fromEntries(new_rotation_pattern))
   }
   return new_map
