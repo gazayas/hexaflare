@@ -30,6 +30,7 @@
     <script src="../javascript/application.js"></script>
     <script src="../javascript/flare_star.js"></script>
     <script src="../javascript/hexagon.js"></script>
+    <script src="../javascript/gravity.js"></script>
 
     <!-- Star Clusters -->
     <script src="../javascript/star_clusters/proxima_data.js"></script>
@@ -82,6 +83,8 @@
           moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
         } else if(event.keyCode == 39 || event.keyCode == 76) {
           moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
+        } else if (event.keyCode == 90) {
+          drop(floating_cluster)
         }
       }
     </script>

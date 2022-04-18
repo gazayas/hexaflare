@@ -68,7 +68,7 @@ function generateFlareStarUI(number_of_rings) {
   first_corona_ring.children[0].appendChild(cursor_div)
 }
 
-function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_type, current_side_number = 1, append_to = false) {
+function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_type, current_side_number = 1, append_to = false, options = {}) {
   var hex_div =  document.createElement("div")
   hex_div.classList.add("hexagon")
   for (var i = 0; i < hexagon_type.length; i++) { hex_div.classList.add(hexagon_type[i]) }
@@ -84,6 +84,8 @@ function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_typ
     var new_dimensions = newSideDimensions(corner_hex_position, current_side_number, ring)
   } else if (hexagon_type.includes("star")) {
     hex_div.classList.add("floating_cluster")
+    hex_div.dataset["star_cluster_type"] = options["star_cluster_type"]
+    hex_div.dataset["center_of_gravity"] = options["center_of_gravity"]
     // This should always be initialized with 1 because it refers to position_1
     // in its rotation pattern, aka the initialization_map
     hex_div.dataset["rotation_position"] = 1
