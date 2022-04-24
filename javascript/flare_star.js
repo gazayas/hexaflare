@@ -260,6 +260,20 @@ function findParentRingParents(flare_star, ring_level, value) {
       right_parent -= parent_ring_length
     }
 
-    return [left_parent, right_parent] // TODO: hexagon = {"ring": 2, "value": 4}
+    // TODO: hexagon = {"ring": 2, "value": 4}
+    return [left_parent, right_parent]
+  }
+}
+
+// TODO: I might want to put HTML-element related methods in their own file.
+function findElementFromData(ring_level, value) {
+  var flare_star_hexagons = document.getElementsByClassName("background_hexagon")
+  for (var i = 0; i < flare_star_hexagons.length; i++) {
+    var element_ring_level = parseInt(flare_star_hexagons[i].dataset["ring_level"])
+    var element_value = parseInt(flare_star_hexagons[i].dataset["value"])
+
+    if(element_ring_level == ring_level && element_value == value) {
+      return flare_star_hexagons[i]
+    }
   }
 }
