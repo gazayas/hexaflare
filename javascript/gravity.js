@@ -1,49 +1,103 @@
-function drop(star_cluster) {
-  var center_of_gravity = getCenterOfGravity(star_cluster)
-  var gravitation_direction = getGravitationDirection(center_of_gravity)
+async function drop(star_cluster) {
+  // TODO: Turn of all button press logic (drop, rotate, move along corona, etc.)
+  // Set all button press codes to 0?
 
-  // Test gravitate by calling it 3 or 4 times before putting it into the loop below.
-  for (var j = 0; j < 4; j++) {
-    for (var i = 0; i < star_cluster.length; i++) {
-      gravitate(star_cluster[i], gravitation_direction)
-    }
+  // 🌠
+  while(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
+    // Determine which direction the Star Cluster will gravitate according to the center of gravity and the FLIP_FACTOR
+    var center_of_gravity = getCenterOfGravity(star_cluster)
+    var gravitation_direction = getGravitationDirection(center_of_gravity)
+    gravitate(star_cluster, gravitation_direction)
+    FLIP_FACTOR = FLIP_FACTOR == 0 ? 1 : 0
+    await sleep(25)
   }
-
-  // The sleep function should probably go in here after each iteration of #gravitate.
-  // while(starClusterCanGravitateToCore(star_cluster, direction)) {}
+  FLIP_FACTOR = 0
 
   // Even if the star cluster can't gravitiate to the core, either way we continue with dropping it.
-  // Then we just remove the classes (i.e. - `floating_cluster`).
+
+  // Remove all relevant classes (i.e. - `floating_cluster`).
+
+  // After everything is dropped, we have to make sure the proper hexagon's "full" dataset is set to true.
 
   // End game if there are any stars in the Corona.
   // We haven't generated a new star cluster yet, so the Corona should be empty at this point.
+
+  // Generate a new Star Cluster and append it to the cursor
 }
 
-// Gravitate a star towards the core.
-function gravitate(star, direction) {
+function starClusterCanGravitateToCore(star_cluster, direction) {
+  var center_of_gravity = getCenterOfGravity(star_cluster)
+  if(onCore(center_of_gravity)) { console.log("On core, returning false"); return false }
+
+  var map = [[direction, 1]]
+  for (var i = 0; i < star_cluster.length ; i++) {
+    // var star_to_gravitate_to = getHexagonByMap(star_cluster[i].parentNode, map)
+    // var can_gravitate = starCanGravitateToCore(star_cluster[i], star_to_gravitate_to)
+    // if(!can_gravitate) { return false }
+  }
+  return true
+}
+
+function starCanGravitateToCore(original_star, target_star) {
+  // if the hexagon's dataset["full"] is true, check if its a floating cluster
+  //   if one of its classes is floating cluster, were still good
+  //   else, return false
+}
+
+// Gravitate a star towards the core 🌠
+function gravitate(star_cluster, direction = null) {
+  if(star_cluster != null && star_cluster.length == 4) {
+    var map = [[direction, 1]]
+    for (var i = 0; i < star_cluster.length; i++) {
+
+      // TODO: This is a weird bug where the hexagons are getting shifted around,
+      // so we make sure the hexagons are being processed in the correct order
+      // according to `i` in this loop.
+      var hexagon_in_order = null
+      for (var k = 0; k < star_cluster.length; k++) {
+        var hexagon_num = star_cluster[k].dataset["value"]
+        var pattern = `hexagon_${i + 1}`
+        if(hexagon_num.match(pattern)) {
+          hexagon_in_order = star_cluster[k]
+        }
+      }
+
+      var star_to_gravitate_to = getHexagonByMap(hexagon_in_order, [[direction, 1]])
+      star_to_gravitate_to.appendChild(hexagon_in_order)
+    }
+  } else {
+    // This is for individual stars in the inner Flare Star.
+    // You probably don't have to think about this too much.
+    // Just check the collision, append until there IS a collision,
+    // And make sure the animation for each iteration happens ALL AT ONCE.
+    // The animation for each time it goes down a RING is the same as a star cluster.
+
+    // Get parent according to FLIP_FACTOR.
+    // Append.
+  }
   // Update FLIP_FACTOR here.
+}
+
+function getHexagonToGravitateTowards(sc_star, direction = null) {
+  if(direction) {
+    var map = [[direction, 1]]
+    return getHexagonByMap(sc_star, map)
+  } else {
+    var star_parent_hexagon = sc_star.parentNode
+    var star_parent_hexagon_ring = parseInt(star_parent_hexagon.dataset["ring_level"])
+    var star_parent_hexagon_value = parseInt(star_parent_hexagon.dataset["value"])
+    var parent_ring_parent_level = star_parent_hexagon_ring - 1
+    var parent_ring_parent_values = findParentRingParents(flare_star, star_parent_hexagon_ring, star_parent_hexagon_value)
+    var parent_ring_parent_value = determineParentToGravitateTo(parent_ring_parent_values)
+    return findElementFromData(parent_ring_parent_level, parent_ring_parent_value)
+  }
 }
 
 // We only need this for star clusters, not individual stars
 function getGravitationDirection(center_of_gravity) {
-  var coe_parent_hexagon = center_of_gravity.parentNode
-  var coe_ring = parseInt(coe_parent_hexagon.dataset["ring_level"])
-  var coe_value = parseInt(coe_parent_hexagon.dataset["value"])
-
-  // In Hexaflare, we're only concerned with getting the parents from one level up.
-  var parent_ring_level = coe_ring - 1
-  var parent_ring_parent_values = findParentRingParents(flare_star, coe_ring, coe_value)
-
-  // Only get one parent based on the flip factor
-  // TODO: This could potentially go in flare_star.js
-  if (parent_ring_parent_values.length == 2) {
-    var parent_ring_parent_value = parent_ring_parent_values[FLIP_FACTOR]
-  } else {
-    var parent_ring_parent_value = parent_ring_parent_values[0]
-  }
-  var flare_star_parent_hexagon = findElementFromData(parent_ring_level, parent_ring_parent_value)
-
-  return calculateDirectionFromCoordinates(coe_parent_hexagon, flare_star_parent_hexagon)
+  var coe_hexagon = center_of_gravity.parentNode
+  var coe_parent_hexagon = getHexagonToGravitateTowards(center_of_gravity)
+  return calculateDirectionFromCoordinates(coe_hexagon, coe_parent_hexagon)
 }
 
 function calculateDirectionFromCoordinates(original_hexagon, target_hexagon) {
@@ -68,39 +122,6 @@ function calculateDirectionFromCoordinates(original_hexagon, target_hexagon) {
   }
 }
 
-// TODO: Redo this?
-// Is this needed?
-function starClusterCanGravitateToCore(star_cluster, direction) {
-  var center_of_gravity = getCenterOfGravity(star_cluster)
-  if(onCore(center_of_gravity)) { return false }
-
-  var can_gravitate = true
-  for (var i = 0; i < star_cluster.length; i++) {
-    // set can_gravitate to false if star_cluster[i] doesn't meet the requirements.
-  }
-  return can_gravitate
-}
-
-// TODO: Redo this?
-// Is this needed?
-function starCanGravitateToCore(star, direction) {
-  var parent_hexagon = star.parentNode
-
-  var ring_level = parseInt(parent_hexagon.dataset["ring_level"])
-  var value = parseInt(parent_hexagon.dataset["value"])
-  var parents_values = findParentRingParents(flare_star, ring_level, value)
-
-  var parent_elements = []
-  for (var i = 0; i < coe_parents_values.length; i++) {
-    parent_elements.push(searchByRingLevelAndValue(ring_level - 1, parents_values[i]))
-  }
-
-  // If there are two parents, decide which one based on the flip factor
-
-  // If the hexagon is a floating cluster,
-  // if floating cluster, return true
-}
-
 function getCenterOfGravity(star_cluster) {
   for(var star_num = 0; star_num < star_cluster.length; star_num++) {
     var star = star_cluster[star_num]
@@ -119,4 +140,15 @@ function onCore(star) {
 }
 
 // We might need to put the logic in #drop here instead.
+// What we can probably do is make a ghost cluster from the original star cluster,
+// and just newly delete/append it every time the player moves/rotates the cluster.
+// Then when they hit drop, just delete the cluster altogether.
 function calculateStarClusterDestination(star_cluster) {}
+
+// https://code-paper.com/javascript/examples-sleep-1-second-javascript
+// TODO: This can go somewhere else
+function sleep(milliseconds) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}

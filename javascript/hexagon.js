@@ -63,6 +63,11 @@ function getCoordinatesByMap(hexagon_map, reference_div) {
   return [new_x, new_y]
 }
 
+function getHexagonByMap(star_cluster_star, map) {
+  var new_star_coordinates = getCoordinatesByMap(map, star_cluster_star.parentNode)
+  return searchByCoordinates(new_star_coordinates)
+}
+
 // At this stage, we're only searching by coordinates in Corona
 // We might need to do this in gravityPull as well,
 // but for that we can potentially make an if statement to save on power

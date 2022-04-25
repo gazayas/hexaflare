@@ -265,6 +265,17 @@ function findParentRingParents(flare_star, ring_level, value) {
   }
 }
 
+// This should be two values within a ring, like [2, 3].
+// Since we can only move a star to one parent,
+// we decide which one it is with the FLIP_FACTOR.
+function determineParentToGravitateTo(flare_star_values) {
+  if(flare_star_values.length == 2) {
+    return flare_star_values[FLIP_FACTOR]
+  } else {
+    return flare_star_values[0]
+  }
+}
+
 // TODO: I might want to put HTML-element related methods in their own file.
 function findElementFromData(ring_level, value) {
   var flare_star_hexagons = document.getElementsByClassName("background_hexagon")
