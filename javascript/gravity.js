@@ -1,6 +1,7 @@
 async function drop(star_cluster) {
   // TODO: Turn of all button press logic (drop, rotate, move along corona, etc.)
   // Set all button press codes to 0?
+  // disableGameplayButtons() //enableGameplayButtons()
 
   // 🌠
   while(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
@@ -49,21 +50,21 @@ function gravitate(star_cluster, direction = null) {
   if(star_cluster != null && star_cluster.length == 4) {
     var map = [[direction, 1]]
     for (var i = 0; i < star_cluster.length; i++) {
-
-      // TODO: This is a weird bug where the hexagons are getting shifted around,
-      // so we make sure the hexagons are being processed in the correct order
-      // according to `i` in this loop.
-      var hexagon_in_order = null
+      // Shuffle Bug:
+      // When a star is appended after reaching the core, for some reason appendChild shuffles the star_cluster array.
+      // Check with console.log() before and after `star_to_gravitate_to.appendChild()` below (use star_cluster[i].dataset["value"]).
+      // This hook makes sure we're processing the array in order.
+      var star_in_order = null
       for (var k = 0; k < star_cluster.length; k++) {
-        var hexagon_num = star_cluster[k].dataset["value"]
+        var star_num = star_cluster[k].dataset["value"]
         var pattern = `hexagon_${i + 1}`
-        if(hexagon_num.match(pattern)) {
-          hexagon_in_order = star_cluster[k]
+        if(star_num.match(pattern)) {
+          star_in_order = star_cluster[k]
         }
       }
 
-      var star_to_gravitate_to = getHexagonByMap(hexagon_in_order, [[direction, 1]])
-      star_to_gravitate_to.appendChild(hexagon_in_order)
+      var star_to_gravitate_to = getHexagonByMap(star_in_order, [[direction, 1]])
+      star_to_gravitate_to.appendChild(star_in_order)
     }
   } else {
     // This is for individual stars in the inner Flare Star.
@@ -78,12 +79,14 @@ function gravitate(star_cluster, direction = null) {
   // Update FLIP_FACTOR here.
 }
 
-function getHexagonToGravitateTowards(sc_star, direction = null) {
+function getHexagonToGravitateTowards(star, direction = null) {
+  // If we have the direction, that means we already got the center of gravity.
+  // TODO: Does this need to be an if statement? Do we need the logic there?
   if(direction) {
     var map = [[direction, 1]]
-    return getHexagonByMap(sc_star, map)
+    return getHexagonByMap(star, map)
   } else {
-    var star_parent_hexagon = sc_star.parentNode
+    var star_parent_hexagon = star.parentNode
     var star_parent_hexagon_ring = parseInt(star_parent_hexagon.dataset["ring_level"])
     var star_parent_hexagon_value = parseInt(star_parent_hexagon.dataset["value"])
     var parent_ring_parent_level = star_parent_hexagon_ring - 1
@@ -139,16 +142,16 @@ function onCore(star) {
   }
 }
 
-// We might need to put the logic in #drop here instead.
-// What we can probably do is make a ghost cluster from the original star cluster,
-// and just newly delete/append it every time the player moves/rotates the cluster.
-// Then when they hit drop, just delete the cluster altogether.
+// We might not even need this.
+// What we can probably do is make a preview cluster from the original star cluster,
+// and just drop/delete it every time the player moves or rotates the cluster and don't update the hexagons to data-full=true
+// Then when they go to drop the actual star cluster, just delete the preview cluster altogether.
 function calculateStarClusterDestination(star_cluster) {}
 
 // https://code-paper.com/javascript/examples-sleep-1-second-javascript
 // TODO: This can go somewhere else
 function sleep(milliseconds) {
   return new Promise((resolve) => {
-    setTimeout(resolve, milliseconds);
-  });
+    setTimeout(resolve, milliseconds)
+  })
 }

@@ -29,9 +29,7 @@ function getCoordinatesByMap(hexagon_map, reference_div) {
   var new_x = parseInt(reference_div.dataset["x"])
   var new_y = parseInt(reference_div.dataset["y"])
 
-  if(hexagon_map[0] == null) {
-    return [new_x, new_y]
-  }
+  if(hexagon_map[0] == null) { return [new_x, new_y] }
 
   for(var i = 0; i < hexagon_map.length; i++) {
     switch (hexagon_map[i][0]) {
