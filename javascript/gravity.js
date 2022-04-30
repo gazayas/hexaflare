@@ -5,25 +5,30 @@ async function drop(star_cluster) {
 
   // 🌠
   while(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
-    // Determine which direction the Star Cluster will gravitate according to the center of gravity and the FLIP_FACTOR
+    // Determine which direction the Star Cluster will gravitate
+    // according to the center of gravity and the FLIP_FACTOR
     var center_of_gravity = getCenterOfGravity(star_cluster)
     var gravitation_direction = getGravitationDirection(center_of_gravity)
     gravitate(star_cluster, gravitation_direction)
     FLIP_FACTOR = FLIP_FACTOR == 0 ? 1 : 0
     await sleep(25)
   }
+
+  // Reset
   FLIP_FACTOR = 0
 
-  // Even if the star cluster can't gravitiate to the core, either way we continue with dropping it.
+  for(var i = 0; i < star_cluster.length; i++) { star_cluster[i].parentNode.dataset["full"] = true }
 
-  // Remove all relevant classes (i.e. - `floating_cluster`).
+  // Writing things like this because star clusters get popped off each time the class is deleted.
+  for(var i = 0; i < 4; i++) {
+    star_cluster[0].classList.add("main_cluster")
+    star_cluster[0].classList.remove("floating_cluster")
+  }
 
-  // After everything is dropped, we have to make sure the proper hexagon's "full" dataset is set to true.
-
-  // End game if there are any stars in the Corona.
-  // We haven't generated a new star cluster yet, so the Corona should be empty at this point.
-
-  // Generate a new Star Cluster and append it to the cursor
+  // ↓ Move the following to flare.js
+  // End game if there are any stars in the Corona
+  star_cluster_name = randomStarClusterType() // This variable is declared in index.html
+  console.log(generateStarCluster(star_cluster_name));
 }
 
 function starClusterCanGravitateToCore(star_cluster, direction) {
@@ -50,18 +55,9 @@ function gravitate(star_cluster, direction = null) {
   if(star_cluster != null && star_cluster.length == 4) {
     var map = [[direction, 1]]
     for (var i = 0; i < star_cluster.length; i++) {
-      // Shuffle Bug:
-      // When a star is appended after reaching the core, for some reason appendChild shuffles the star_cluster array.
-      // Check with console.log() before and after `star_to_gravitate_to.appendChild()` below (use star_cluster[i].dataset["value"]).
-      // This hook makes sure we're processing the array in order.
-      var star_in_order = null
-      for (var k = 0; k < star_cluster.length; k++) {
-        var star_num = star_cluster[k].dataset["value"]
-        var pattern = `hexagon_${i + 1}`
-        if(star_num.match(pattern)) {
-          star_in_order = star_cluster[k]
-        }
-      }
+      // Shuffle bug
+      var star_in_order = orderCluster(star_cluster, i)
+
 
       var star_to_gravitate_to = getHexagonByMap(star_in_order, [[direction, 1]])
       star_to_gravitate_to.appendChild(star_in_order)
@@ -77,6 +73,21 @@ function gravitate(star_cluster, direction = null) {
     // Append.
   }
   // Update FLIP_FACTOR here.
+}
+
+// Shuffle Bug:
+// When a star is appended after reaching the core, for some reason appendChild shuffles the star_cluster array.
+// Check with console.log() before and after `star_to_gravitate_to.appendChild()` below (use star_cluster[i].dataset["value"]).
+// This hook makes sure we're processing the array in order.
+function orderCluster(cluster, counter) {
+  for (var k = 0; k < cluster.length; k++) {
+    var star_num = cluster[k].dataset["value"]
+    var pattern = `hexagon_${counter + 1}`
+    if(star_num.match(pattern)) {
+      star_in_order = cluster[k]
+    }
+  }
+  return star_in_order
 }
 
 function getHexagonToGravitateTowards(star, direction = null) {

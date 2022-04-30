@@ -65,11 +65,11 @@
       // Used when moving star clusters down child hexagons
       var FLIP_FACTOR = 0
 
-      var flare_star = generateFlareStar(14)
+      var flare_star = generateFlareStar(10)
       generateFlareStarUI(numberOfRings(flare_star))
       applyHexagonDimensions("hexagon", HEX_COLOR)
 
-      var star_cluster_name = "Proxima" randomStarClusterType()
+      var star_cluster_name = randomStarClusterType()
       generateStarCluster(star_cluster_name)
       // get current star cluster
       var floating_cluster = document.getElementsByClassName("floating_cluster")
