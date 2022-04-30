@@ -25,6 +25,8 @@ async function drop(star_cluster) {
     star_cluster[0].classList.remove("floating_cluster")
   }
 
+  processStarsAfterDrop()
+
   // ↓ Move the following to flare.js
   // End game if there are any stars in the Corona
   star_cluster_name = randomStarClusterType() // This variable is declared in index.html

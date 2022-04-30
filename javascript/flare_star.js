@@ -78,6 +78,7 @@ function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_typ
   // just `if` for each type so all the logic is added accordingly.
   if(hexagon_type.includes("corner") || hexagon_type.includes("cursor")) {
     hex_div.classList.add("background_hexagon")
+    hex_div.dataset["full"] = false // TODO: This might be okay, but not sure if this affects the cursor
     var new_dimensions = newCornerDimensions(corner_hex_position, ring)
   } else if (hexagon_type.includes("side")) {
     hex_div.classList.add("background_hexagon")
