@@ -1,5 +1,6 @@
 const PI_DATA = {
   "hexagon_1": {
+    "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],
       "position_2": [null],
@@ -10,6 +11,7 @@ const PI_DATA = {
     }
   },
   "hexagon_2": {
+    "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [["left", 1]],
       "position_2": [["up_left", 1]],
@@ -20,6 +22,7 @@ const PI_DATA = {
     }
   },
   "hexagon_3": {
+    "center_of_gravity": true,
     "rotation_pattern": {
       "position_1": [["left", 2]],
       "position_2": [["up_left", 2]],
@@ -30,6 +33,7 @@ const PI_DATA = {
     }
   },
   "hexagon_4": {
+    "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [["left", 2], ["up_left", 1]],
       "position_2": [["up_left", 2], ["up_right", 1]],
