@@ -66,22 +66,16 @@ function getHexagonByMap(star_cluster_star, map) {
   return searchByCoordinates(new_star_coordinates)
 }
 
-// At this stage, we're only searching by coordinates in Corona
-// We might need to do this in gravityPull as well,
-// but for that we can potentially make an if statement to save on power
+// TODO: Use the corona hook
 function searchByCoordinates(coordinates, corona = true) {
-  // if(corona) {
-    // Search with corona rings only
-  // } else {
-    var background_hexagon_div = null
-    var background_hexagons = document.getElementsByClassName("background_hexagon")
-    for (var i = 0; i < background_hexagons.length; i++) {
-      if(parseInt(background_hexagons[i].dataset["x"]) == coordinates[0] &&
-         parseInt(background_hexagons[i].dataset["y"]) == coordinates[1]) {
-        return background_hexagons[i]
-      }
+  var background_hexagon_div = null
+  var background_hexagons = document.getElementsByClassName("background_hexagon")
+  for (var i = 0; i < background_hexagons.length; i++) {
+    if(parseInt(background_hexagons[i].dataset["x"]) == coordinates[0] &&
+       parseInt(background_hexagons[i].dataset["y"]) == coordinates[1]) {
+      return background_hexagons[i]
     }
-  // }
+  }
 }
 
 function searchByRingLevelAndValue(ring_level, value) {

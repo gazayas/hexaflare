@@ -1,9 +1,7 @@
 async function drop(star_cluster) {
   // TODO: Turn of all button press logic (drop, rotate, move along corona, etc.)
-  // Set all button press codes to 0?
   // disableGameplayButtons() //enableGameplayButtons()
 
-  // 🌠
   while(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
     // Determine which direction the Star Cluster will gravitate
     // according to the center of gravity and the FLIP_FACTOR
@@ -17,7 +15,10 @@ async function drop(star_cluster) {
   // Reset
   FLIP_FACTOR = 0
 
-  for(var i = 0; i < star_cluster.length; i++) { star_cluster[i].parentNode.dataset["full"] = true }
+  for(var i = 0; i < star_cluster.length; i++) {
+    var star_in_order = orderCluster(star_cluster, i)
+    star_in_order.parentNode.dataset["full"] = true
+  }
 
   // Writing things like this because star clusters get popped off each time the class is deleted.
   for(var i = 0; i < 4; i++) {
@@ -30,56 +31,73 @@ async function drop(star_cluster) {
   // ↓ Move the following to flare.js
   // End game if there are any stars in the Corona
   star_cluster_name = randomStarClusterType() // This variable is declared in index.html
-  console.log(generateStarCluster(star_cluster_name));
+  generateStarCluster(star_cluster_name)
 }
 
-function starClusterCanGravitateToCore(star_cluster, direction) {
-  var center_of_gravity = getCenterOfGravity(star_cluster)
+function starClusterCanGravitateToCore(star_cluster_to_gravitate, direction) {
+  var center_of_gravity = getCenterOfGravity(star_cluster_to_gravitate)
   if(onCore(center_of_gravity)) { console.log("On core, returning false"); return false }
 
   var map = [[direction, 1]]
-  for (var i = 0; i < star_cluster.length ; i++) {
-    // var star_to_gravitate_to = getHexagonByMap(star_cluster[i].parentNode, map)
-    // var can_gravitate = starCanGravitateToCore(star_cluster[i], star_to_gravitate_to)
-    // if(!can_gravitate) { return false }
+  for (var i = 0; i < star_cluster_to_gravitate.length ; i++) {
+    var star_in_order = orderCluster(star_cluster_to_gravitate, i)
+    var star_to_gravitate_to = getHexagonToGravitateTowards(star_in_order)
+    // var star_to_gravitate_to = getHexagonByMap(star_in_order, map)
+    var can_gravitate = starCanGravitateToCore(star_in_order, star_to_gravitate_to)
+    if(!can_gravitate) { return false }
   }
   return true
 }
 
+// TODO: A lot of this logic might not even work.
+// Look over this again and see if it needs tweaking.
+// To deal with this, I added the saveLastPosition and moveToLastPosition functions.
 function starCanGravitateToCore(original_star, target_star) {
-  // if the hexagon's dataset["full"] is true, check if its a floating cluster
-  //   if one of its classes is floating cluster, were still good
-  //   else, return false
+  if(target_star == undefined) { return false }
+  if(target_star.dataset["full"] == "true" || target_star.querySelectorAll(".main_cluster").length > 0) {
+    return false
+  }
+  if(target_star.querySelectorAll(".floating_cluster").length > 0) {
+    return true
+  }
+  return true
 }
 
-// Gravitate a star towards the core 🌠
+// 🌠
 function gravitate(star_cluster, direction = null) {
+  var move_back = false // In case main_cluster shows up twice in a hexagon
+
   if(star_cluster != null && star_cluster.length == 4) {
     var map = [[direction, 1]]
     for (var i = 0; i < star_cluster.length; i++) {
-      // Shuffle bug
-      var star_in_order = orderCluster(star_cluster, i)
-
-
+      var star_in_order = orderCluster(star_cluster, i) // Shuffle bug
+      saveLastPosition(star_in_order)
       var star_to_gravitate_to = getHexagonByMap(star_in_order, [[direction, 1]])
+
       star_to_gravitate_to.appendChild(star_in_order)
+
+      // Move back to previous position if there's already a main_cluster in the star_to_gravitate_to
+      if(star_to_gravitate_to.querySelectorAll(".main_cluster").length > 0) {
+        move_back = true
+      }
     }
   } else {
     // This is for individual stars in the inner Flare Star.
-    // You probably don't have to think about this too much.
-    // Just check the collision, append until there IS a collision,
-    // And make sure the animation for each iteration happens ALL AT ONCE.
-    // The animation for each time it goes down a RING is the same as a star cluster.
-
-    // Get parent according to FLIP_FACTOR.
-    // Append.
   }
-  // Update FLIP_FACTOR here.
+
+  if(move_back) {
+    console.log("moving back");
+    for (var i = 0; i < star_cluster.length; i++) {
+      var star_in_order = orderCluster(star_cluster, i)
+      moveToLastPosition(star_in_order)
+      // If this doesnt work, get main_cluster.length == 2 and move the second one back
+    }
+  }
 }
 
 // Shuffle Bug:
 // When a star is appended after reaching the core, for some reason appendChild shuffles the star_cluster array.
-// Check with console.log() before and after `star_to_gravitate_to.appendChild()` below (use star_cluster[i].dataset["value"]).
+// Check with console.log() before and after `star_to_gravitate_to.appendChild()` in gravitate() → (use star_cluster[i].dataset["value"]).
 // This hook makes sure we're processing the array in order.
 function orderCluster(cluster, counter) {
   for (var k = 0; k < cluster.length; k++) {
@@ -153,6 +171,18 @@ function onCore(star) {
   } else {
     return true;
   }
+}
+
+function saveLastPosition(star_cluster_to_save) {
+  star_cluster_to_save.dataset["last_x"] = star_cluster_to_save.parentNode.dataset["x"]
+  star_cluster_to_save.dataset["last_y"] = star_cluster_to_save.parentNode.dataset["y"]
+}
+
+function moveToLastPosition(star_to_move_back) {
+  var last_x = parseInt(star_to_move_back.dataset["last_x"])
+  var last_y = parseInt(star_to_move_back.dataset["last_y"])
+  var previous_hexagon = searchByCoordinates([last_x, last_y])
+  previous_hexagon.appendChild(star_to_move_back)
 }
 
 // We might not even need this.

@@ -1,4 +1,4 @@
-// https://en.wikipedia.org/wiki/List_of_open_clusters)
+// 🌠 https://en.wikipedia.org/wiki/List_of_open_clusters)
 const STAR_CLUSTER_NAMES = [
   "Proxima",
   "Jewel", // Cross
@@ -216,6 +216,9 @@ function getData(star_cluster_type) {
       break;
     case "Butterfly":
       return BUTTERFLY_DATA
+      break;
+    case "One":
+      return ONE_DATA
       break;
     default:
   }

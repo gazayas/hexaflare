@@ -18,7 +18,7 @@ function processStarsAfterDrop() {
 function ringIsFull(ring) {
   var ring_hexagons = ring.children
   for (var i = 1; i < ring_hexagons.length; i++) {
-    if(ring_hexagons[i].dataset["full"] == "false") { return false }
+    if(ring_hexagons[i].dataset["full"] == "false" || ring_hexagons[i].dataset["full"] == null) { return false }
   }
   return true
 }
