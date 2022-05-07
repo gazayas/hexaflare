@@ -289,3 +289,12 @@ function findElementFromData(ring_level, value) {
     }
   }
 }
+
+
+function coreIsEmpty() {
+  var flare_star_hexagons = document.getElementsByClassName("background_hexagon")
+  for (var i = 0; i < flare_star_hexagons.length; i++) {
+    var main_cluster_hexagon = flare_star_hexagons[i].querySelector(".main_cluster")
+    return main_cluster_hexagon == null
+  }
+}

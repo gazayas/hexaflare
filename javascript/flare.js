@@ -1,6 +1,7 @@
-function processStarsAfterDrop() {
+async function processStarsAfterDrop() {
   var flare_star_rings = document.getElementsByClassName("ring")
 
+  // TODO: Make sure main cluster stars gravitate to the core with overlapping.
   while(fullRingExists(flare_star_rings)) {
     for (var i = 0; i < flare_star_rings.length; i++) {
       if(ringIsFull(flare_star_rings[i])){
@@ -9,6 +10,18 @@ function processStarsAfterDrop() {
       }
     }
     // Gravitate each individual star from ring level 1 and up
+    for (i = 0; i < flare_star_rings.length; i++) {
+      // TODO: Stop if you're in the Corona
+      var ring_hexagons = flare_star_rings[i].querySelectorAll(".background_hexagon")
+      for (var j = 0; j < ring_hexagons.length; j++) {
+        var star_in_hexagon = ring_hexagons[j].querySelector(".main_cluster")
+        if(star_in_hexagon != null) {
+          await sleep(25)
+          gravitate(star_in_hexagon)
+        }
+      }
+      updateHexagonFullData()
+    }
   }
 
   // stars in corona ? end game : generateStarCluster

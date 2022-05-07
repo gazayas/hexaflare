@@ -64,6 +64,7 @@ function starCanGravitateToCore(original_star, target_star) {
 }
 
 // 🌠
+// TODO: There's a lot of doubled up code here → Refactor.
 function gravitate(star_cluster, direction = null) {
   var move_back = false // In case main_cluster shows up twice in a hexagon
 
@@ -82,15 +83,26 @@ function gravitate(star_cluster, direction = null) {
       }
     }
   } else {
-    // This is for individual stars in the inner Flare Star.
+    var gravitation_direction = getGravitationDirection(star_cluster)
+    var map = [[gravitation_direction, 1]]
+    saveLastPosition(star_cluster)
+    var star_to_gravitate_to = getHexagonByMap(star_cluster, map)
+    star_to_gravitate_to.appendChild(star_cluster)
   }
 
+  // TODO: There's a bug here where it keeps moving back, resulting in an endless loop.
+  // Add moved_back class, skip if exists.
   if(move_back) {
     console.log("moving back");
-    for (var i = 0; i < star_cluster.length; i++) {
-      var star_in_order = orderCluster(star_cluster, i)
-      moveToLastPosition(star_in_order)
-      // If this doesnt work, get main_cluster.length == 2 and move the second one back
+    if(star_cluster.length == 4) {
+      for (var i = 0; i < star_cluster.length; i++) {
+        var star_in_order = orderCluster(star_cluster, i)
+        moveToLastPosition(star_in_order)
+        // If this doesnt work, get main_cluster.length == 2 and move the second one back
+      }
+    } else {
+      // TODO: We might not need this else statement.
+      moveToLastPosition(star_cluster)
     }
   }
 }

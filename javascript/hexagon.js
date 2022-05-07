@@ -87,3 +87,13 @@ function searchByRingLevelAndValue(ring_level, value) {
     }
   }
 }
+
+// We use this whenever there is a flare.
+//
+function updateHexagonFullData() {
+  var background_hexagons = document.getElementsByClassName("background_hexagon")
+  for (var i = 0; i < background_hexagons.length; i++) {
+    var main_cluster_star = background_hexagons[i].querySelector(".main_cluster")
+    background_hexagons[i].dataset["full"] = main_cluster_star != null
+  }
+}
