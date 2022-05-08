@@ -290,11 +290,25 @@ function findElementFromData(ring_level, value) {
   }
 }
 
+// Pass x and y as strings
+function getAllElementsFromCoordinates(x, y, class_name = null) {
+  if(class_name == null) {
+    var all_hexagons = document.getElementsByClassName("hexagon")
+  } else {
+    var all_hexagons = document.getElementsByClassName(class_name)
+  }
+  var matching_hexagons = []
+  for (var i = 0; i < all_hexagons.length; i++) {
+    if(parseInt(all_hexagons[i].dataset["x"]) == x && parseInt(all_hexagons[i].dataset["y"]) == y) {
+      matching_hexagons.push(all_hexagons[i])
+    }
+  }
+  return matching_hexagons
+}
 
 function coreIsEmpty() {
-  var flare_star_hexagons = document.getElementsByClassName("background_hexagon")
-  for (var i = 0; i < flare_star_hexagons.length; i++) {
-    var main_cluster_hexagon = flare_star_hexagons[i].querySelector(".main_cluster")
-    return main_cluster_hexagon == null
-  }
+  var core = document.getElementsByClassName("core")[0]
+  var star_present = core.querySelector(".star")
+  console.log(star_present);
+  return star_present == null
 }
