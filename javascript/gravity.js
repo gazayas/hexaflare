@@ -25,6 +25,8 @@ async function drop(star_cluster) {
     await sleep(25)
   }
 
+  moveBackCluster(star_cluster)
+
   // Reset
   FLIP_FACTOR = 0
 
@@ -33,12 +35,34 @@ async function drop(star_cluster) {
     star_cluster[0].classList.remove("floating_cluster")
   }
 
-  processStarsAfterDrop()
+  // processStarsAfterDrop()
 
   // ↓ Move the following to flare.js
   // End game if there are any stars in the Corona
   star_cluster_name = randomStarClusterType() // This variable is declared in index.html
   generateStarCluster(star_cluster_name)
+}
+
+function moveBackCluster(star_cluster) {
+  // Double check the position just in case
+  var move_back = false
+  for (var i = 0; i < star_cluster.length; i++) {
+    var star_in_order = orderCluster(star_cluster, i)
+    var hexagons_to_check = getAllElementsFromCoordinates(star_in_order.dataset["x"], star_in_order.dataset["y"], "main_cluster")
+    if(hexagons_to_check.length > 0) {
+      console.log("Too many");
+      console.log(hexagons_to_check);
+      move_back = true
+    }
+  }
+
+  if(move_back) {
+    for (var i = 0; i < star_cluster.length; i++) {
+      console.log("Moving back.");
+      var star_in_order = orderCluster(star_cluster, i)
+      moveToLastPosition(star_in_order)
+    }
+  }
 }
 
 // 🌠
