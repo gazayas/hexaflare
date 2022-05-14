@@ -14,17 +14,8 @@ async function drop(star_cluster) {
     flare_star_html.appendChild(star_in_order)
   }
 
-  while(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
-    var center_of_gravity = getCenterOfGravity(star_cluster)
-    var gravitation_direction = getGravitationDirection(center_of_gravity)
-    for (var i = 0; i < 4; i++) {
-      var star_in_order = orderCluster(star_cluster, i)
-      gravitate(star_in_order, gravitation_direction)
-    }
-    FLIP_FACTOR = FLIP_FACTOR == 0 ? 1 : 0
-    await sleep(25)
-  }
-
+  await gravitationSteps(star_cluster, gravitation_direction)
+  moveBackCluster(star_cluster)
   moveBackCluster(star_cluster)
 
   // Reset
@@ -43,6 +34,20 @@ async function drop(star_cluster) {
   generateStarCluster(star_cluster_name)
 }
 
+async function gravitationSteps(star_cluster, gravitation_direction) {
+  while(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
+    var center_of_gravity = getCenterOfGravity(star_cluster)
+    var gravitation_direction = getGravitationDirection(center_of_gravity)
+    for (var i = 0; i < 4; i++) {
+      var star_in_order = orderCluster(star_cluster, i)
+      gravitate(star_in_order, gravitation_direction)
+    }
+    FLIP_FACTOR = FLIP_FACTOR == 0 ? 1 : 0
+    await sleep(25)
+  }
+}
+
+// TODO: this shouldn't be here in the first place.
 function moveBackCluster(star_cluster) {
   // Double check the position just in case
   var move_back = false
