@@ -1,5 +1,6 @@
 const PEARL_DATA = {
   "hexagon_1": {
+    "color": "purple",
     "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],
@@ -42,5 +43,5 @@ const PEARL_DATA = {
       "position_5": [null],
       "position_6": [["down_left", 1]],
     }
-  }
+  },
 }

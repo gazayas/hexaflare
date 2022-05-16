@@ -1,5 +1,6 @@
 const BUTTERFLY_DATA = {
   "hexagon_1": {
+    "color": "yellow",
     "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],
@@ -42,5 +43,5 @@ const BUTTERFLY_DATA = {
       "position_5": [["down_left", 1]],
       "position_6": [["down_left", 1], ["left", 1]],
     }
-  }
+  },
 }

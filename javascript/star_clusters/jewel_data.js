@@ -1,3 +1,7 @@
+// TODO: "color" here should be outside hexagon_1,
+// but the code breaks because we how we use the data in for loops in star_cluster.js.
+// Adjust how the for loops read the hexagons, and pull color outside "hexagon_1"
+
 // Hexagons with an initialization_map of [[null]] start at the cursor
 // TODO: calculate the hexagon with constants like HEX_CENTER_WIDTH, etc.
 
@@ -6,6 +10,7 @@
 
 const JEWEL_DATA = {
   "hexagon_1": {
+    "color": "beige",
     "center_of_gravity": true,
     "rotation_pattern": {
       "position_1": [null],
@@ -48,5 +53,5 @@ const JEWEL_DATA = {
       "position_5": [null],
       "position_6": [null],
     }
-  }
+  },
 }

@@ -49,7 +49,8 @@ function generateStarsfromData(star_cluster_data, star_cluster_type, reference_d
     generateHexagon(null, null, `hexagon_${i + 1}`, null, ["star"], 1, hexagon_div, star_cluster_options)
   }
 
-  applyHexagonDimensions("floating_cluster", "blue", {"opacity": 1})
+  // TODO: Check out the TODO in jewel_data.js
+  applyHexagonDimensions("floating_cluster", star_cluster_data["hexagon_1"]["color"], {"opacity": 1})
 }
 
 function moveAlongCorona(direction, star_cluster, star_cluster_type) {

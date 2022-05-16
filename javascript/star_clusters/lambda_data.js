@@ -1,5 +1,6 @@
 const LAMBDA_DATA = {
   "hexagon_1": {
+    "color": "green",
     "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],
@@ -42,5 +43,5 @@ const LAMBDA_DATA = {
       "position_5": [null],
       "position_6": [null],
     }
-  }
+  },
 }
