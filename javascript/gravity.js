@@ -1,3 +1,6 @@
+// TODO: There's a lot of async stuff going on here.
+// Only keep what's necessary and delete the rest.
+
 async function drop(star_cluster) {
   // TODO: Turn off all button press logic (drop, rotate, move along corona, etc.)
   // disableGameplayButtons() enableGameplayButtons()
@@ -14,9 +17,15 @@ async function drop(star_cluster) {
     flare_star_html.appendChild(star_in_order)
   }
 
-  await gravitationSteps(star_cluster, gravitation_direction)
-  moveBackCluster(star_cluster)
-  moveBackCluster(star_cluster)
+  while(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
+    var center_of_gravity = getCenterOfGravity(star_cluster)
+    var gravitation_direction = getGravitationDirection(center_of_gravity)
+    await gravitateCluster(star_cluster, gravitation_direction)
+  }
+
+  // TODO: Might not need this anymore.
+  //moveBackCluster(star_cluster)
+  //moveBackCluster(star_cluster)
 
   // Reset
   FLIP_FACTOR = 0
@@ -34,17 +43,13 @@ async function drop(star_cluster) {
   generateStarCluster(star_cluster_name)
 }
 
-async function gravitationSteps(star_cluster, gravitation_direction) {
-  while(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
-    var center_of_gravity = getCenterOfGravity(star_cluster)
-    var gravitation_direction = getGravitationDirection(center_of_gravity)
-    for (var i = 0; i < 4; i++) {
-      var star_in_order = orderCluster(star_cluster, i)
-      gravitate(star_in_order, gravitation_direction)
-    }
-    FLIP_FACTOR = FLIP_FACTOR == 0 ? 1 : 0
-    await sleep(25)
+async function gravitateCluster(star_cluster, gravitation_direction) {
+  for (var i = 0; i < 4; i++) {
+    var star_in_order = orderCluster(star_cluster, i)
+    gravitate(star_in_order, gravitation_direction)
   }
+  FLIP_FACTOR = FLIP_FACTOR == 0 ? 1 : 0
+  await sleep(25)
 }
 
 // TODO: this shouldn't be here in the first place.
@@ -71,7 +76,7 @@ function moveBackCluster(star_cluster) {
 }
 
 // 🌠
-function gravitate(star, direction = null) {
+async function gravitate(star, direction = null) {
   if(direction == null) { direction = getGravitationDirection(star) }
   var map = [[direction, 1]]
   star.dataset["last_x"] = star.dataset["x"]
@@ -107,8 +112,15 @@ function starClusterCanGravitateToCore(star_cluster_to_gravitate, direction) {
 
     var target_hexagon_x = star_to_gravitate_to.dataset["x"]
     var target_hexagon_y = star_to_gravitate_to.dataset["y"]
-    var stars_in_target = getAllElementsFromCoordinates(target_hexagon_x, target_hexagon_y, "main_cluster")
-    if(stars_in_target.length > 0) {
+    var stars_in_target = getAllElementsFromCoordinates(target_hexagon_x, target_hexagon_y)
+    var main_cluster_stars = []
+    for (var stl = 0; stl < stars_in_target.length; stl++) {
+      if(stars_in_target[stl].classList.contains("main_cluster")) {
+        main_cluster_stars.push(stars_in_target[stl])
+      }
+    }
+
+    if(main_cluster_stars.length > 0) {
       return false
     }
   }
@@ -201,11 +213,12 @@ function directChildOfFlareStar(star) {
 }
 
 function getBackgroundHexagonFromStar(star) {
-  var background_hexagons = document.getElementsByClassName("background_hexagon")
-  for (var i = 0; i < background_hexagons.length; i++) {
-    if(star.dataset["x"] == background_hexagons[i].dataset["x"] &&
-       star.dataset["y"] == background_hexagons[i].dataset["y"]) {
-      return background_hexagons[i]
+  var x = star.dataset["x"]
+  var y = star.dataset["y"]
+  var elements = flare_star_ui.querySelectorAll(`[data-x = '${x}'][data-y = '${y}']`);
+  for (var i = 0; i < elements.length; i++) {
+    if(elements[i].classList.contains("background_hexagon")) {
+      return elements[i]
     }
   }
 }

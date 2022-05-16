@@ -279,19 +279,25 @@ function determineParentToGravitateTo(flare_star_values) {
 
 // TODO: I might want to put HTML-element related methods in their own file.
 function findElementFromData(ring_level, value) {
-  var flare_star_hexagons = document.getElementsByClassName("background_hexagon")
-  for (var i = 0; i < flare_star_hexagons.length; i++) {
-    var element_ring_level = parseInt(flare_star_hexagons[i].dataset["ring_level"])
-    var element_value = parseInt(flare_star_hexagons[i].dataset["value"])
-
-    if(element_ring_level == ring_level && element_value == value) {
-      return flare_star_hexagons[i]
+  var elements = flare_star_ui.querySelectorAll(`[data-ring_level = '${ring_level}'][data-value = '${value}']`);
+  for (var i = 0; i < elements.length; i++) {
+    if(elements[i].classList.contains("background_hexagon")) {
+      return elements[i]
     }
   }
 }
 
 // Pass x and y as strings
 function getAllElementsFromCoordinates(x, y, class_name = null) {
+  var stars_in_target = flare_star_ui.querySelectorAll(`[data-x = '${x}'][data-y = '${y}']`)
+  var result_stars = []
+
+  // Doing this because I want an array and not an HTMLCollection
+  for (var i = 0; i < stars_in_target.length; i++) {
+    result_stars.push(stars_in_target[i])
+  }
+  return result_stars
+/*
   if(class_name == null) {
     var all_hexagons = document.getElementsByClassName("hexagon")
   } else {
@@ -304,6 +310,7 @@ function getAllElementsFromCoordinates(x, y, class_name = null) {
     }
   }
   return matching_hexagons
+  */
 }
 
 function coreIsEmpty() {
