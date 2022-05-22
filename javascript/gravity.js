@@ -1,5 +1,3 @@
-// TODO: Refactor getCoordinatesByMap with null
-
 async function drop(star_cluster) {
   // TODO: Turn off all button press logic (drop, rotate, move along corona, etc.)
   // disableGameplayButtons() enableGameplayButtons()
@@ -54,11 +52,7 @@ async function gravitateCluster(star_cluster, gravitation_direction) {
 function gravitate(star, direction = null) {
   if(direction == null) { direction = getGravitationDirection(star) }
   var map = [[direction, 1]]
-  var star_x = parseInt(star.dataset["x"])
-  var star_y = parseInt(star.dataset["y"])
-
-  // TODO: I forget why this argument is null. Probably shouldn't be writing things this way.
-  var new_position = getCoordinatesByMap(map, null, star_x, star_y)
+  var new_position = getCoordinatesByMap(map, star)
   var new_x = new_position[0]
   var new_y = new_position[1]
   star.style.left = `${new_x}px`
@@ -82,9 +76,7 @@ function getCenterOfGravity(star_cluster) {
 
 function getGravitationDirection(center_of_gravity) {
   var coe_hexagon = directChildOfFlareStar(center_of_gravity) ? getBackgroundHexagonFromStar(center_of_gravity) : center_of_gravity.parentNode
-
   if(onCore(center_of_gravity)) {
-    console.log("Center of Gravity on Core");
     return null
   } else {
     var coe_parent_hexagon = getHexagonToGravitateTowards(center_of_gravity)

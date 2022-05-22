@@ -1,12 +1,7 @@
-function getCoordinatesByMap(hexagon_map, reference_div, x = null, y = null) {
-  if(x != null) {
-    var new_x = x
-    var new_y = y
-  } else {
-    var new_x = parseInt(reference_div.dataset["x"])
-    var new_y = parseInt(reference_div.dataset["y"])
-  }
-
+// origin_div represents where the map starts from.
+function getCoordinatesByMap(hexagon_map, origin_div) {
+  var new_x = parseInt(origin_div.dataset["x"])
+  var new_y = parseInt(origin_div.dataset["y"])
   if(hexagon_map[0] == null) { return [new_x, new_y] }
 
   for(var i = 0; i < hexagon_map.length; i++) {
@@ -39,6 +34,8 @@ function getCoordinatesByMap(hexagon_map, reference_div, x = null, y = null) {
   return [new_x, new_y]
 }
 
+// TODO: Refactor this.
+// parentNode is unclear here. Maybe the same as directChildOfFlareStar in gravity.js?
 function getHexagonByMap(star_cluster_star, map) {
   if(star_cluster_star.parentNode.classList.contains("hexagon")) {
     var new_star_coordinates = getCoordinatesByMap(map, star_cluster_star.parentNode)
