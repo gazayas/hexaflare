@@ -28,16 +28,9 @@ function applyHexagonDimensions(hexagon_class_name, color, options = {}) {
   }
 }
 
-// TODO: Use the corona hook to increase performance.
-function searchByCoordinates(coordinates, corona = true) {
-  var background_hexagon_div = null
-  var background_hexagons = document.getElementsByClassName("background_hexagon")
-  for (var i = 0; i < background_hexagons.length; i++) {
-    if(parseInt(background_hexagons[i].dataset["x"]) == coordinates[0] &&
-       parseInt(background_hexagons[i].dataset["y"]) == coordinates[1]) {
-      return background_hexagons[i]
-    }
-  }
+function searchByCoordinates(coordinates) {
+  var flare_star_element = document.getElementsByClassName("flare_star")[0]
+  return flare_star_element.querySelector(`.background_hexagon[data-x = '${coordinates[0]}'][data-y = '${coordinates[1]}']`)
 }
 
 function searchByRingLevelAndValue(ring_level, value) {
