@@ -44,7 +44,10 @@ function generateStarsfromData(star_cluster_data, star_cluster_type, reference_d
   for(var i = 0; i < Object.keys(star_cluster_data).length; i++) {
     var coordinates = getCoordinatesByMap(new_rotation_pattern[i]["position_1"], cursor_hexagon)
     var hexagon_div = searchByCoordinates(coordinates, false)
-    var star_cluster_options = {"star_cluster_type": star_cluster_type, "center_of_gravity": star_cluster_data[`hexagon_${i + 1}`]["center_of_gravity"]}
+    var star_cluster_options = {
+      "star_cluster_type": star_cluster_type,
+      "center_of_gravity": star_cluster_data[`hexagon_${i + 1}`]["center_of_gravity"]
+    }
     // TODO: Maybe refactor this to generateStar(...) and call generateHexagon() within that.
     generateHexagon(null, null, `hexagon_${i + 1}`, null, ["star"], 1, hexagon_div, star_cluster_options)
   }

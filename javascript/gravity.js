@@ -1,3 +1,7 @@
+// TODO: Refactor getHexagonToGravitateTowards
+// TODO: Refactor getCoordinatesByMap with null
+// TODO: Remove the saveLastPosition logic and other affected areas.
+
 async function drop(star_cluster) {
   // TODO: Turn off all button press logic (drop, rotate, move along corona, etc.)
   // disableGameplayButtons() enableGameplayButtons()
@@ -49,31 +53,6 @@ async function gravitateCluster(star_cluster, gravitation_direction) {
   await sleep(25)
 }
 
-// TODO: Move to collision.js
-function starClusterCanGravitateToCore(star_cluster_to_gravitate, direction) {
-  var center_of_gravity = getCenterOfGravity(star_cluster_to_gravitate)
-
-  for (var can_counter = 0; can_counter < star_cluster_to_gravitate.length; can_counter++) {
-    var star_in_order = orderCluster(star_cluster_to_gravitate, can_counter)
-    var star_to_gravitate_to = getHexagonByMap(star_in_order, [[direction, 1]])
-
-    var target_hexagon_x = star_to_gravitate_to.dataset["x"]
-    var target_hexagon_y = star_to_gravitate_to.dataset["y"]
-    var stars_in_target = getAllElementsFromCoordinates(target_hexagon_x, target_hexagon_y)
-
-    var main_cluster_stars = []
-    for (var stl = 0; stl < stars_in_target.length; stl++) {
-      if(stars_in_target[stl].classList.contains("main_cluster")) {
-        main_cluster_stars.push(stars_in_target[stl])
-      }
-    }
-    if(main_cluster_stars.length > 0) {
-      return false
-    }
-  }
-  return true
-}
-
 // 🌠
 function gravitate(star, direction = null) {
   if(direction == null) { direction = getGravitationDirection(star) }
@@ -83,6 +62,7 @@ function gravitate(star, direction = null) {
   var star_x = parseInt(star.dataset["x"])
   var star_y = parseInt(star.dataset["y"])
 
+  // TODO: I forget why this argument is null. Probably shouldn't be writing things this way.
   var new_position = getCoordinatesByMap(map, null, star_x, star_y)
   var new_x = new_position[0]
   var new_y = new_position[1]
@@ -94,6 +74,27 @@ function gravitate(star, direction = null) {
   var parent_hexagon = getBackgroundHexagonFromStar(star)
   star.dataset["ring_level"] = parent_hexagon.dataset["ring_level"]
   star.dataset["ring_value"] = parent_hexagon.dataset["value"]
+}
+
+function getCenterOfGravity(star_cluster) {
+  for(var star_num = 0; star_num < star_cluster.length; star_num++) {
+    var star = star_cluster[star_num]
+    if(star.dataset["center_of_gravity"] === "true") {
+      return star
+    }
+  }
+}
+
+function getGravitationDirection(center_of_gravity) {
+  var coe_hexagon = directChildOfFlareStar(center_of_gravity) ? getBackgroundHexagonFromStar(center_of_gravity) : center_of_gravity.parentNode
+
+  if(onCore(center_of_gravity)) {
+    console.log("Center of Gravity on Core");
+    return null
+  } else {
+    var coe_parent_hexagon = getHexagonToGravitateTowards(center_of_gravity)
+    return calculateDirectionFromCoordinates(coe_hexagon, coe_parent_hexagon)
+  }
 }
 
 // Determine which direction the Star Cluster will gravitate
@@ -117,56 +118,8 @@ function getHexagonToGravitateTowards(star, direction = null) {
   }
 }
 
-function getGravitationDirection(center_of_gravity) {
-  var coe_hexagon = directChildOfFlareStar(center_of_gravity) ? getBackgroundHexagonFromStar(center_of_gravity) : center_of_gravity.parentNode
-
-  if(onCore(center_of_gravity)) {
-    console.log("Center of Gravity on Core");
-    return null
-  } else {
-    var coe_parent_hexagon = getHexagonToGravitateTowards(center_of_gravity)
-    return calculateDirectionFromCoordinates(coe_hexagon, coe_parent_hexagon)
-  }
-}
-
-// TODO: Move to mapping.js
-function calculateDirectionFromCoordinates(original_hexagon, target_hexagon) {
-  var original_x = parseInt(original_hexagon.dataset["x"])
-  var original_y = parseInt(original_hexagon.dataset["y"])
-  var target_x = parseInt(target_hexagon.dataset["x"])
-  var target_y = parseInt(target_hexagon.dataset["y"])
-
-  // Not so bad!
-  if(original_x < target_x && original_y == target_y) {
-    return "right"
-  } else if (original_x < target_x && original_y < target_y) {
-    return "down_right"
-  } else if (original_x > target_x && original_y < target_y) {
-    return "down_left"
-  } else if (original_x > target_x && original_y == target_y) {
-    return "left"
-  } else if (original_x > target_x && original_y > target_y) {
-    return "up_left"
-  } else if (original_x < target_x && original_y > target_y) {
-    return "up_right"
-  }
-}
-
-function getCenterOfGravity(star_cluster) {
-  for(var star_num = 0; star_num < star_cluster.length; star_num++) {
-    var star = star_cluster[star_num]
-    if(star.dataset["center_of_gravity"] === "true") {
-      return star
-    }
-  }
-}
-
 function onCore(star) {
   return star.dataset["x"] == "0" && star.dataset["y"] == "0"
-}
-
-function directChildOfFlareStar(star) {
-  return star.parentNode.classList.contains("flare_star")
 }
 
 function getBackgroundHexagonFromStar(star) {
@@ -179,6 +132,10 @@ function getBackgroundHexagonFromStar(star) {
       return elements[elements_counter]
     }
   }
+}
+
+function directChildOfFlareStar(star) {
+  return star.parentNode.classList.contains("flare_star")
 }
 
 // Shuffle Bug
