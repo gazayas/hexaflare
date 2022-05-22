@@ -278,6 +278,7 @@ function determineParentToGravitateTo(flare_star_values) {
 }
 
 // TODO: I might want to put HTML-element related methods in their own file.
+// Rename this => findElementFromFlareStarData
 function findElementFromData(ring_level, value) {
   var elements = flare_star_ui.querySelectorAll(`[data-ring_level = '${ring_level}'][data-value = '${value}']`);
   for (var i = 0; i < elements.length; i++) {
