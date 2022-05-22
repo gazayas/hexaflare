@@ -1,4 +1,3 @@
-// TODO: Refactor getHexagonToGravitateTowards
 // TODO: Refactor getCoordinatesByMap with null
 
 async function drop(star_cluster) {
@@ -93,24 +92,24 @@ function getGravitationDirection(center_of_gravity) {
   }
 }
 
-// Determine which direction the Star Cluster will gravitate
-// according to the center of gravity and the FLIP_FACTOR
 function getHexagonToGravitateTowards(star, direction = null) {
-  if(direction) {
-    var map = [[direction, 1]]
-    return getHexagonByMap(star, map)
-  } else {
+  // If the direction is null, the star is either the center of gravity of
+  // a star cluster, or an individual star from the main cluster.
+  if(!direction) {
     var star_parent_hexagon = directChildOfFlareStar(star) ? getBackgroundHexagonFromStar(star) : star.parentNode
     var star_parent_hexagon_ring = parseInt(star_parent_hexagon.dataset["ring_level"])
     var star_parent_hexagon_value = parseInt(star_parent_hexagon.dataset["value"])
 
-    // This turns into -1 when on the core.
-    // For that reason, we skip getHexagonToGravitateTowards
-    // earlier on in starClusterCanGravitateToCore.
+    // We don't have to worry about this ever becoming -1 because we check if
+    // the center of gravity is on the core in another portion of the code.
     var parent_ring_parent_level = star_parent_hexagon_ring - 1
+
     var parent_ring_parent_values = findParentRingParents(flare_star, star_parent_hexagon_ring, star_parent_hexagon_value)
     var parent_ring_parent_value = determineParentToGravitateTo(parent_ring_parent_values)
     return findElementFromData(parent_ring_parent_level, parent_ring_parent_value)
+  } else {
+    var map = [[direction, 1]]
+    return getHexagonByMap(star, map)
   }
 }
 
