@@ -1,6 +1,5 @@
 // TODO: Refactor getHexagonToGravitateTowards
 // TODO: Refactor getCoordinatesByMap with null
-// TODO: Remove the saveLastPosition logic and other affected areas.
 
 async function drop(star_cluster) {
   // TODO: Turn off all button press logic (drop, rotate, move along corona, etc.)
@@ -11,7 +10,6 @@ async function drop(star_cluster) {
   var flare_star_html = document.getElementsByClassName("flare_star")[0]
   for (var i = 0; i < star_cluster.length; i++) {
     var star_in_order = orderCluster(star_cluster, i)
-    saveLastPosition(star_in_order)
     star_in_order.dataset["x"] = star_in_order.parentNode.dataset["x"]
     star_in_order.dataset["y"] = star_in_order.parentNode.dataset["y"]
     flare_star_html.appendChild(star_in_order)
@@ -57,8 +55,6 @@ async function gravitateCluster(star_cluster, gravitation_direction) {
 function gravitate(star, direction = null) {
   if(direction == null) { direction = getGravitationDirection(star) }
   var map = [[direction, 1]]
-  star.dataset["last_x"] = star.dataset["x"]
-  star.dataset["last_y"] = star.dataset["y"]
   var star_x = parseInt(star.dataset["x"])
   var star_y = parseInt(star.dataset["y"])
 
