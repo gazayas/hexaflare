@@ -5,14 +5,17 @@ function applyHexagonDimensions(hexagon_class_name, color, options = {}) {
   var invisible_style = HEX_INVISIBLE_BORDERS + "px solid transparent"
 
   for(var i = 0; i < top_divs.length; i++) {
+    // Top triangle in hexagon
     top_divs[i].style.borderBottom = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + color
     top_divs[i].style.borderLeft = invisible_style
     top_divs[i].style.borderRight = invisible_style
 
+    // Body (square) in hexagon
     center_divs[i].style.height = HEX_CENTER_HEIGHT + "px"
     center_divs[i].style.width = HEX_CENTER_WIDTH + "px"
     center_divs[i].style.backgroundColor = color
 
+    // Bottom triangle in hexagon
     bottom_divs[i].style.borderTop = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + color
     bottom_divs[i].style.borderLeft = invisible_style
     bottom_divs[i].style.borderRight = invisible_style
@@ -87,6 +90,7 @@ function searchByCoordinates(coordinates, corona = true) {
   }
 }
 
+// TODO: Where is this used? Can we just do the [dataset="3"] or whatever here?
 function searchByRingLevelAndValue(ring_level, value) {
   var background_hexagons = document.getElementsByClassName("background_hexagon")
   for (var i = 0; i < background_hexagons.length; i++) {
@@ -97,8 +101,8 @@ function searchByRingLevelAndValue(ring_level, value) {
   }
 }
 
+// TODO: Is this needed?
 // We use this whenever there is a flare.
-//
 function updateHexagonFullData() {
   var background_hexagons = document.getElementsByClassName("background_hexagon")
   for (var i = 0; i < background_hexagons.length; i++) {
