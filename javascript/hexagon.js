@@ -28,7 +28,7 @@ function applyHexagonDimensions(hexagon_class_name, color, options = {}) {
   }
 }
 
-// TODO: Use the corona hook
+// TODO: Use the corona hook to increase performance.
 function searchByCoordinates(coordinates, corona = true) {
   var background_hexagon_div = null
   var background_hexagons = document.getElementsByClassName("background_hexagon")
@@ -40,15 +40,9 @@ function searchByCoordinates(coordinates, corona = true) {
   }
 }
 
-// TODO: Where is this used? Can we just do the [dataset="3"] or whatever here?
 function searchByRingLevelAndValue(ring_level, value) {
-  var background_hexagons = document.getElementsByClassName("background_hexagon")
-  for (var i = 0; i < background_hexagons.length; i++) {
-    if(parseInt(background_hexagons[i].dataset["ring_level"]) == ring_level &&
-       parseInt(background_hexagons[i].dataset["value"]) == value) {
-      return background_hexagons[i]
-    }
-  }
+  var flare_star_element = document.getElementsByClassName("flare_star")[0]
+  return flare_star_element.querySelector(`.background_hexagon[data-ring_level = '${ring_level}'][data-value = '${value}']`)
 }
 
 // TODO: Is this needed?

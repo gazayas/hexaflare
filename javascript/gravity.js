@@ -113,7 +113,7 @@ function getBackgroundHexagonFromStar(star) {
   var x = star.dataset["x"]
   var y = star.dataset["y"]
 
-  var elements = flare_star_ui.querySelectorAll(`[data-x = '${x}'][data-y = '${y}']`);
+  var elements = flare_star_ui.querySelectorAll(`[data-x = '${x}'][data-y = '${y}']`)
   for (var elements_counter = 0; elements_counter < elements.length; elements_counter++) {
     if(elements[elements_counter].classList.contains("background_hexagon")) {
       return elements[elements_counter]
