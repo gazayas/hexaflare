@@ -17,7 +17,7 @@
       <div class="flare_star">
         <div class="core">
           <!-- The general structure for hexagons. -->
-          <div class="hexagon background_hexagon" data-ring_level="0" data-value="1" data-x="0" data-y="0" data-full="false">
+          <div class="hexagon background_hexagon inner_flare_star_hexagon" data-ring_level="0" data-value="1" data-x="0" data-y="0" data-full="false">
             <div class="hexagon_top"></div>
             <div class="hexagon_center"></div>
             <div class="hexagon_bottom"></div>
@@ -77,7 +77,21 @@
       var flare_star = generateFlareStar(14)
       var flare_star_ui = document.getElementsByClassName("flare_star")[0]
       generateFlareStarUI(numberOfRings(flare_star))
-      applyHexagonDimensions("hexagon", HEX_COLOR)
+
+      // First apply global colors
+      var background_hexagons = document.getElementsByClassName("background_hexagon")
+      for (var x = 0; x < background_hexagons.length; x++) {
+        applyHexagonDimensions(background_hexagons[x], HEX_COLOR)
+      }
+
+      // TODO: This works, I just don't want to deal with the colors right now.
+      /*
+      // Then apply to inner_flare_star
+      var inner_flare_star_hexagons = document.getElementsByClassName("inner_flare_star_hexagon")
+      for (var x = 0; x < inner_flare_star_hexagons.length; x++) {
+        applyHexagonDimensions(inner_flare_star_hexagons[x], HEX_COLOR, {"apply_ring_colors": true})
+      }
+      */
 
       var star_cluster_name = randomStarClusterType()
       generateStarCluster(star_cluster_name)

@@ -53,7 +53,7 @@ function generateFlareStarUI(number_of_rings) {
     corona_rings[i].classList.add("corona")
     var corona_ring_hexagons = corona_rings[i].children
     for(var j = 0; j < corona_ring_hexagons.length; j++) {
-      corona_ring_hexagons[j].classList.remove("inner_flare_star")
+      corona_ring_hexagons[j].classList.remove("inner_flare_star_hexagon")
       corona_ring_hexagons[j].classList.add("corona_hexagon")
     }
   }
@@ -77,12 +77,12 @@ function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_typ
   // TODO: For each hexagon_type, it probably doesn't need to be if else if,
   // just `if` for each type so all the logic is added accordingly.
   if(hexagon_type.includes("corner") || hexagon_type.includes("cursor")) {
-    hex_div.classList.add("inner_flare_star")
+    hex_div.classList.add("inner_flare_star_hexagon")
     hex_div.classList.add("background_hexagon")
     hex_div.dataset["full"] = false // TODO: This might be okay, but not sure if this affects the cursor
     var new_dimensions = newCornerDimensions(corner_hex_position, ring)
   } else if (hexagon_type.includes("side")) {
-    hex_div.classList.add("inner_flare_star")
+    hex_div.classList.add("inner_flare_star_hexagon")
     hex_div.classList.add("background_hexagon")
     var new_dimensions = newSideDimensions(corner_hex_position, current_side_number, ring)
   } else if (hexagon_type.includes("star")) {

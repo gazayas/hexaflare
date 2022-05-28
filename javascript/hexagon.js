@@ -1,8 +1,18 @@
-function applyHexagonDimensions(hexagon_class_name, color, options = {}) {
-  var top_divs = document.querySelectorAll(`.${hexagon_class_name} .hexagon_top`)
-  var center_divs = document.querySelectorAll(`.${hexagon_class_name} .hexagon_center`)
-  var bottom_divs = document.querySelectorAll(`.${hexagon_class_name} .hexagon_bottom`)
+function applyHexagonDimensions(hexagon, color, options = {}) {
+  // TODO: Change to just querySelector, not querySelectorAll
+  var top_divs = hexagon.getElementsByClassName("hexagon_top")
+  var center_divs = hexagon.getElementsByClassName("hexagon_center")
+  var bottom_divs = hexagon.getElementsByClassName("hexagon_bottom")
   var invisible_style = HEX_INVISIBLE_BORDERS + "px solid transparent"
+
+// TODO: Implement the .inner_flare_star class before getting here
+
+  if(options["apply_ring_colors"]) {
+    var hexagon_ring_level = hexagon.dataset["ring_level"]
+    console.log(hexagon_ring_level);
+    color = hexagon_ring_level % 2 == 0 ? "#a3a3a3" : "#d3d3d3"
+  }
+
 
   for(var i = 0; i < top_divs.length; i++) {
     // Top triangle in hexagon
