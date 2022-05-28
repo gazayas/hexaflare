@@ -76,7 +76,7 @@ function generateHexagon(ring_div, ring, value, corner_hex_position, hexagon_typ
 
   // TODO: For each hexagon_type, it probably doesn't need to be if else if,
   // just `if` for each type so all the logic is added accordingly.
-  if(hexagon_type.includes("corner") || hexagon_type.includes("cursor")) {
+  if(hexagon_type.includes("corner")) {
     hex_div.classList.add("inner_flare_star_hexagon")
     hex_div.classList.add("background_hexagon")
     hex_div.dataset["full"] = false // TODO: This might be okay, but not sure if this affects the cursor
