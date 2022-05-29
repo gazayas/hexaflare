@@ -70,28 +70,26 @@
       var REAL_X = HEX_CENTER_WIDTH + HEX_X_MARGIN
       var REAL_Y = HEX_TOTAL_HEIGHT - HEX_Y_MARGIN
       var HEX_COLOR = "silver"
+      var CORONA_IS_VISIBLE = false
 
       // Used when moving star clusters down child hexagons
       var FLIP_FACTOR = 0
 
-      var flare_star = generateFlareStar(14)
+      var flare_star = generateFlareStar(12)
       var flare_star_ui = document.getElementsByClassName("flare_star")[0]
       generateFlareStarUI(numberOfRings(flare_star))
 
-      // First apply global colors
-      var background_hexagons = document.getElementsByClassName("background_hexagon")
-      for (var x = 0; x < background_hexagons.length; x++) {
-        applyHexagonDimensions(background_hexagons[x], HEX_COLOR)
-      }
-
-      // TODO: This works, I just don't want to deal with the colors right now.
-      /*
-      // Then apply to inner_flare_star
       var inner_flare_star_hexagons = document.getElementsByClassName("inner_flare_star_hexagon")
       for (var x = 0; x < inner_flare_star_hexagons.length; x++) {
-        applyHexagonDimensions(inner_flare_star_hexagons[x], HEX_COLOR, {"apply_ring_colors": true})
+        applyHexagonDimensions(inner_flare_star_hexagons[x], HEX_COLOR, {"inner_flare_star_hexagon_opacity": 0.3})
       }
-      */
+
+      if(CORONA_IS_VISIBLE) {
+        var corona_background_hexagons = document.getElementsByClassName("corona_hexagon")
+        for (var i = 0; i < corona_background_hexagons.length; i++) {
+          applyHexagonDimensions(corona_background_hexagons[i], HEX_COLOR, {"opacity": 0.075})
+        }
+      }
 
       var star_cluster_name = randomStarClusterType()
       generateStarCluster(star_cluster_name)

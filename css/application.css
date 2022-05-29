@@ -18,10 +18,11 @@ body {
   background-color: #111;
 }
 
+/* You can override the opacity in initialization with CORONA_IS_VISIBLE */
 .corona_ring .background_hexagon .hexagon_top,
 .corona_ring .background_hexagon .hexagon_center,
 .corona_ring .background_hexagon .hexagon_bottom {
-  opacity: 0.15;
+  opacity: 0;
 }
 
 .space {

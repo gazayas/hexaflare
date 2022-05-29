@@ -4,12 +4,6 @@ function applyHexagonDimensions(hexagon, color, options = {}) {
   var bottom_divs = hexagon.getElementsByClassName("hexagon_bottom")
   var invisible_style = HEX_INVISIBLE_BORDERS + "px solid transparent"
 
-  if(options["apply_ring_colors"]) {
-    var hexagon_ring_level = hexagon.dataset["ring_level"]
-    console.log(hexagon_ring_level);
-    color = hexagon_ring_level % 2 == 0 ? "#a3a3a3" : "#d3d3d3"
-  }
-
   for(var i = 0; i < top_divs.length; i++) {
     // Top triangle in hexagon
     top_divs[i].style.borderBottom = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + color
@@ -25,6 +19,19 @@ function applyHexagonDimensions(hexagon, color, options = {}) {
     bottom_divs[i].style.borderTop = HEX_TOP_BOTTOM_BORDER_HEIGHT + "px solid " + color
     bottom_divs[i].style.borderLeft = invisible_style
     bottom_divs[i].style.borderRight = invisible_style
+
+    if(options["inner_flare_star_hexagon_opacity"]) {
+      if(parseInt(hexagon.dataset["ring_level"]) % 2 == 0) {
+        top_divs[i].style.opacity = options["inner_flare_star_hexagon_opacity"]
+        center_divs[i].style.opacity = options["inner_flare_star_hexagon_opacity"]
+        bottom_divs[i].style.opacity = options["inner_flare_star_hexagon_opacity"]
+      } else {
+        var dim_opacity_factor = 1.5
+        top_divs[i].style.opacity = options["inner_flare_star_hexagon_opacity"] / dim_opacity_factor
+        center_divs[i].style.opacity = options["inner_flare_star_hexagon_opacity"] / dim_opacity_factor
+        bottom_divs[i].style.opacity = options["inner_flare_star_hexagon_opacity"] / dim_opacity_factor
+      }
+    }
 
     if(options["opacity"]) {
       top_divs[i].style.opacity = options["opacity"]
