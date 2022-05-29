@@ -94,17 +94,37 @@
       var star_cluster_name = randomStarClusterType()
       generateStarCluster(star_cluster_name)
       var floating_cluster = document.getElementsByClassName("floating_cluster")
-      generateAndDropPreviewStarCluster(floating_cluster)
+      generatePreviewStarCluster(floating_cluster)
+      var preview_cluster = document.getElementsByClassName("preview_cluster")
+      drop(preview_cluster, true)
 
+      // TODO: Refactor this
       window.onkeydown = function(event) {
         if(event.keyCode == 88) {
           rotate("counter-clockwise", floating_cluster, star_cluster_name)
+
+          resetPreviewClusterToStarCluster(floating_cluster)
+          var preview_cluster = document.getElementsByClassName("preview_cluster")
+          drop(preview_cluster, true)
         } else if(event.keyCode == 67) {
           rotate("clockwise", floating_cluster, star_cluster_name)
+
+          resetPreviewClusterToStarCluster(floating_cluster)
+          var preview_cluster = document.getElementsByClassName("preview_cluster")
+          drop(preview_cluster, true)
         } else if(event.keyCode == 37 || event.keyCode == 74) {
           moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+
+          resetPreviewClusterToStarCluster(floating_cluster)
+          var preview_cluster = document.getElementsByClassName("preview_cluster")
+          console.log(preview_cluster);
+          drop(preview_cluster, true)
         } else if(event.keyCode == 39 || event.keyCode == 76) {
           moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
+
+          resetPreviewClusterToStarCluster(floating_cluster)
+          var preview_cluster = document.getElementsByClassName("preview_cluster")
+          drop(preview_cluster, true)
         } else if (event.keyCode == 90) {
           drop(floating_cluster)
         }

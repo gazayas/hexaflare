@@ -46,7 +46,9 @@ async function drop(star_cluster, preview_cluster_option = false) {
   if(!preview_cluster_option) {
     star_cluster_name = randomStarClusterType()
     generateStarCluster(star_cluster_name)
-    generateAndDropPreviewStarCluster(floating_cluster)
+    generatePreviewStarCluster(floating_cluster)
+    var preview_cluster = document.getElementsByClassName("preview_cluster")
+    drop(preview_cluster, true)
   }
 }
 
