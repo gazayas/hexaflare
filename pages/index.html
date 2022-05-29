@@ -93,8 +93,9 @@
 
       var star_cluster_name = randomStarClusterType()
       generateStarCluster(star_cluster_name)
-      // This is the star cluster we just generated
       var floating_cluster = document.getElementsByClassName("floating_cluster")
+      generateAndDropPreviewStarCluster(floating_cluster)
+
       window.onkeydown = function(event) {
         if(event.keyCode == 88) {
           rotate("counter-clockwise", floating_cluster, star_cluster_name)

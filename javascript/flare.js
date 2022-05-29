@@ -1,6 +1,16 @@
-async function processStarsAfterDrop() {
+async function processStarsAfterDrop(preview_cluster_option = false) {
   var flare_star_rings = document.getElementsByClassName("inner_flare_star_ring")
   var flare_combo = 0
+
+  // We don't want the preview cluster to be visible while we're doing flares, so we delete them here.
+  if(!preview_cluster_option) {
+    var preview_cluster_divs = document.getElementsByClassName("preview_cluster")
+    if(preview_cluster_divs.length > 0) {
+      for (var i = 0; i < 4; i++) {
+        preview_cluster_divs[0].remove()
+      }
+    }
+  }
 
   while(fullRingExists(flare_star_rings)) {
 

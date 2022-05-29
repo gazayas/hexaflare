@@ -33,6 +33,29 @@ function generateStarCluster(star_cluster_type) {
   generateStarsfromData(data, star_cluster_type, cursor_div)
 }
 
+function generateAndDropPreviewStarCluster(floating_star_cluster) {
+  var existing_preview_clusters = document.getElementsByClassName("preview_cluster")
+  // There should only be 4 stars at a time, so this is fine.
+  if(existing_preview_clusters.length > 0) {
+    for (var i = 0; i < 4; i++) {
+      existing_preview_clusters[0].remove()
+    }
+  }
+
+  for (var i = 0; i < floating_star_cluster.length; i++) {
+    var ordered_star = orderCluster(floating_star_cluster, i)
+    var preview_cluster_star = ordered_star.cloneNode(true)
+    preview_cluster_star.classList.add("preview_cluster")
+    preview_cluster_star.classList.remove("floating_cluster")
+    preview_cluster_star.dataset["star_cluster_type"] = "Preview"
+    applyHexagonDimensions(preview_cluster_star, "white", {"opacity": 0.3 })
+    ordered_star.after(preview_cluster_star)
+  }
+
+  var preview_cluster = document.getElementsByClassName("preview_cluster")
+  drop(preview_cluster, true)
+}
+
 // When a star cluster is generated, each star is always generated in its first position, `position_1`.
 function generateStarsfromData(star_cluster_data, star_cluster_type, reference_div) {
   var cursor_hexagon = reference_div.parentNode
@@ -85,6 +108,9 @@ function moveAlongCorona(direction, star_cluster, star_cluster_type) {
   cursor.dataset["corner_position"] = new_corner
   hexagon_to_move_to.appendChild(cursor)
 
+  // Make sure we move the preview cluster as well.
+  generateAndDropPreviewStarCluster(star_cluster)
+
   // TODO: This is super hacky, but it works ¯\_(ツ)_/¯
   // Would be better to redraw the star cluster itself.
   // However, this isn't top priority.
@@ -127,6 +153,9 @@ function rotate(direction, star_cluster, star_cluster_type) {
     var new_coordinates = getCoordinatesByMap(new_rotation_map, cursor.parentNode)
     var new_hexagon = searchByCoordinates(new_coordinates)
     new_hexagon.appendChild(star_to_rotate)
+
+    // Make sure we rotate the preview cluster as well.
+    generateAndDropPreviewStarCluster(star_cluster)
   }
 }
 

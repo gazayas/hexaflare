@@ -1,4 +1,4 @@
-async function drop(star_cluster) {
+async function drop(star_cluster, preview_cluster_option = false) {
   // TODO: Turn off all button press logic (drop, rotate, move along corona, etc.)
   // disableGameplayButtons() enableGameplayButtons()
 
@@ -18,7 +18,11 @@ async function drop(star_cluster) {
   // Check initially if we can drop it, and then procede to gravitate in a loop if so.
   if(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
     do {
-      await gravitateCluster(star_cluster, gravitation_direction)
+      if(preview_cluster_option) {
+        gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
+      } else {
+        await gravitateCluster(star_cluster, gravitation_direction)
+      }
       gravitation_direction = getGravitationDirection(center_of_gravity)
     } while(gravitation_direction != null && starClusterCanGravitateToCore(star_cluster, gravitation_direction))
   }
@@ -26,33 +30,44 @@ async function drop(star_cluster) {
   // Reset
   FLIP_FACTOR = 0
 
-  for(var i = 0; i < 4; i++) {
-    star_cluster[0].classList.add("main_cluster")
-    star_cluster[0].classList.remove("floating_cluster")
+  if(!preview_cluster_option) {
+    for(var i = 0; i < 4; i++) {
+      star_cluster[0].classList.add("main_cluster")
+      star_cluster[0].classList.remove("floating_cluster")
+    }
   }
 
   // 💫🔥
-  await processStarsAfterDrop()
+  await processStarsAfterDrop(preview_cluster_option)
 
   // ↓ Move the following to flare.js?
   // End game if there are any stars in the Corona
-  star_cluster_name = randomStarClusterType() // This variable is declared in index.html
-  generateStarCluster(star_cluster_name)
+  // floating_cluster here is declared in index.html.
+  if(!preview_cluster_option) {
+    star_cluster_name = randomStarClusterType()
+    generateStarCluster(star_cluster_name)
+    generateAndDropPreviewStarCluster(floating_cluster)
+  }
 }
 
-async function gravitateCluster(star_cluster, gravitation_direction) {
+async function gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option = false) {
   for (var i = 0; i < 4; i++) {
     var star_in_order = orderCluster(star_cluster, i)
-    gravitate(star_in_order, gravitation_direction)
+    gravitate(star_in_order, gravitation_direction, preview_cluster_option)
   }
   FLIP_FACTOR = FLIP_FACTOR == 0 ? 1 : 0
   await sleep(25)
 }
 
 // 🌠
-function gravitate(star, direction = null) {
+function gravitate(star, direction = null, preview_cluster_option = false) {
   var current_background_hexagon = getBackgroundHexagonFromStar(star)
-  current_background_hexagon.dataset["full"] = false
+
+  // TODO: This doesn't seem right, but it's working.
+  // We don't want to change dataset["full"] if we're gravitating a preview cluster.
+  if(!preview_cluster_option) {
+    current_background_hexagon.dataset["full"] = false
+  }
 
   if(direction == null) { direction = getGravitationDirection(star) }
   var map = [[direction, 1]]
@@ -65,7 +80,9 @@ function gravitate(star, direction = null) {
   star.dataset["y"] = new_y
 
   var parent_hexagon = getBackgroundHexagonFromStar(star)
-  parent_hexagon.dataset["full"] = true
+  if(!preview_cluster_option) {
+    parent_hexagon.dataset["full"] = true
+  }
   star.dataset["ring_level"] = parent_hexagon.dataset["ring_level"]
   star.dataset["ring_value"] = parent_hexagon.dataset["value"]
 }
