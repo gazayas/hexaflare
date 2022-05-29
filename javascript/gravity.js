@@ -31,9 +31,10 @@ async function drop(star_cluster) {
     star_cluster[0].classList.remove("floating_cluster")
   }
 
-  // processStarsAfterDrop()
+  // 💫🔥
+  await processStarsAfterDrop()
 
-  // ↓ Move the following to flare.js
+  // ↓ Move the following to flare.js?
   // End game if there are any stars in the Corona
   star_cluster_name = randomStarClusterType() // This variable is declared in index.html
   generateStarCluster(star_cluster_name)
@@ -50,6 +51,9 @@ async function gravitateCluster(star_cluster, gravitation_direction) {
 
 // 🌠
 function gravitate(star, direction = null) {
+  var current_background_hexagon = getBackgroundHexagonFromStar(star)
+  current_background_hexagon.dataset["full"] = false
+
   if(direction == null) { direction = getGravitationDirection(star) }
   var map = [[direction, 1]]
   var new_position = getCoordinatesByMap(map, star)
@@ -61,6 +65,7 @@ function gravitate(star, direction = null) {
   star.dataset["y"] = new_y
 
   var parent_hexagon = getBackgroundHexagonFromStar(star)
+  parent_hexagon.dataset["full"] = true
   star.dataset["ring_level"] = parent_hexagon.dataset["ring_level"]
   star.dataset["ring_value"] = parent_hexagon.dataset["value"]
 }

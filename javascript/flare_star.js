@@ -23,6 +23,7 @@ function generateFlareStarUI(number_of_rings) {
   for(var ring = 1; ring <= number_of_rings; ring++) {
     var ring_div = document.createElement("div")
     ring_div.classList.add("ring")
+    ring_div.classList.add("inner_flare_star_ring")
     ring_div.style.position = "absolute"
     ring_div.dataset["level"] = ring
     var flare_star_div = document.getElementsByClassName("flare_star")[0]
@@ -50,7 +51,8 @@ function generateFlareStarUI(number_of_rings) {
   // We set inner_flare_star to all .background_hexagons on creation,
   // so we go ahead a replace it with .corona_hexagon here.
   for(i = 0; i < corona_rings.length; i++) {
-    corona_rings[i].classList.add("corona")
+    corona_rings[i].classList.remove("inner_flare_star_ring")
+    corona_rings[i].classList.add("corona_ring")
     var corona_ring_hexagons = corona_rings[i].children
     for(var j = 0; j < corona_ring_hexagons.length; j++) {
       corona_ring_hexagons[j].classList.remove("inner_flare_star_hexagon")
@@ -297,28 +299,10 @@ function getAllElementsFromCoordinates(x, y, class_name = null) {
 
   // Doing this because I want an array and not an HTMLCollection
   for (var i = 0; i < stars_in_target.length; i++) {
-    result_stars.push(stars_in_target[i])
-  }
-  return result_stars
-/*
-  if(class_name == null) {
-    var all_hexagons = document.getElementsByClassName("hexagon")
-  } else {
-    var all_hexagons = document.getElementsByClassName(class_name)
-  }
-  var matching_hexagons = []
-  for (var i = 0; i < all_hexagons.length; i++) {
-    if(parseInt(all_hexagons[i].dataset["x"]) == x && parseInt(all_hexagons[i].dataset["y"]) == y) {
-      matching_hexagons.push(all_hexagons[i])
+    if(class_name != null && stars_in_target[i].classList.contains(class_name) ||
+       class_name == null) {
+      result_stars.push(stars_in_target[i])
     }
   }
-  return matching_hexagons
-  */
-}
-
-function coreIsEmpty() {
-  var core = document.getElementsByClassName("core")[0]
-  var star_present = core.querySelector(".star")
-  console.log(star_present);
-  return star_present == null
+  return result_stars
 }

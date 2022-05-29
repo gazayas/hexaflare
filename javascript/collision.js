@@ -21,3 +21,26 @@ function starClusterCanGravitateToCore(star_cluster_to_gravitate, direction) {
   }
   return true
 }
+
+function starCanGravitateToCore(star) {
+  var background_hexagon_to_gravitate_to = getHexagonToGravitateTowards(star)
+
+  // TODO: We do this if the star is on the core.
+  // There's probably a better way to handle this.
+  if(background_hexagon_to_gravitate_to == undefined) { return false }
+
+  var hex_x = background_hexagon_to_gravitate_to.dataset["x"]
+  var hex_y = background_hexagon_to_gravitate_to.dataset["y"]
+  var main_cluster = getAllElementsFromCoordinates(hex_x, hex_y, "main_cluster")
+  return main_cluster.length == 0
+}
+
+function gravitatableStarExists() {
+  var main_cluster_stars = document.getElementsByClassName("main_cluster")
+  for (var i = 0; i < main_cluster_stars.length; i++) {
+    if(starCanGravitateToCore(main_cluster_stars[i])) {
+      return true
+    }
+  }
+  return false
+}
