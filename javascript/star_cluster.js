@@ -49,6 +49,9 @@ function generatePreviewStarCluster(floating_star_cluster) {
     preview_cluster_star.classList.remove("floating_cluster")
     preview_cluster_star.dataset["star_cluster_type"] = "Preview"
     applyHexagonDimensions(preview_cluster_star, "white", {"opacity": 0.3 })
+
+    // TODO: This might be right, but I still want to check.
+    // Should this be preview_cluster_star.after(ordered_star)? Check HTML in dev tools.
     ordered_star.after(preview_cluster_star)
   }
 }

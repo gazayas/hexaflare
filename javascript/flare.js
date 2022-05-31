@@ -37,6 +37,10 @@ async function processStarsAfterDrop(preview_cluster_option = false) {
             await sleep(10)
             if(starCanGravitateToCore(star_to_gravitate)) {
               gravitate(star_to_gravitate)
+
+              // Update hexagon full data
+              emptyPreviousBackgroundHexagon(star_to_gravitate)
+              fillBackgroundHexagon(star_to_gravitate)
             }
           }
         }

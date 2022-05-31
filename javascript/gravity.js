@@ -18,11 +18,26 @@ async function drop(star_cluster, preview_cluster_option = false) {
   // Check initially if we can drop it, and then procede to gravitate in a loop if so.
   if(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
     do {
+      // TODO: Refactor to only gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
       if(preview_cluster_option) {
-        gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
+        await gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
       } else {
         await gravitateCluster(star_cluster, gravitation_direction)
       }
+
+      // Update hexagon full data.
+      if(!preview_cluster_option) {
+        for (var star_count = 0; star_count < star_cluster.length; star_count++) {
+          var ordered_star = orderCluster(star_cluster, star_count)
+          emptyPreviousBackgroundHexagon(ordered_star)
+        }
+
+        for (var star_count = 0; star_count < star_cluster.length; star_count++) {
+          var ordered_star = orderCluster(star_cluster, star_count)
+          fillBackgroundHexagon(ordered_star)
+        }
+      }
+
       gravitation_direction = getGravitationDirection(center_of_gravity)
     } while(gravitation_direction != null && starClusterCanGravitateToCore(star_cluster, gravitation_direction))
   }
@@ -58,17 +73,18 @@ async function gravitateCluster(star_cluster, gravitation_direction, preview_clu
     gravitate(star_in_order, gravitation_direction, preview_cluster_option)
   }
   FLIP_FACTOR = FLIP_FACTOR == 0 ? 1 : 0
-  await sleep(25)
+  if(!preview_cluster_option) {
+    await sleep(25)
+  }
 }
 
 // 🌠
 function gravitate(star, direction = null, preview_cluster_option = false) {
   var current_background_hexagon = getBackgroundHexagonFromStar(star)
 
-  // TODO: This doesn't seem right, but it's working.
-  // We don't want to change dataset["full"] if we're gravitating a preview cluster.
   if(!preview_cluster_option) {
-    current_background_hexagon.dataset["full"] = false
+    star.dataset["previous_x"] = current_background_hexagon.dataset["x"]
+    star.dataset["previous_y"] = current_background_hexagon.dataset["y"]
   }
 
   if(direction == null) { direction = getGravitationDirection(star) }
@@ -82,9 +98,6 @@ function gravitate(star, direction = null, preview_cluster_option = false) {
   star.dataset["y"] = new_y
 
   var parent_hexagon = getBackgroundHexagonFromStar(star)
-  if(!preview_cluster_option) {
-    parent_hexagon.dataset["full"] = true
-  }
   star.dataset["ring_level"] = parent_hexagon.dataset["ring_level"]
   star.dataset["ring_value"] = parent_hexagon.dataset["value"]
 }
@@ -147,6 +160,22 @@ function getBackgroundHexagonFromStar(star) {
 
 function directChildOfFlareStar(star) {
   return star.parentNode.classList.contains("flare_star")
+}
+
+function emptyPreviousBackgroundHexagon(star_to_update) {
+  var previous_x = parseInt(star_to_update.dataset["previous_x"])
+  var previous_y = parseInt(star_to_update.dataset["previous_y"])
+
+  // TODO: This should be fine, but it would be better to
+  // pass "background_hexagon" to make sure that's what we're getting.
+  // The function already accepts a class name as a third argument.
+  var previous_hexagon = getAllElementsFromCoordinates(previous_x, previous_y)[0]
+  previous_hexagon.dataset["full"] = false
+}
+
+function fillBackgroundHexagon(star_to_update) {
+  var current_hexagon = getBackgroundHexagonFromStar(star_to_update)
+  current_hexagon.dataset["full"] = true
 }
 
 // Shuffle Bug
