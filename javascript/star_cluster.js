@@ -164,6 +164,58 @@ function rotate(direction, star_cluster, star_cluster_type) {
   }
 }
 
+// ...Nah?
+function moveToCorner(direction, star_cluster, star_cluster_type) {
+  var data = getData(star_cluster_type)
+  var cursor = document.getElementsByClassName("cursor")[0]
+  var current_cursor_corner_position = cursor.dataset["corner_position"]
+  var parent_hexagon = cursor.parentNode
+
+  var current_ring = parseInt(parent_hexagon.dataset["ring_level"])
+  var current_value = parseInt(parent_hexagon.dataset["value"])
+  var current_ring_corner_values = ringCorners(flare_star, current_ring)
+  var parent_corner_value = findParentCornerInRing(flare_star, current_ring, current_value)
+  var parent_corner_position = cornerPosition(flare_star, current_ring, current_value)
+
+  // Initialize here and update below.
+  var new_corner_position = parent_corner_position
+
+  // TODO: The if statements below can be refactored if we start with `direction`.
+  // If the cursor is already at a corner, or if it's a side hexagon.
+  if(current_ring_corner_values.includes(current_value)) {
+    if(direction == "counter-clockwise") {
+      new_corner_position -= 1
+      if(new_corner_position < 0) { new_corner_position += 6 }
+    } else if (direction == "clockwise") {
+      new_corner_position += 1
+      if(new_corner_position > 5) { new_corner_position -= 6 }
+    }
+  } else {
+    if(direction == "counter-clockwise") {
+      // We already set the parent corner position to the new corner position,
+      // so we don't have to do anything else here.
+    } else if (direction == "clockwise") {
+      new_corner_position += 1
+      if(new_corner_position > 5) { new_corner_position -= 6 }
+    }
+  }
+
+  // Find element based off of new corner position in current_ring
+  var new_parent_hexagon = findElementFromData(current_ring, current_ring_corner_values[new_corner_position])
+
+  // Append the cursor to the new element (We shouldn't have any problems with append here)
+  new_parent_hexagon.appendChild(cursor)
+
+  // Redraw!
+  // Again, this is really hacky, but it works.
+  // ¯\_(ツ)_/¯
+  var reverse_direction = direction == "clockwise" ? "counter-clockwise" : "clockwise"
+  rotate(direction, star_cluster, star_cluster_type)
+  moveAlongCorona(direction, star_cluster, star_cluster_type)
+  moveAlongCorona(reverse_direction, star_cluster, star_cluster_type)
+  rotate(reverse_direction, star_cluster, star_cluster_type)
+}
+
 // This method gets a star clusters' new rotation pattern
 // according to the cursor's corner position.
 function getNewRotationPattern(star_cluster, star_cluster_type) {
