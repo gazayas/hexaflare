@@ -40,7 +40,7 @@
     <script src="../javascript/collision.js"></script>
     <script src="../javascript/flare.js"></script>
     <script src="../javascript/gamepad.js"></script>
-    <script src="../javascript/frame_update.js"></script>
+    <script src="../javascript/keyboard_buttons.js"></script>
 
     <!-- Star Clusters -->
     <script src="../javascript/star_clusters/proxima_data.js"></script>
@@ -100,8 +100,7 @@
       var preview_cluster = document.getElementsByClassName("preview_cluster")
       drop(preview_cluster, true)
 
-      // From frame_update.js
-      frameUpdate()
+      keyboardButtonFrameUpdate()
     </script>
   </body>
 </html>

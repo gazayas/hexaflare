@@ -10,11 +10,7 @@ window.addEventListener('keyup', function(e) {
 
 var x_key = 88
 var c_key = 67
-
-// Remove these. They make the game too easy.
-var u_key = 85
-var o_key = 79
-
+var space_key = 32
 var z_key = 90
 
 var left_key = 37
@@ -22,20 +18,28 @@ var right_key = 39
 var j_key = 74
 var l_key = 76
 
-
-function frameUpdate() {
+window.onkeydown = function(event) {
   if(keys_enabled) {
-    if(key_state[x_key] || key_state[c_key] || key_state[u_key] || key_state[o_key] ||
-       key_state[left_key] || key_state[j_key] || key_state[right_key] || key_state[l_key]) {
-      if (key_state[x_key]) {
+    if(event.keyCode == 32 || event.keyCode == z_key) {
+      drop(floating_cluster)
+    } else {
+      if(event.keyCode == left_key || event.keyCode == x_key) {
         rotate("counter-clockwise", floating_cluster, star_cluster_name)
-      } else if (key_state[c_key]) {
+      } else if (event.keyCode == right_key || event.keyCode == c_key) {
         rotate("clockwise", floating_cluster, star_cluster_name)
-      } else if (key_state[u_key]) {
-        // moveToCorner("counter-clockwise", floating_cluster, star_cluster_name)
-      } else if (key_state[o_key]) {
-        // moveToCorner("clockwise", floating_cluster, star_cluster_name)
-      } else if (key_state[left_key] || key_state[j_key]) {
+      }
+      resetPreviewClusterToStarCluster(floating_cluster)
+      var preview_cluster = document.getElementsByClassName("preview_cluster")
+      drop(preview_cluster, true)
+    }
+  }
+}
+
+function keyboardButtonFrameUpdate() {
+  if(keys_enabled) {
+    if(
+       key_state[left_key] || key_state[j_key] || key_state[right_key] || key_state[l_key]) {
+      if (key_state[left_key] || key_state[j_key]) {
         moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
       } else if (key_state[right_key] || key_state[l_key]) {
         moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
@@ -43,11 +47,9 @@ function frameUpdate() {
       resetPreviewClusterToStarCluster(floating_cluster)
       var preview_cluster = document.getElementsByClassName("preview_cluster")
       drop(preview_cluster, true)
-    } else if (key_state[z_key]) {
-      drop(floating_cluster)
     }
   }
-  // TODO: Consider if keys_enabled should go here or not.
+  // TODO: Consider if keys_enabled = true should go here or not.
   // Same for the gamepad logic.
-  setTimeout(frameUpdate, 80);
+  setTimeout(keyboardButtonFrameUpdate, 90);
 }
