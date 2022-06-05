@@ -1,6 +1,7 @@
 async function drop(star_cluster, preview_cluster_option = false) {
   // TODO: Turn off all button press logic (drop, rotate, move along corona, etc.)
   // disableGameplayButtons() enableGameplayButtons()
+  keys_enabled = false
 
   // Detach cluster from background hexagons and register initial coordinates.
   // TODO: Refactor this to get the element by the `event`
@@ -58,6 +59,7 @@ async function drop(star_cluster, preview_cluster_option = false) {
   // ↓ Move the following to flare.js?
   // End game if there are any stars in the Corona
   // floating_cluster here is declared in index.html.
+
   if(!preview_cluster_option) {
     star_cluster_name = randomStarClusterType()
     generateStarCluster(star_cluster_name)
@@ -65,6 +67,7 @@ async function drop(star_cluster, preview_cluster_option = false) {
     var preview_cluster = document.getElementsByClassName("preview_cluster")
     drop(preview_cluster, true)
   }
+  keys_enabled = true
 }
 
 async function gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option = false) {
