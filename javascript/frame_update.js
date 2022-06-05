@@ -37,5 +37,7 @@ function frameUpdate() {
       drop(floating_cluster)
     }
   }
+  // TODO: Consider if keys_enabled should go here or not.
+  // Same for the gamepad logic.
   setTimeout(frameUpdate, 80);
 }
