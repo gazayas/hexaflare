@@ -23,9 +23,9 @@ window.onkeydown = function(event) {
     if(event.keyCode == 32 || event.keyCode == z_key) {
       drop(floating_cluster)
     } else {
-      if(event.keyCode == left_key || event.keyCode == x_key) {
+      if(event.keyCode == x_key) {
         rotate("counter-clockwise", floating_cluster, star_cluster_name)
-      } else if (event.keyCode == right_key || event.keyCode == c_key) {
+      } else if (event.keyCode == c_key) {
         rotate("clockwise", floating_cluster, star_cluster_name)
       }
       resetPreviewClusterToStarCluster(floating_cluster)
