@@ -18,6 +18,8 @@ var right_key = 39
 var j_key = 74
 var l_key = 76
 
+// TODO: Add a check to see if the input is from the keyboard or a USB controller.
+// Then change the setTimeout time value according to that.
 window.onkeydown = function(event) {
   if(keys_enabled) {
     if(event.keyCode == 32 || event.keyCode == z_key) {
