@@ -1,4 +1,6 @@
-// TODO: Document this.
+// TODO: Document how onkeydown handles some things,
+// and how keyboardButtonFrameUpdate(), a loop in
+// index.html, handles other things.
 
 var key_state = {}
 var keys_enabled = true
@@ -45,11 +47,11 @@ window.onkeydown = function(event) {
     // This is implemented because the timeout with the loop below might start at weird time and
     // not pick up on a single button press. This will ensure the first move DOES happen,
     // and then all consequent moves in that direction will be taken care of in the loop
-    // as long as the player is still pressing down the same button
+    // as long as the player is still pressing down the same button.
+    // There's similar code in gamepad.js
     if(event.keyCode == left_key && moves_to_left == 0) {
       moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
       moves_to_left++
-      console.log("moved once.")
     } else if (event.keyCode == right_key && moves_to_right == 0) {
       moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
       moves_to_right++
