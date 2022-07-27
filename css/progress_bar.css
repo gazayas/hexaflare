@@ -1,0 +1,25 @@
+.vertical {
+  position: absolute;
+  display: inline-block;
+  width: 500px;
+  height: 10px;
+  top: 50%;
+  right: -100px;
+  -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
+  transform: rotate(-90deg);
+}
+
+.vertical {
+  background-color: rgb(47, 73, 158);
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: azure;
+
+  /*
+   * Since the progress bar is vertical, width here 
+   * represents the height of the progress bar
+   */
+  width: 100%;
+}
