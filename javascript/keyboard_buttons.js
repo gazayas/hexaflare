@@ -1,6 +1,16 @@
-// TODO: Document how onkeydown handles some things,
-// and how keyboardButtonFrameUpdate(), a loop in
-// index.html, handles other things.
+// Left key:  Move counter-clockwise once
+// J Key:     Move counter-clockwise once
+// Right Key: Move clockwise once
+// L Key:     Move clockwise once
+// S Key:     Move counter-clockwise continuously
+// D Key:     Move counter-clockwise continuously
+
+// X Key:     Rotate counter-clockwise
+// C Key:     Rotate clockwise
+// Z Key:     Drop
+
+// Keys that move star clusters continuously are placed in a loop
+// where the frame is updated continuously.
 
 var key_state = {}
 var keys_enabled = true
@@ -12,6 +22,8 @@ window.addEventListener('keyup', function(e) {
   key_state[e.keycode || e.which] = false
 })
 
+// TODO: I think there's an actual way to just get
+// something like "left_arrow" from the `event` object.
 var x_key = 88
 var c_key = 67
 var space_key = 32
@@ -22,54 +34,51 @@ var right_key = 39
 var j_key = 74
 var l_key = 76
 
-var moves_to_left = 0
-var moves_to_right = 0
+var s_key = 83
+var d_key = 68
 
-// TODO: Add a check to see if the input is from the keyboard or a USB controller.
-// Then change the setTimeout time value according to that.
+// The player should only move once even if they hold the button down
+// when moving left or right, unless they're using the s or d keys.
+var moving_left = false
+var moving_right = false
+
 window.onkeydown = function(event) {
   if(keys_enabled) {
     // Drop and Rotate logic
     if(event.keyCode == 32 || event.keyCode == z_key) {
       drop(floating_cluster)
     } else {
+      // TODO: Switch case.
       if(event.keyCode == x_key) {
         rotate("counter-clockwise", floating_cluster, star_cluster_name)
       } else if (event.keyCode == c_key) {
         rotate("clockwise", floating_cluster, star_cluster_name)
+      } else if ((event.keyCode == left_key || event.keyCode == j_key) && !moving_left) {
+        moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+        moving_left = true
+      } else if ((event.keyCode == right_key || event.keyCode == l_key) && !moving_right) {
+        moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
+        moving_right = true
       }
+
       resetPreviewClusterToStarCluster(floating_cluster)
       var preview_cluster = document.getElementsByClassName("preview_cluster")
       drop(preview_cluster, true)
-    }
-
-    // Move along Corona logic (logic for initial move over one space).
-    // This is implemented because the timeout with the loop below might start at weird time and
-    // not pick up on a single button press. This will ensure the first move DOES happen,
-    // and then all consequent moves in that direction will be taken care of in the loop
-    // as long as the player is still pressing down the same button.
-    // There's similar code in gamepad.js
-    if(event.keyCode == left_key && moves_to_left == 0) {
-      moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
-      moves_to_left++
-    } else if (event.keyCode == right_key && moves_to_right == 0) {
-      moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
-      moves_to_right++
     }
   }
 }
 
 function keyboardButtonFrameUpdate() {
   if(keys_enabled) {
-    if(
-       key_state[left_key] || key_state[j_key] || key_state[right_key] || key_state[l_key]) {
-      if (key_state[left_key] || key_state[j_key]) {
-        if(moves_to_left > 1) { moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name) }
-        moves_to_left++
-      } else if (key_state[right_key] || key_state[l_key]) {
-        if(moves_to_right > 1) { moveAlongCorona("clockwise", floating_cluster, star_cluster_name) }
-        moves_to_right++
+    if(key_state[s_key] || key_state[d_key]) {
+
+      // Move continuously according to the frame rate declared below.
+      if (key_state[s_key]) {
+        moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+      } else if (key_state[d_key]) {
+        moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
       }
+
       resetPreviewClusterToStarCluster(floating_cluster)
       var preview_cluster = document.getElementsByClassName("preview_cluster")
       drop(preview_cluster, true)
@@ -77,10 +86,13 @@ function keyboardButtonFrameUpdate() {
   }
   // TODO: Consider if keys_enabled = true should go here or not.
   // Same for the gamepad logic.
-  setTimeout(keyboardButtonFrameUpdate, 90);
+  setTimeout(keyboardButtonFrameUpdate, 60);
 }
 
 window.onkeyup = function(event) {
-  moves_to_left = 0
-  moves_to_right = 0
+  if (event.keyCode == left_key || event.keyCode == j_key) {
+    moving_left = false
+  } else if (event.keyCode == right_key || event.keyCode == l_key) {
+    moving_right = false
+  }
 }

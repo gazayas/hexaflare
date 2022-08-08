@@ -16,6 +16,10 @@ var x_button = 3
 
 var moves_to_left_by_gamepad = 0
 var moves_to_right_by_gamepad = 0
+
+var moving_left_with_gamepad = false
+var moving_right_with_gamepad = false
+
 var left_button_down = false
 var right_button_down = false
 var reset_left_button = false
@@ -30,34 +34,32 @@ function gamepadHandler(event, connecting) {
   setInterval(function() {
     var gp = navigator.getGamepads()[event.gamepad.index]
 
-    if(gp.buttons[14].pressed && moves_to_left_by_gamepad == 0) {
+    if(gp.buttons[14].pressed && !moving_left_with_gamepad) {
       moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
-      moves_to_left_by_gamepad++
-    } else if (gp.buttons[15].pressed && moves_to_right_by_gamepad == 0) {
+      moving_left_with_gamepad = true
+    } else if (gp.buttons[15].pressed && !moving_right_with_gamepad) {
       moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
-      moves_to_right_by_gamepad++
+      moving_right_with_gamepad = true
     }
 
-    if(!gp.buttons[14].pressed) { moves_to_left_by_gamepad = 0 }
-    if(!gp.buttons[15].pressed) { moves_to_right_by_gamepad = 0 }
+    if(!gp.buttons[14].pressed) { moving_left_with_gamepad = false }
+    if(!gp.buttons[15].pressed) { moving_right_with_gamepad = false }
   }, 1)
 
   setInterval(function(){
     var gp = navigator.getGamepads()[event.gamepad.index]
     if(keys_enabled) {
-      if (gp.buttons[14].pressed) {
-        if(moves_to_left_by_gamepad > 2) { moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name) }
-        moves_to_left_by_gamepad++
-      } else if (gp.buttons[15].pressed) {
-        if(moves_to_right_by_gamepad > 2) { moveAlongCorona("clockwise", floating_cluster, star_cluster_name) }
-        moves_to_right_by_gamepad++
+      if (gp.buttons[4].pressed) {
+        moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+      } else if (gp.buttons[5].pressed) {
+        moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
       }
 
       resetPreviewClusterToStarCluster(floating_cluster)
       var preview_cluster = document.getElementsByClassName("preview_cluster")
       drop(preview_cluster, true)
     }
-  }, 95)
+  }, 65)
 
   setInterval(function() {
     if(keys_enabled) {
