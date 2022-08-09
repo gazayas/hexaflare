@@ -41,7 +41,7 @@ var d_key = 68
 // when moving left or right, unless they're using the s or d keys.
 var moving_left = false
 var moving_right = false
-
+/*
 window.onkeydown = function(event) {
   if(keys_enabled) {
     // Drop and Rotate logic
@@ -67,11 +67,38 @@ window.onkeydown = function(event) {
     }
   }
 }
+*/
+
+window.addEventListener('keydown', (event) => {
+  if(keys_enabled) {
+    // Drop and Rotate logic
+    if(event.keyCode == 32 || event.keyCode == z_key) {
+      drop(floating_cluster)
+      current_prog = 100
+    } else {
+      // TODO: Switch case.
+      if(event.keyCode == x_key) {
+        rotate("counter-clockwise", floating_cluster, star_cluster_name)
+      } else if (event.keyCode == c_key) {
+        rotate("clockwise", floating_cluster, star_cluster_name)
+      } else if ((event.keyCode == left_key || event.keyCode == j_key) && !moving_left) {
+        moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+        moving_left = true
+      } else if ((event.keyCode == right_key || event.keyCode == l_key) && !moving_right) {
+        moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
+        moving_right = true
+      }
+
+      resetPreviewClusterToStarCluster(floating_cluster)
+      var preview_cluster = document.getElementsByClassName("preview_cluster")
+      drop(preview_cluster, true)
+    }
+  }
+})
 
 function keyboardButtonFrameUpdate() {
   if(keys_enabled) {
     if(key_state[s_key] || key_state[d_key]) {
-
       // Move continuously according to the frame rate declared below.
       if (key_state[s_key]) {
         moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
@@ -84,9 +111,9 @@ function keyboardButtonFrameUpdate() {
       drop(preview_cluster, true)
     }
   }
-  // TODO: Consider if keys_enabled = true should go here or not.
+  // TODO: Consider if `keys_enabled` = true should go here or not.
   // Same for the gamepad logic.
-  setTimeout(keyboardButtonFrameUpdate, 60);
+  return 1;
 }
 
 window.onkeyup = function(event) {
