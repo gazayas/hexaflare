@@ -3,7 +3,9 @@
 /* TODO: Put body color and flare star background color in one place */
 
 body {
-  background: radial-gradient(circle at bottom, navy 0, black 100%);
+  /* background: radial-gradient(circle at bottom, navy 0, black 100%);*/
+  background: no-repeat center/100% url("../images/Hexaflare.png");
+  background-size: cover;
   height: 100vh;
   overflow: hidden;
 }
