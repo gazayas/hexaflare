@@ -1,6 +1,6 @@
 const LAMBDA_DATA = {
   "hexagon_1": {
-    "color": "green",
+    "color": "#DEE2EC",
     "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],

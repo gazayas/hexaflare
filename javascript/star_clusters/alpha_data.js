@@ -1,6 +1,6 @@
 const ALPHA_DATA = {
   "hexagon_1": {
-    "color": "blue",
+    "color": "#446EE0",
     "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],

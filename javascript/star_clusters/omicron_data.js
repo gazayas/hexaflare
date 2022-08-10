@@ -1,6 +1,6 @@
 const OMICRON_DATA = {
   "hexagon_1": {
-    "color": "red",
+    "color": "#52565F",
     "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],

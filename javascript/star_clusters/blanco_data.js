@@ -1,6 +1,6 @@
 const BLANCO_DATA = {
   "hexagon_1": {
-    "color": "gray",
+    "color": "#F7F7F7",
     "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],

@@ -1,6 +1,6 @@
 const PROXIMA_DATA = {
   "hexagon_1": {
-    "color": "orange",
+    "color": "#8C97B2",
     "center_of_gravity": true,
     "rotation_pattern": {
       "position_1": [["left", 1]],

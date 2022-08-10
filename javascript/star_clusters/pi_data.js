@@ -1,6 +1,6 @@
 const PI_DATA = {
   "hexagon_1": {
-    "color": "pink",
+    "color": "#819EE0",
     "center_of_gravity": false,
     "rotation_pattern": {
       "position_1": [null],

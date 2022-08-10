@@ -9,7 +9,6 @@ function processTimerEvents() {
   current_prog -= 0.2
 
   if(current_prog <= 0) {
-    console.log("0!")
     keys_enabled = false
     drop(floating_cluster)
     resetPreviewClusterToStarCluster(floating_cluster)

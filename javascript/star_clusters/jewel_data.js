@@ -10,7 +10,7 @@
 
 const JEWEL_DATA = {
   "hexagon_1": {
-    "color": "beige",
+    "color": "#153BA0",
     "center_of_gravity": true,
     "rotation_pattern": {
       "position_1": [null],
