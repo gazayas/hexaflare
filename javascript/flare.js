@@ -25,7 +25,7 @@ async function processStarsAfterDrop(preview_cluster_option = false) {
         TOTAL_FLARE_COUNT += 1
 
         // Level up here.
-        if(TOTAL_FLARE_COUNT >= 12 && TOTAL_FLARE_COUNT % 12 == 0) {
+        if(TOTAL_FLARE_COUNT >= 12 && TOTAL_FLARE_COUNT % 12 == 0 && CURRENT_LEVEL < 24) {
           CURRENT_LEVEL += 1
           document.getElementById("level").innerHTML = CURRENT_LEVEL
         }
