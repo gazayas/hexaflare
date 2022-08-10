@@ -6,7 +6,7 @@ let timer_speed = 10
 
 let current_prog = parseFloat(progress_bar.style.width.replace(/%/, ""))
 function processTimerEvents() {
-  current_prog -= 0.2
+  if(UPDATE_TIMER == true) { current_prog -= 0.2 }
 
   if(current_prog <= 0) {
     keys_enabled = false

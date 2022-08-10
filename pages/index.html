@@ -79,6 +79,7 @@
 
       // Used when moving star clusters down child hexagons
       var FLIP_FACTOR = 0
+      var UPDATE_TIMER = true
 
       var flare_star = generateFlareStar(12)
       var flare_star_ui = document.getElementsByClassName("flare_star")[0]
@@ -111,6 +112,8 @@
           frame_update_flag = keyboardButtonFrameUpdate()
         }
         frame_update_flag++
+
+        if(keys_enabled) { UPDATE_TIMER = true }
 
         window.requestAnimationFrame(animate)
       }

@@ -19,6 +19,8 @@ var moves_to_right_by_gamepad = 0
 
 var moving_left_with_gamepad = false
 var moving_right_with_gamepad = false
+var rotating_clockwise_with_gamepad = false
+var rotating_counter_clockwise_with_gamepad = false
 
 var left_button_down = false
 var right_button_down = false
@@ -34,24 +36,24 @@ function gamepadHandler(event, connecting) {
   setInterval(function() {
     var gp = navigator.getGamepads()[event.gamepad.index]
 
-    if(gp.buttons[14].pressed && !moving_left_with_gamepad) {
+    if(gp.buttons[4].pressed && !moving_left_with_gamepad) {
       moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
       moving_left_with_gamepad = true
-    } else if (gp.buttons[15].pressed && !moving_right_with_gamepad) {
+    } else if (gp.buttons[5].pressed && !moving_right_with_gamepad) {
       moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
       moving_right_with_gamepad = true
     }
 
-    if(!gp.buttons[14].pressed) { moving_left_with_gamepad = false }
-    if(!gp.buttons[15].pressed) { moving_right_with_gamepad = false }
+    if(!gp.buttons[4].pressed) { moving_left_with_gamepad = false }
+    if(!gp.buttons[5].pressed) { moving_right_with_gamepad = false }
   }, 1)
 
   setInterval(function(){
     var gp = navigator.getGamepads()[event.gamepad.index]
     if(keys_enabled) {
-      if (gp.buttons[4].pressed) {
+      if (gp.buttons[14].pressed) {
         moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
-      } else if (gp.buttons[5].pressed) {
+      } else if (gp.buttons[15].pressed) {
         moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
       }
 
@@ -82,10 +84,14 @@ function gamepadHandler(event, connecting) {
         current_button = a_button
       } else if (gp.buttons[b_button].pressed) {
         if(current_button != b_button) {
+          UPDATE_TIMER = false
           drop(floating_cluster)
+          current_prog = 100
         }
         current_button = b_button
       }
+
+      if(keys_enabled) { UPDATE_TIMER = true }
 
       if(!gp.buttons[a_button].pressed && !gp.buttons[y_button].pressed && !gp.buttons[b_button].pressed) {
         current_button = null

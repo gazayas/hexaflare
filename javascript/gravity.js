@@ -1,7 +1,8 @@
 async function drop(star_cluster, preview_cluster_option = false) {
-  // TODO: Turn off all button press logic (drop, rotate, move along corona, etc.)
-  // disableGameplayButtons() enableGameplayButtons()
   keys_enabled = false
+  if(!preview_cluster_option) {
+    UPDATE_TIMER = false
+  }
 
   // Detach cluster from background hexagons and register initial coordinates.
   // TODO: Refactor this to get the element by the `event`
