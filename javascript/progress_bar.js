@@ -2,11 +2,11 @@
 var progress_bar = document.getElementsByClassName("progress-bar")[0]
 progress_bar.style.width = "100%"
 var current_progress = progress_bar.style.width
-let timer_speed = 10
 
 let current_prog = parseFloat(progress_bar.style.width.replace(/%/, ""))
 function processTimerEvents() {
-  if(UPDATE_TIMER == true) { current_prog -= 0.2 }
+  var timer_speed = 0.2 + (0.08 * CURRENT_LEVEL)
+  if(UPDATE_TIMER == true) { current_prog -= timer_speed }
 
   if(current_prog <= 0) {
     current_prog = 0
