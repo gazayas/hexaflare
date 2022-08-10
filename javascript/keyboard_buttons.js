@@ -50,7 +50,7 @@ window.addEventListener('keydown', (event) => {
     if(event.keyCode == 32 || event.keyCode == z_key) {
       UPDATE_TIMER = false
       drop(floating_cluster)
-      current_prog = 100
+      // current_prog = 100
     } else {
       // TODO: Switch case.
       if(event.keyCode == x_key && !rotating_counter_clockwise) {

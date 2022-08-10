@@ -4,7 +4,7 @@
   width: 500px;
   height: 10px;
   top: 50%;
-  right: -100px;
+  right: -99px;
   -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
   transform: rotate(-90deg);
 }

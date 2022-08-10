@@ -1,0 +1,13 @@
+#level_container {
+  position: absolute;
+  top: 7%;
+  left: 147px;
+  color: white;
+}
+
+#score_container {
+  position: absolute;
+  top: 7%;
+  right: 147px;
+  color: white;
+}

@@ -7,6 +7,7 @@
     <!-- CSS -->
     <link href="../css/application.css" rel="stylesheet" type="text/css" media="all">
     <link href="../css/progress_bar.css" rel="stylesheet" type="text/css" media="all">
+    <link href="../css/stats.css" rel="stylesheet" type="text/css" media="all">
   </head>
   <body>
     <!-- Change this to .container or #main_screen -->
@@ -31,6 +32,9 @@
       <div class="timer vertical">
         <div class="progress-bar progress-bar-info" role="progressbar" varia-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
+
+      <div id="level_container">Level: <span id="level">1</span></div>
+      <div id="score_container">Score: <span id="score">0</span></div>
 
       <!-- TODO: Display the next clusters here (3 to 4) -->
     </div>
@@ -78,10 +82,16 @@
       var REAL_Y = HEX_TOTAL_HEIGHT - HEX_Y_MARGIN
       var HEX_COLOR = "silver"
       var CORONA_IS_VISIBLE = false
+      var UPDATE_TIMER = true
 
       // Used when moving star clusters down child hexagons
       var FLIP_FACTOR = 0
-      var UPDATE_TIMER = true
+
+      // Initialize player stats
+      var PLAYER_SCORE = 0
+      var CURRENT_LEVEL = 1
+      var TOTAL_FLARE_COUNT = 0
+      var GAME_OVER = false
 
       var flare_star = generateFlareStar(12)
       var flare_star_ui = document.getElementsByClassName("flare_star")[0]

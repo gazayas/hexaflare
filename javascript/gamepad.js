@@ -86,7 +86,7 @@ function gamepadHandler(event, connecting) {
         if(current_button != b_button) {
           UPDATE_TIMER = false
           drop(floating_cluster)
-          current_prog = 100
+          // current_prog = 100
         }
         current_button = b_button
       }

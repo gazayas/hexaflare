@@ -9,6 +9,7 @@ function processTimerEvents() {
   if(UPDATE_TIMER == true) { current_prog -= 0.2 }
 
   if(current_prog <= 0) {
+    current_prog = 0
     keys_enabled = false
     drop(floating_cluster)
     resetPreviewClusterToStarCluster(floating_cluster)
@@ -16,7 +17,11 @@ function processTimerEvents() {
     drop(preview_cluster, true)
 
     progress_bar.style.width = "100%"
-    current_prog = 100
+
+    // Super buggy! 🐞
+    // But we can multiply 1 * the score which might be good.
+    // This is if the timer runs out and the star cluster is dropped automatically.
+    current_prog = 1
   } else {
     progress_bar.style.width = `${current_prog}%`
   }

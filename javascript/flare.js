@@ -1,6 +1,8 @@
 async function processStarsAfterDrop(preview_cluster_option = false) {
   var flare_star_rings = document.getElementsByClassName("inner_flare_star_ring")
+
   var flare_combo = 0
+  var current_flare_count = 0
 
   // We don't want the preview cluster to be visible while we're doing flares, so we delete them here.
   if(!preview_cluster_option) {
@@ -18,11 +20,23 @@ async function processStarsAfterDrop(preview_cluster_option = false) {
     for (var i = 0; i < flare_star_rings.length; i++) {
       if(ringIsFull(flare_star_rings[i])){
         flare(flare_star_rings[i])
-        flare_combo += 1
+
+        current_flare_count += 1
+        TOTAL_FLARE_COUNT += 1
+
+        // Level up here.
+        if(TOTAL_FLARE_COUNT >= 12 && TOTAL_FLARE_COUNT % 12 == 0) {
+          CURRENT_LEVEL += 1
+          document.getElementById("level").innerHTML = CURRENT_LEVEL
+        }
 
         if(parseInt(flare_star_rings[i].dataset["level"]) == 1) { flareTheCore() }
       }
     }
+
+    // The flare combo will at least be 1, because it will
+    // reset the score if we initialize it with 0 and multiply it to the score.
+    flare_combo += 1
 
     // Gravitate 🌠
     while(gravitatableStarExists()) {
@@ -48,8 +62,12 @@ async function processStarsAfterDrop(preview_cluster_option = false) {
     }
   }
 
-  // End game if stars are in corona
-  // TODO: Tally up score here → flare_combo * level * timer %
+  if(!preview_cluster_option) {
+    if(starInCorona()) { return true }
+    var current_score = PLAYER_SCORE
+    var tallied_score = tallyUpScore(current_flare_count, flare_combo)
+    return {"current_score": current_score, "tallied_score": tallied_score}
+  }
 }
 
 // 💫🔥
@@ -66,6 +84,37 @@ function flare(flare_star_ring) {
 
 function flareTheCore() {
   flare(document.getElementsByClassName("core")[0])
+}
+
+function tallyUpScore(flare_count, combo_count) {
+  // If we do 1 * 0.5 and parse it, it'll just give us 0.
+  if(current_prog == 1) {
+    var prog_factor = 1
+  } else {
+    prog_factor = 0.5
+  }
+
+  // Players should be able to rack up points by simply dropping star clusters.
+  if(flare_count == 0 || combo_count == 0) {
+    var tallied_score = parseInt(current_prog * prog_factor) * CURRENT_LEVEL
+  } else {
+    var tallied_score = flare_count^combo_count + parseInt(current_prog * prog_factor) * CURRENT_LEVEL
+  }
+
+  current_prog = 100
+  return tallied_score
+}
+
+function starInCorona() {
+  var first_corona_ring = document.getElementsByClassName("corona_ring")[0]
+  var first_ring_hexagons = first_corona_ring.getElementsByClassName("hexagon")
+  var star_in_hexagon = false
+
+  for(var i = 0; i < first_ring_hexagons.length; i++) {
+    if(first_ring_hexagons[i].dataset["full"] == "true") {
+      return true
+    }
+  }
 }
 
 // TODO: Put these in ring.js

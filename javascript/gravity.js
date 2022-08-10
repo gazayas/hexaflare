@@ -55,13 +55,20 @@ async function drop(star_cluster, preview_cluster_option = false) {
   }
 
   // 💫🔥
-  await processStarsAfterDrop(preview_cluster_option)
+  var result = await processStarsAfterDrop(preview_cluster_option)
 
-  // ↓ Move the following to flare.js?
-  // End game if there are any stars in the Corona
-  // floating_cluster here is declared in index.html.
+  if(result == true) {
+    alert("Game Over.\nRefresh the page to play again.")
+    keys_enabled = false
+    return null
+  } else if(!preview_cluster_option) {
+    var current_score = result["current_score"]
+    var tallied_score = result["tallied_score"]
 
-  if(!preview_cluster_option) {
+    // TODO: Do an animation when changing the score.
+    PLAYER_SCORE += tallied_score
+    document.getElementById("score").innerHTML = PLAYER_SCORE
+
     star_cluster_name = randomStarClusterType()
     generateStarCluster(star_cluster_name)
     generatePreviewStarCluster(floating_cluster)
@@ -70,6 +77,7 @@ async function drop(star_cluster, preview_cluster_option = false) {
   }
   keys_enabled = true
 }
+
 
 async function gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option = false) {
   for (var i = 0; i < 4; i++) {
