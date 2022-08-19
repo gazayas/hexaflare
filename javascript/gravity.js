@@ -4,63 +4,75 @@ async function drop(star_cluster, preview_cluster_option = false) {
     UPDATE_TIMER = false
   }
 
-  // Detach cluster from background hexagons and register initial coordinates.
-  // TODO: Refactor this to get the element by the `event`
-  var flare_star_html = document.getElementsByClassName("flare_star")[0]
-  for (var i = 0; i < star_cluster.length; i++) {
-    var star_in_order = orderCluster(star_cluster, i)
-    star_in_order.dataset["x"] = star_in_order.parentNode.dataset["x"]
-    star_in_order.dataset["y"] = star_in_order.parentNode.dataset["y"]
-    flare_star_html.appendChild(star_in_order)
-  }
+  if(!GAME_OVER) {
+    // Detach cluster from background hexagons and register initial coordinates.
+    // TODO: Refactor this to get the element by the `event`
+    var flare_star_html = document.getElementsByClassName("flare_star")[0]
+    for (var i = 0; i < star_cluster.length; i++) {
+      var star_in_order = orderCluster(star_cluster, i)
+      star_in_order.dataset["x"] = star_in_order.parentNode.dataset["x"]
+      star_in_order.dataset["y"] = star_in_order.parentNode.dataset["y"]
+      flare_star_html.appendChild(star_in_order)
+    }
 
-  var center_of_gravity = getCenterOfGravity(star_cluster)
-  var gravitation_direction = getGravitationDirection(center_of_gravity)
+    var center_of_gravity = getCenterOfGravity(star_cluster)
+    var gravitation_direction = getGravitationDirection(center_of_gravity)
 
-  // Check initially if we can drop it, and then procede to gravitate in a loop if so.
-  if(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
-    do {
-      // TODO: Refactor to only gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
-      if(preview_cluster_option) {
-        await gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
-      } else {
-        await gravitateCluster(star_cluster, gravitation_direction)
-      }
+    // Check initially if we can drop it, and then proceed to gravitate in a loop if so.
+    if(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
+      do {
+        // TODO: Refactor to only gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
+        if(preview_cluster_option) {
+          await gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
+        } else {
+          await gravitateCluster(star_cluster, gravitation_direction)
+        }
 
-      // Update hexagon full data.
+        // Update hexagon full data.
+        if(!preview_cluster_option) {
+          for (var star_count = 0; star_count < star_cluster.length; star_count++) {
+            var ordered_star = orderCluster(star_cluster, star_count)
+            emptyPreviousBackgroundHexagon(ordered_star)
+          }
+
+          for (var star_count = 0; star_count < star_cluster.length; star_count++) {
+            var ordered_star = orderCluster(star_cluster, star_count)
+            fillBackgroundHexagon(ordered_star)
+          }
+        }
+
+        gravitation_direction = getGravitationDirection(center_of_gravity)
+      } while(gravitation_direction != null && starClusterCanGravitateToCore(star_cluster, gravitation_direction))
+
+      // Reset
+      FLIP_FACTOR = 0
+
       if(!preview_cluster_option) {
-        for (var star_count = 0; star_count < star_cluster.length; star_count++) {
-          var ordered_star = orderCluster(star_cluster, star_count)
-          emptyPreviousBackgroundHexagon(ordered_star)
-        }
-
-        for (var star_count = 0; star_count < star_cluster.length; star_count++) {
-          var ordered_star = orderCluster(star_cluster, star_count)
-          fillBackgroundHexagon(ordered_star)
+        for(var i = 0; i < 4; i++) {
+          star_cluster[0].classList.add("main_cluster")
+          star_cluster[0].classList.remove("floating_cluster")
         }
       }
-
-      gravitation_direction = getGravitationDirection(center_of_gravity)
-    } while(gravitation_direction != null && starClusterCanGravitateToCore(star_cluster, gravitation_direction))
-  }
-
-  // Reset
-  FLIP_FACTOR = 0
-
-  if(!preview_cluster_option) {
-    for(var i = 0; i < 4; i++) {
-      star_cluster[0].classList.add("main_cluster")
-      star_cluster[0].classList.remove("floating_cluster")
+    } else {
+      result = true
     }
   }
 
   // 💫🔥
-  var result = await processStarsAfterDrop(preview_cluster_option)
+  if(result != true) { var result = await processStarsAfterDrop(preview_cluster_option) }
 
-  if(result == true) {
+  if(result == true && !preview_cluster_option) {
+    GAME_OVER = true
+
+    // Make sure the last floating cluster stays in place.
+    for (var i = 0; i < floating_cluster.length; i++) {
+      var star_in_order = orderCluster(floating_cluster, i)
+      star_in_order.style.left = star_in_order.dataset["x"] + "px"
+      star_in_order.style.top = star_in_order.dataset["y"] + "px"
+    }
+
     alert("Game Over.\nRefresh the page to play again.")
     keys_enabled = false
-    return null
   } else if(!preview_cluster_option) {
     var current_score = result["current_score"]
     var tallied_score = result["tallied_score"]
@@ -75,7 +87,7 @@ async function drop(star_cluster, preview_cluster_option = false) {
     var preview_cluster = document.getElementsByClassName("preview_cluster")
     drop(preview_cluster, true)
   }
-  keys_enabled = true
+  if(!GAME_OVER) { keys_enabled = true }
 }
 
 
@@ -92,26 +104,28 @@ async function gravitateCluster(star_cluster, gravitation_direction, preview_clu
 
 // 🌠
 function gravitate(star, direction = null, preview_cluster_option = false) {
-  var current_background_hexagon = getBackgroundHexagonFromStar(star)
+  if(!GAME_OVER) {
+    var current_background_hexagon = getBackgroundHexagonFromStar(star)
 
-  if(!preview_cluster_option) {
-    star.dataset["previous_x"] = current_background_hexagon.dataset["x"]
-    star.dataset["previous_y"] = current_background_hexagon.dataset["y"]
+    if(!preview_cluster_option) {
+      star.dataset["previous_x"] = current_background_hexagon.dataset["x"]
+      star.dataset["previous_y"] = current_background_hexagon.dataset["y"]
+    }
+
+    if(direction == null) { direction = getGravitationDirection(star) }
+    var map = [[direction, 1]]
+    var new_position = getCoordinatesByMap(map, star)
+    var new_x = new_position[0]
+    var new_y = new_position[1]
+    star.style.left = `${new_x}px`
+    star.style.top = `${new_y}px`
+    star.dataset["x"] = new_x
+    star.dataset["y"] = new_y
+
+    var parent_hexagon = getBackgroundHexagonFromStar(star)
+    star.dataset["ring_level"] = parent_hexagon.dataset["ring_level"]
+    star.dataset["ring_value"] = parent_hexagon.dataset["value"]
   }
-
-  if(direction == null) { direction = getGravitationDirection(star) }
-  var map = [[direction, 1]]
-  var new_position = getCoordinatesByMap(map, star)
-  var new_x = new_position[0]
-  var new_y = new_position[1]
-  star.style.left = `${new_x}px`
-  star.style.top = `${new_y}px`
-  star.dataset["x"] = new_x
-  star.dataset["y"] = new_y
-
-  var parent_hexagon = getBackgroundHexagonFromStar(star)
-  star.dataset["ring_level"] = parent_hexagon.dataset["ring_level"]
-  star.dataset["ring_value"] = parent_hexagon.dataset["value"]
 }
 
 function getCenterOfGravity(star_cluster) {
@@ -124,11 +138,13 @@ function getCenterOfGravity(star_cluster) {
 }
 
 function getGravitationDirection(center_of_gravity) {
+  // if(center_of_gravity == undefined) { return null }
   var coe_hexagon = directChildOfFlareStar(center_of_gravity) ? getBackgroundHexagonFromStar(center_of_gravity) : center_of_gravity.parentNode
   if(onCore(center_of_gravity)) {
     return null
   } else {
     var coe_parent_hexagon = getHexagonToGravitateTowards(center_of_gravity)
+    // if(coe_parent_hexagon == null) { return null }
     return calculateDirectionFromCoordinates(coe_hexagon, coe_parent_hexagon)
   }
 }
@@ -137,7 +153,15 @@ function getHexagonToGravitateTowards(star, direction = null) {
   // If the direction is null, the star is either the center of gravity of
   // a star cluster, or an individual star from the main cluster.
   if(!direction) {
-    var star_parent_hexagon = directChildOfFlareStar(star) ? getBackgroundHexagonFromStar(star) : star.parentNode
+    if(star.classList.contains("preview_cluster")) {
+      var star_parent_hexagon = getBackgroundHexagonFromStar(star)
+    } else {
+      var star_parent_hexagon = directChildOfFlareStar(star) ? getBackgroundHexagonFromStar(star) : star.parentNode
+    }
+
+    // TODO: Is this needed?
+    // if(star_parent_hexagon == undefined) { return null }
+
     var star_parent_hexagon_ring = parseInt(star_parent_hexagon.dataset["ring_level"])
     var star_parent_hexagon_value = parseInt(star_parent_hexagon.dataset["value"])
 
@@ -171,6 +195,10 @@ function getBackgroundHexagonFromStar(star) {
 }
 
 function directChildOfFlareStar(star) {
+  // TODO: Are these undefined checks needed?
+  // if(star == undefined) { return undefined }
+  // if(star.parentNode == undefined) { return undefined }
+
   return star.parentNode.classList.contains("flare_star")
 }
 

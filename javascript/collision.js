@@ -5,6 +5,9 @@ function starClusterCanGravitateToCore(star_cluster_to_gravitate, direction) {
     var star_in_order = orderCluster(star_cluster_to_gravitate, can_counter)
     var star_to_gravitate_to = getHexagonByMap(star_in_order, [[direction, 1]])
 
+    // TODO: Is this needed? Analyze.
+    // if (star_to_gravitate_to == undefined) { return true }
+
     var target_hexagon_x = star_to_gravitate_to.dataset["x"]
     var target_hexagon_y = star_to_gravitate_to.dataset["y"]
     var stars_in_target = getAllElementsFromCoordinates(target_hexagon_x, target_hexagon_y)
