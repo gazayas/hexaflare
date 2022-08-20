@@ -1,9 +1,12 @@
-window.addEventListener("gamepadconnected", function(e) {
-  var gp = navigator.getGamepads()[e.gamepad.index];
-  console.log("Gamepad connected at index %d: %s. %d buttons, %d axes.",
+/*window.addEventListener("gamepadconnected", function(e) {
+  var gp = navigator.getGamepads()[e.gamepad.index]
+  console.log(
+    "Gamepad connected at index %d: %s. %d buttons, %d axes.",
     gp.index, gp.id,
-    gp.buttons.length, gp.axes.length);
+    gp.buttons.length, gp.axes.length
+    )
 })
+*/
 
 var current_button = null
 
@@ -36,21 +39,29 @@ function gamepadHandler(event, connecting) {
   setInterval(function() {
     var gp = navigator.getGamepads()[event.gamepad.index]
 
-    if(gp.buttons[4].pressed && !moving_left_with_gamepad) {
-      moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
-      moving_left_with_gamepad = true
-    } else if (gp.buttons[5].pressed && !moving_right_with_gamepad) {
-      moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
-      moving_right_with_gamepad = true
+    if(gp.buttons[9].pressed && (GAME_OVER == true || GAME_OVER == undefined)) {
+      startGame()
+    } else if (gp.buttons[9].pressed && GAME_OVER == false) {
+      console.log("Can't reset while playing")
     }
 
-    if(!gp.buttons[4].pressed) { moving_left_with_gamepad = false }
-    if(!gp.buttons[5].pressed) { moving_right_with_gamepad = false }
+    if(keys_enabled) {
+      if(gp.buttons[4].pressed && !moving_left_with_gamepad) {
+        moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+        moving_left_with_gamepad = true
+      } else if (gp.buttons[5].pressed && !moving_right_with_gamepad) {
+        moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
+        moving_right_with_gamepad = true
+      }
+
+      if(!gp.buttons[4].pressed) { moving_left_with_gamepad = false }
+      if(!gp.buttons[5].pressed) { moving_right_with_gamepad = false }
+    }
   }, 1)
 
   setInterval(function(){
     var gp = navigator.getGamepads()[event.gamepad.index]
-    if(keys_enabled) {
+    if(keys_enabled && GAME_OVER != true && GAME_OVER != undefined) {
       if (gp.buttons[14].pressed) {
         moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
       } else if (gp.buttons[15].pressed) {
@@ -64,7 +75,7 @@ function gamepadHandler(event, connecting) {
   }, 65)
 
   setInterval(function() {
-    if(keys_enabled) {
+    if(keys_enabled && GAME_OVER != true) {
       var gp = navigator.getGamepads()[event.gamepad.index]
       if (gp.buttons[y_button].pressed) {
         if(current_button != y_button) {

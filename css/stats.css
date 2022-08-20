@@ -5,6 +5,14 @@
   color: white;
 }
 
+#message_container {
+  position: absolute;
+  text-align: center;
+  top: 7%;
+  color: white;
+  width: 100%;
+}
+
 #score_container {
   position: absolute;
   top: 7%;

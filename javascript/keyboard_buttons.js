@@ -51,6 +51,7 @@ window.addEventListener('keydown', (event) => {
     console.log(event.keyCode)
     startGame()
   } else if(event.keyCode == enter_key && GAME_OVER != true) {
+    // TODO: Write pause game logic
     console.log("Cannot reset game while unpaused.")
   }
 

@@ -34,6 +34,7 @@
       </div>
 
       <div id="level_container">Level: <span id="level">1</span></div>
+      <div id="message_container"></div>
       <div id="score_container">Score: <span id="score">0</span></div>
 
       <!-- TODO: Display the next clusters here (3 to 4) -->
@@ -98,6 +99,9 @@
       var preview_cluster
       var star_cluster_name
 
+      // Hide the timer at first, then display it on startGame()
+      document.getElementsByClassName("timer")[0].style.visibility = "hidden"
+
       var frame_update_flag = 1
       function animate() {
         processTimerEvents()
@@ -115,6 +119,7 @@
       function startGame(starting_level = 1) {
         // Write clean up logic to start from a clean slate
         keys_enabled = false
+
         floating_cluster = []
         preview_cluster = []
         if(flare_star_ui != undefined) {
@@ -127,6 +132,8 @@
           while(stale_floating_clusters.length > 0) { stale_floating_clusters[0].remove() }
           while(stale_preview_clusters.length > 0) { stale_preview_clusters[0].remove() }
         }
+        document.getElementsByClassName("timer")[0].style.visibility = "visible"
+        document.getElementById("message_container").innerHTML = ""
 
         // TODO: Make radio buttons (1-12) and set starting_level to the radio button value
 
