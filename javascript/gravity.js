@@ -87,7 +87,7 @@ async function drop(star_cluster, preview_cluster_option = false) {
     var preview_cluster = document.getElementsByClassName("preview_cluster")
     drop(preview_cluster, true)
   }
-  if(!GAME_OVER) { keys_enabled = true }
+  keys_enabled = true
 }
 
 

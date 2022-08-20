@@ -37,6 +37,8 @@ var l_key = 76
 var s_key = 83
 var d_key = 68
 
+var enter_key = 13
+
 // The player should only move once even if they hold the button down
 // when moving left or right, unless they're using the s or d keys.
 var moving_left = false
@@ -45,37 +47,52 @@ var rotating_clockwise = false
 var rotating_counter_clockwise = false
 
 window.addEventListener('keydown', (event) => {
-  if(keys_enabled) {
-    // Drop and Rotate logic
-    if(event.keyCode == 32 || event.keyCode == z_key) {
-      UPDATE_TIMER = false
-      drop(floating_cluster)
-      // current_prog = 100
-    } else {
-      // TODO: Switch case.
-      if(event.keyCode == x_key && !rotating_counter_clockwise) {
-        rotate("counter-clockwise", floating_cluster, star_cluster_name)
-        rotating_counter_clockwise = true
-      } else if (event.keyCode == c_key && !rotating_clockwise) {
-        rotate("clockwise", floating_cluster, star_cluster_name)
-        rotating_clockwise = true
-      } else if ((event.keyCode == s_key) && !moving_left) {
-        moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
-        moving_left = true
-      } else if ((event.keyCode == d_key) && !moving_right) {
-        moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
-        moving_right = true
-      }
-
-      resetPreviewClusterToStarCluster(floating_cluster)
-      var preview_cluster = document.getElementsByClassName("preview_cluster")
-      drop(preview_cluster, true)
+  // TODO: Using the space key makings things go beserk (O_O)
+  if(keys_enabled && event.keyCode != space_key) {
+    if(event.keyCode == enter_key && (GAME_OVER == true || GAME_OVER == undefined)) {
+      startGame()
+    } else if(event.keyCode == enter_key && GAME_OVER != true) {
+      console.log("Cannot reset game while unpaused.")
     }
+
+    console.log({GAME_OVER})
+
+    if(GAME_OVER == false || GAME_OVER != undefined){
+      // Drop and Rotate logic
+      if(event.keyCode == z_key) {
+        UPDATE_TIMER = false
+        drop(floating_cluster)
+        // current_prog = 100
+      } else {
+        // TODO: Switch case.
+        console.log("...")
+        
+        if(event.keyCode == x_key && !rotating_counter_clockwise) {
+          rotate("counter-clockwise", floating_cluster, star_cluster_name)
+          rotating_counter_clockwise = true
+        } else if (event.keyCode == c_key && !rotating_clockwise) {
+          rotate("clockwise", floating_cluster, star_cluster_name)
+          rotating_clockwise = true
+        } else if ((event.keyCode == s_key) && !moving_left) {
+          moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+          moving_left = true
+        } else if ((event.keyCode == d_key) && !moving_right) {
+          moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
+          moving_right = true
+        }
+
+        resetPreviewClusterToStarCluster(floating_cluster)
+        var preview_cluster = document.getElementsByClassName("preview_cluster")
+        drop(preview_cluster, true)
+      }
+    }
+    
   }
 })
 
 function keyboardButtonFrameUpdate() {
-  if(keys_enabled) {
+  console.log({keys_enabled})
+  if(keys_enabled && (GAME_OVER == false || GAME_OVER != undefined)) {
     if(key_state[left_key] || key_state[right_key] || key_state[j_key] || key_state[l_key]) {
       // Move continuously according to the frame rate declared below.
       if (key_state[left_key] || key_state[j_key]) {

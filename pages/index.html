@@ -70,67 +70,109 @@
     <!-- <script src="../test/flare_star_test.js"></script> -->
 
     <script type="text/javascript">
-      // In pixels
-      var HEX_CENTER_WIDTH = 30
-      var HEX_CENTER_HEIGHT = 18
-      var HEX_TOP_BOTTOM_BORDER_HEIGHT = 7
-      var HEX_INVISIBLE_BORDERS = 15 // Extends top and bottom triangles horizontally
-      var HEX_TOTAL_HEIGHT = HEX_CENTER_HEIGHT + (HEX_TOP_BOTTOM_BORDER_HEIGHT * 2)
-      var HEX_X_MARGIN = 4
-      var HEX_Y_MARGIN = 3 // Use a negative number for greater distance
-      var REAL_X = HEX_CENTER_WIDTH + HEX_X_MARGIN
-      var REAL_Y = HEX_TOTAL_HEIGHT - HEX_Y_MARGIN
-      var HEX_COLOR = "silver"
-      var CORONA_IS_VISIBLE = false
-      var UPDATE_TIMER = true
+      // Global variables
+      var HEX_CENTER_WIDTH
+      var HEX_CENTER_HEIGHT
+      var HEX_TOP_BOTTOM_BORDER_HEIGHT
+      var HEX_INVISIBLE_BORDERS
+      var HEX_TOTAL_HEIGHT
+      var HEX_X_MARGIN
+      var HEX_Y_MARGIN
+      var REAL_X
+      var REAL_Y
+      var HEX_COLOR
+      var CORONA_IS_VISIBLE
+      var UPDATE_TIMER
+      var FLIP_FACTOR
 
-      // Used when moving star clusters down child hexagons
-      var FLIP_FACTOR = 0
+      var PLAYER_SCORE
+      var CURRENT_LEVEL
+      var TOTAL_FLARE_COUNT
+      var GAME_OVER
 
-      // Initialize player stats
-      var PLAYER_SCORE = 0
-      var CURRENT_LEVEL = 1
-      var TOTAL_FLARE_COUNT = 0
-      var GAME_OVER = false
+      // TODO: Make these uppercase
+      var flare_star
+      var flare_star_ui
 
-      var flare_star = generateFlareStar(12)
-      var flare_star_ui = document.getElementsByClassName("flare_star")[0]
-      generateFlareStarUI(numberOfRings(flare_star))
-
-      var inner_flare_star_hexagons = document.getElementsByClassName("inner_flare_star_hexagon")
-      for (var x = 0; x < inner_flare_star_hexagons.length; x++) {
-        applyHexagonDimensions(inner_flare_star_hexagons[x], HEX_COLOR, {"inner_flare_star_hexagon_opacity": 0.3})
-      }
-
-      if(CORONA_IS_VISIBLE) {
-        var corona_background_hexagons = document.getElementsByClassName("corona_hexagon")
-        for (var i = 0; i < corona_background_hexagons.length; i++) {
-          applyHexagonDimensions(corona_background_hexagons[i], HEX_COLOR, {"opacity": 0.075})
-        }
-      }
-
-      var star_cluster_name = randomStarClusterType()
-      generateStarCluster(star_cluster_name)
-      var floating_cluster = document.getElementsByClassName("floating_cluster")
-      generatePreviewStarCluster(floating_cluster)
-      var preview_cluster = document.getElementsByClassName("preview_cluster")
-      drop(preview_cluster, true)
+      var floating_cluster
+      var preview_cluster
+      var star_cluster_name
 
       var frame_update_flag = 1
       function animate() {
-        processTimerEvents()
+            processTimerEvents()
 
-        if(frame_update_flag >= 4) {
-          frame_update_flag = keyboardButtonFrameUpdate()
-        }
-        frame_update_flag++
+          if(frame_update_flag >= 4) {
+            frame_update_flag = keyboardButtonFrameUpdate()
+          }
+          frame_update_flag++
 
-        if(keys_enabled) { UPDATE_TIMER = true }
+          if(keys_enabled) { UPDATE_TIMER = true }
 
-        window.requestAnimationFrame(animate)
+          window.requestAnimationFrame(animate)
       }
 
-      animate()
+      function startGame(starting_level = 1) {
+        // Write clean up logic to start from a clean slate
+        floating_cluster = []
+        preview_cluster = []
+        if(flare_star_ui != undefined) {
+          var current_rings = flare_star_ui.getElementsByClassName("ring")
+          var main_cluster_stars = flare_star_ui.getElementsByClassName("main_cluster")
+          while(current_rings.length > 0) { current_rings[0].remove() }
+          while(main_cluster_stars.length > 0) { main_cluster_stars[0].remove() }
+        }
+
+        // TODO: Make radio buttons (1-12) and set starting_level to the radio button value
+
+        // In pixels
+        HEX_CENTER_WIDTH = 30
+        HEX_CENTER_HEIGHT = 18
+        HEX_TOP_BOTTOM_BORDER_HEIGHT = 7
+        HEX_INVISIBLE_BORDERS = 15 // Extends top and bottom triangles horizontally
+        HEX_TOTAL_HEIGHT = HEX_CENTER_HEIGHT + (HEX_TOP_BOTTOM_BORDER_HEIGHT * 2)
+        HEX_X_MARGIN = 4
+        HEX_Y_MARGIN = 3 // Use a negative number for greater distance
+        REAL_X = HEX_CENTER_WIDTH + HEX_X_MARGIN
+        REAL_Y = HEX_TOTAL_HEIGHT - HEX_Y_MARGIN
+        HEX_COLOR = "silver"
+        CORONA_IS_VISIBLE = false
+        UPDATE_TIMER = true
+
+        // Used when moving star clusters towards parent hexagons
+        FLIP_FACTOR = 0
+
+        // Initialize player stats
+        PLAYER_SCORE = 0
+        CURRENT_LEVEL = starting_level
+        TOTAL_FLARE_COUNT = 0
+        GAME_OVER = false
+
+        flare_star = generateFlareStar(12)
+        flare_star_ui = document.getElementsByClassName("flare_star")[0]
+        generateFlareStarUI(numberOfRings(flare_star))
+
+        var inner_flare_star_hexagons = document.getElementsByClassName("inner_flare_star_hexagon")
+        for (var x = 0; x < inner_flare_star_hexagons.length; x++) {
+          applyHexagonDimensions(inner_flare_star_hexagons[x], HEX_COLOR, {"inner_flare_star_hexagon_opacity": 0.3})
+        }
+
+        if(CORONA_IS_VISIBLE) {
+          var corona_background_hexagons = document.getElementsByClassName("corona_hexagon")
+          for (var i = 0; i < corona_background_hexagons.length; i++) {
+            applyHexagonDimensions(corona_background_hexagons[i], HEX_COLOR, {"opacity": 0.075})
+          }
+        }
+
+        star_cluster_name = randomStarClusterType()
+        generateStarCluster(star_cluster_name)
+        floating_cluster = document.getElementsByClassName("floating_cluster")
+        generatePreviewStarCluster(floating_cluster)
+        preview_cluster = document.getElementsByClassName("preview_cluster")
+        drop(preview_cluster, true)
+
+        animate()
+      }
     </script>
   </body>
 </html>
