@@ -100,27 +100,32 @@
 
       var frame_update_flag = 1
       function animate() {
-            processTimerEvents()
+        processTimerEvents()
 
-          if(frame_update_flag >= 4) {
-            frame_update_flag = keyboardButtonFrameUpdate()
-          }
-          frame_update_flag++
+        if(frame_update_flag >= 4) {
+          frame_update_flag = keyboardButtonFrameUpdate()
+        }
+        frame_update_flag++
 
-          if(keys_enabled) { UPDATE_TIMER = true }
+        if(keys_enabled) { UPDATE_TIMER = true }
 
-          window.requestAnimationFrame(animate)
+        window.requestAnimationFrame(animate)
       }
 
       function startGame(starting_level = 1) {
         // Write clean up logic to start from a clean slate
+        keys_enabled = false
         floating_cluster = []
         preview_cluster = []
         if(flare_star_ui != undefined) {
           var current_rings = flare_star_ui.getElementsByClassName("ring")
           var main_cluster_stars = flare_star_ui.getElementsByClassName("main_cluster")
+          var stale_floating_clusters = flare_star_ui.getElementsByClassName("floating_cluster")
+          var stale_preview_clusters = flare_star_ui.getElementsByClassName("preview_cluster")
           while(current_rings.length > 0) { current_rings[0].remove() }
           while(main_cluster_stars.length > 0) { main_cluster_stars[0].remove() }
+          while(stale_floating_clusters.length > 0) { stale_floating_clusters[0].remove() }
+          while(stale_preview_clusters.length > 0) { stale_preview_clusters[0].remove() }
         }
 
         // TODO: Make radio buttons (1-12) and set starting_level to the radio button value
@@ -170,9 +175,9 @@
         generatePreviewStarCluster(floating_cluster)
         preview_cluster = document.getElementsByClassName("preview_cluster")
         drop(preview_cluster, true)
-
-        animate()
+        keys_enabled = true
       }
+      animate()
     </script>
   </body>
 </html>

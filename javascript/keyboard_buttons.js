@@ -47,26 +47,22 @@ var rotating_clockwise = false
 var rotating_counter_clockwise = false
 
 window.addEventListener('keydown', (event) => {
-  // TODO: Using the space key makings things go beserk (O_O)
-  if(keys_enabled && event.keyCode != space_key) {
-    if(event.keyCode == enter_key && (GAME_OVER == true || GAME_OVER == undefined)) {
-      startGame()
-    } else if(event.keyCode == enter_key && GAME_OVER != true) {
-      console.log("Cannot reset game while unpaused.")
-    }
+  if(event.keyCode == enter_key && (GAME_OVER == true || GAME_OVER == undefined)) {
+    console.log(event.keyCode)
+    startGame()
+  } else if(event.keyCode == enter_key && GAME_OVER != true) {
+    console.log("Cannot reset game while unpaused.")
+  }
 
-    console.log({GAME_OVER})
-
-    if(GAME_OVER == false || GAME_OVER != undefined){
+  if(keys_enabled) {
+    if(GAME_OVER != true){
       // Drop and Rotate logic
-      if(event.keyCode == z_key) {
+      if(event.keyCode == z_key || event.keyCode == space_key) {
         UPDATE_TIMER = false
         drop(floating_cluster)
         // current_prog = 100
       } else {
         // TODO: Switch case.
-        console.log("...")
-        
         if(event.keyCode == x_key && !rotating_counter_clockwise) {
           rotate("counter-clockwise", floating_cluster, star_cluster_name)
           rotating_counter_clockwise = true
@@ -91,8 +87,7 @@ window.addEventListener('keydown', (event) => {
 })
 
 function keyboardButtonFrameUpdate() {
-  console.log({keys_enabled})
-  if(keys_enabled && (GAME_OVER == false || GAME_OVER != undefined)) {
+  if(keys_enabled && (GAME_OVER != true && GAME_OVER != undefined)) {
     if(key_state[left_key] || key_state[right_key] || key_state[j_key] || key_state[l_key]) {
       // Move continuously according to the frame rate declared below.
       if (key_state[left_key] || key_state[j_key]) {
