@@ -143,7 +143,13 @@
 
         resetFlareStar()
 
-        // Write clean up logic to start from a clean slate
+        // TODO: Maybe put this in resetFlareStar()
+        // Reset stats
+        document.getElementById("level").innerHTML = starting_level
+        document.getElementById("score").innerHTML = 0
+        document.getElementById("flare_count").innerHTML = 0
+        current_prog = 100 // Resets the timer
+
         keys_enabled = false
 
         // TODO: Make radio buttons (1-12) and set starting_level to the radio button value
