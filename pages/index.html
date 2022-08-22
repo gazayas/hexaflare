@@ -10,7 +10,10 @@
     <link href="../css/stats.css" rel="stylesheet" type="text/css" media="all">
   </head>
   <body>
-    <!-- Change this to .container or #main_screen -->
+    <div id="title_screen">
+      <span id="title">Hexaflare</span><br/>
+    </div>
+
     <div id="hexaflare">
       <!--   (ToT) 🌠
       <div class="space stars1"></div>
@@ -33,9 +36,9 @@
         <div class="progress-bar progress-bar-info" role="progressbar" varia-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
       </div>
 
-      <div id="level_container">Level: <span id="level">1</span></div>
+      <div id="level_container">level <span id="level">1</span></div>
       <div id="message_container"></div>
-      <div id="score_container">Score: <span id="score">0</span></div>
+      <div id="score_container">score <span id="score">0</span></div>
 
       <!-- TODO: Display the next clusters here (3 to 4) -->
     </div>
@@ -117,6 +120,12 @@
       }
 
       function startGame(starting_level = 1) {
+        // TODO: Maybe put this somewhere else, like in the function it's originally called from.
+        // Change screens
+        document.getElementById("title_screen").style.visibility = "hidden"
+        document.getElementById("level_container").style.visibility = "visible"
+        document.getElementById("score_container").style.visibility = "visible"
+
         // Write clean up logic to start from a clean slate
         keys_enabled = false
 

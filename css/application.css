@@ -2,6 +2,20 @@
 
 /* TODO: Put body color and flare star background color in one place */
 
+@font-face {
+  font-family: "STF_POLYGON WINDOW (FILL)";
+  src: url(fonts/stf-polygon-window-fill.ttf);
+}
+
+@font-face {
+  font-family: "Hexagon";
+  src: url(fonts/hexagon.ttf);
+}
+
+/*div {
+  @font-face {font-family: "Gamma Sentry" }
+}*/
+
 body {
   /* background: radial-gradient(circle at bottom, navy 0, black 100%);*/
   background: no-repeat center/100% url("../images/Hexaflare.png");
@@ -9,6 +23,23 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+
+#title_screen {
+  font-family: "Hexagon";
+  position: absolute;
+  top: 20%;
+  width: 100%;
+  text-align: center;
+
+  font-size: 60px;
+  color: white;
+}
+
+#description {
+  font-family: "STF_POLYGON WINDOW (FILL)";
+}
+
+
 
 /* https://twitter.com/adiig7/status/1502546767505551361 */
 .flare_star {
