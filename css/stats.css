@@ -1,4 +1,4 @@
-#level_container, #score_container {
+#level_container, #score_container, #flare_count_container {
   font-family: "STF_POLYGON WINDOW (FILL)";
   font-size: 40px;
   color: white;
@@ -29,4 +29,10 @@
   top: 7%;
   right: 147px;
   color: white;
+}
+
+#flare_count_container {
+  position: absolute;
+  top: 11%;
+  right: 147px;
 }

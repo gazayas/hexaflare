@@ -23,6 +23,7 @@ async function processStarsAfterDrop(preview_cluster_option = false) {
 
         current_flare_count += 1
         TOTAL_FLARE_COUNT += 1
+        document.getElementById("flare_count").innerHTML = TOTAL_FLARE_COUNT
 
         // Level up here.
         if(TOTAL_FLARE_COUNT >= 12 && TOTAL_FLARE_COUNT % 12 == 0 && CURRENT_LEVEL < 24) {

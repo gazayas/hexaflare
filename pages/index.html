@@ -39,6 +39,7 @@
       <div id="level_container">level <span id="level">1</span></div>
       <div id="message_container"></div>
       <div id="score_container">score <span id="score">0</span></div>
+      <div id="flare_count_container">flare count <span id="flare_count">0</span></div>
 
       <!-- TODO: Display the next clusters here (3 to 4) -->
     </div>
@@ -125,6 +126,7 @@
         document.getElementById("title_screen").style.visibility = "hidden"
         document.getElementById("level_container").style.visibility = "visible"
         document.getElementById("score_container").style.visibility = "visible"
+        document.getElementById("flare_count_container").style.visibility = "visible"
 
         // Write clean up logic to start from a clean slate
         keys_enabled = false
