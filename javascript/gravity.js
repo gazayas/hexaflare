@@ -71,7 +71,7 @@ async function drop(star_cluster, preview_cluster_option = false) {
       star_in_order.style.top = star_in_order.dataset["y"] + "px"
     }
 
-    document.getElementById("message_container").innerHTML = "game over<br/>press start to play again"
+    document.getElementById("message_container").innerHTML = "game over<br/>press start or enter to<br/>return to the title screen"
     keys_enabled = false
   } else if(!preview_cluster_option) {
     var current_score = result["current_score"]

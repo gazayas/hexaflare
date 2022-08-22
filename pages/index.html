@@ -12,6 +12,12 @@
   <body>
     <div id="title_screen">
       <span id="title">Hexaflare</span><br/>
+
+      <div id="title_screen_buttons">
+        <div class="title_screen_button" id="start_game_button" data-highlighted="false">start game</div>
+        <div class="title_screen_button" id="options_button" data-highlighted="false">options</div>
+        <div class="title_screen_button" id="how_to_play_button" data-full="false">how to play</div>
+      </div>
     </div>
 
     <div id="hexaflare">
@@ -47,6 +53,7 @@
     <!-- JavaScript -->
     <!-- TODO: I wanted to move everything to `application`, but it might be unneeded -->
     <script src="../javascript/application.js"></script>
+    <script src="../javascript/title_screen.js"></script>
     <script src="../javascript/sleep.js"></script>
     <script src="../javascript/flare_star.js"></script>
     <script src="../javascript/hexagon.js"></script>
@@ -93,7 +100,9 @@
       var PLAYER_SCORE
       var CURRENT_LEVEL
       var TOTAL_FLARE_COUNT
+
       var GAME_OVER
+      var ON_TITLE_SCREEN = true
 
       // TODO: Make these uppercase
       var flare_star
@@ -105,6 +114,9 @@
 
       // Hide the timer at first, then display it on startGame()
       document.getElementsByClassName("timer")[0].style.visibility = "hidden"
+
+      // Initialize the title screen cursor on "start game"
+      initializeTitleScreenCursor()
 
       var frame_update_flag = 1
       function animate() {
@@ -123,28 +135,16 @@
       function startGame(starting_level = 1) {
         // TODO: Maybe put this somewhere else, like in the function it's originally called from.
         // Change screens
+        ON_TITLE_SCREEN = false
         document.getElementById("title_screen").style.visibility = "hidden"
         document.getElementById("level_container").style.visibility = "visible"
         document.getElementById("score_container").style.visibility = "visible"
         document.getElementById("flare_count_container").style.visibility = "visible"
 
+        resetFlareStar()
+
         // Write clean up logic to start from a clean slate
         keys_enabled = false
-
-        floating_cluster = []
-        preview_cluster = []
-        if(flare_star_ui != undefined) {
-          var current_rings = flare_star_ui.getElementsByClassName("ring")
-          var main_cluster_stars = flare_star_ui.getElementsByClassName("main_cluster")
-          var stale_floating_clusters = flare_star_ui.getElementsByClassName("floating_cluster")
-          var stale_preview_clusters = flare_star_ui.getElementsByClassName("preview_cluster")
-          while(current_rings.length > 0) { current_rings[0].remove() }
-          while(main_cluster_stars.length > 0) { main_cluster_stars[0].remove() }
-          while(stale_floating_clusters.length > 0) { stale_floating_clusters[0].remove() }
-          while(stale_preview_clusters.length > 0) { stale_preview_clusters[0].remove() }
-        }
-        document.getElementsByClassName("timer")[0].style.visibility = "visible"
-        document.getElementById("message_container").innerHTML = ""
 
         // TODO: Make radio buttons (1-12) and set starting_level to the radio button value
 

@@ -24,16 +24,38 @@ body {
   overflow: hidden;
 }
 
-#title_screen {
+
+/* TODO: Put this in title_screen.css */
+#title {
   font-family: "Hexagon";
   position: absolute;
-  top: 20%;
+  top: 25%;
   width: 100%;
   text-align: center;
 
   font-size: 60px;
   color: white;
 }
+
+#title_screen_buttons {
+  font-family: "STF_POLYGON WINDOW (FILL)";
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+
+  font-size: 50px;
+  color: #52565F;
+}
+
+.title_screen_button {
+  margin-bottom: 40px;
+}
+
+#title_screen_cursor {
+  border: white solid 2px;
+}
+
 
 #description {
   font-family: "STF_POLYGON WINDOW (FILL)";

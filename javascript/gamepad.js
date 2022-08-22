@@ -27,8 +27,11 @@ var rotating_counter_clockwise_with_gamepad = false
 
 var left_button_down = false
 var right_button_down = false
+var up_button_down = false
+var down_button_down = false
 var reset_left_button = false
 var reset_right_button = false
+var start_button_down = false
 
 // `gp` needs to be declared in each setInterval loop here because
 // its state is renewed by the time each loop is run
@@ -39,9 +42,27 @@ function gamepadHandler(event, connecting) {
   setInterval(function() {
     var gp = navigator.getGamepads()[event.gamepad.index]
 
-    if(gp.buttons[9].pressed && (GAME_OVER == true || GAME_OVER == undefined)) {
+    if(ON_TITLE_SCREEN) {
+      if(gp.buttons[12].pressed && !up_button_down) {
+        moveTitleScreenCursor("up")
+        up_button_down = true
+      } else if(gp.buttons[13].pressed && !down_button_down) {
+        moveTitleScreenCursor("down")
+        down_button_down = true
+      }
+
+      if(!gp.buttons[12].pressed) { up_button_down = false }
+      if(!gp.buttons[13].pressed) { down_button_down = false }
+    }
+
+    if(gp.buttons[9].pressed && GAME_OVER == true && !onTitleScreen() && start_button_down == false) {
+      returnToTitleScreen()
+      start_button_down = true
+    } else if(gp.buttons[9].pressed && (GAME_OVER == true || GAME_OVER == undefined) && start_button_down == false) {
       startGame()
+      start_button_down = true
     } else if (gp.buttons[9].pressed && GAME_OVER == false) {
+      // TODO: Add a pause screen
       console.log("Can't reset while playing")
     }
 
@@ -56,6 +77,7 @@ function gamepadHandler(event, connecting) {
 
       if(!gp.buttons[4].pressed) { moving_left_with_gamepad = false }
       if(!gp.buttons[5].pressed) { moving_right_with_gamepad = false }
+      if(!gp.buttons[9].pressed) { start_button_down = false }
     }
   }, 1)
 

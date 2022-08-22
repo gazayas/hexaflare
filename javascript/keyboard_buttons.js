@@ -31,8 +31,12 @@ var z_key = 90
 
 var left_key = 37
 var right_key = 39
+var up_key = 38
+var down_key = 40
 var j_key = 74
 var l_key = 76
+var i_key = 73
+var k_key = 75
 
 var s_key = 83
 var d_key = 68
@@ -46,10 +50,27 @@ var moving_right = false
 var rotating_clockwise = false
 var rotating_counter_clockwise = false
 
+var enter_key_down = false
+var i_key_down = false
+var k_key_down = false
+var up_key_down = false
+var down_key_down = false
+
 window.addEventListener('keydown', (event) => {
-  if(event.keyCode == enter_key && (GAME_OVER == true || GAME_OVER == undefined)) {
-    console.log(event.keyCode)
+  if(ON_TITLE_SCREEN) {
+    if(event.keyCode == up_key || event.keyCode == i_key) {
+      moveTitleScreenCursor("up")
+    } else if(event.keyCode == down_key || event.keyCode == k_key) {
+      moveTitleScreenCursor("down")
+    }
+  }
+
+  if(event.keyCode == enter_key && GAME_OVER == true && !enter_key_down && !onTitleScreen()) {
+    returnToTitleScreen()
+    enter_key_down = true
+  } else if(event.keyCode == enter_key && (GAME_OVER == true || GAME_OVER == undefined)) {
     startGame()
+    enter_key_down = true
   } else if(event.keyCode == enter_key && GAME_OVER != true) {
     // TODO: Write pause game logic
     console.log("Cannot reset game while unpaused.")
@@ -116,5 +137,7 @@ window.onkeyup = function(event) {
     rotating_counter_clockwise = false
   } else if (event.keyCode == c_key) {
     rotating_clockwise = false
+  } else if (event.keyCode != enter_key) {
+    enter_key_down = false
   }
 }
