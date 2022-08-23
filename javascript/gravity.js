@@ -19,7 +19,7 @@ async function drop(star_cluster, preview_cluster_option = false) {
     var gravitation_direction = getGravitationDirection(center_of_gravity)
 
     // Check initially if we can drop it, and then proceed to gravitate in a loop if so.
-    if(starClusterCanGravitateToCore(star_cluster, gravitation_direction)) {
+    if(starClusterCanGravitateToCore(star_cluster, gravitation_direction) && !GAME_PAUSED) {
       do {
         // TODO: Refactor to only gravitateCluster(star_cluster, gravitation_direction, preview_cluster_option)
         if(preview_cluster_option) {

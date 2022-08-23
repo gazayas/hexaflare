@@ -56,6 +56,26 @@ body {
   border: white solid 2px;
 }
 
+#pause_screen {
+  font-family: "STF_POLYGON WINDOW (FILL)";
+  position: absolute;
+  left: 20%;
+  top: 20%;
+  height: 60%;
+  width: 60%;
+  text-align: center;
+  visibility: hidden;
+  z-index: 1;
+
+  font-size: 40px;
+  background-color: midnightblue;
+  color: white;
+}
+
+#pause_screen_options {
+  padding-top: 175px;
+}
+
 
 #description {
   font-family: "STF_POLYGON WINDOW (FILL)";

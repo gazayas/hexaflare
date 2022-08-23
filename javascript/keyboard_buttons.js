@@ -79,21 +79,23 @@ window.addEventListener('keydown', (event) => {
       startGame(level_to_start_with)
       CHOOSING_LEVEL = false
       enter_key_down = true
+      waiting_for_start_button_release = true
     }
   }
 
   if(!ON_TITLE_SCREEN && !CHOOSING_LEVEL) {
-    if(event.keyCode == enter_key && GAME_OVER == true && !enter_key_down && !onTitleScreen()) {
+    if(event.keyCode == enter_key && GAME_OVER == true && !enter_key_down) {
       returnToTitleScreen()
       enter_key_down = true
-    } else if(event.keyCode == enter_key && (GAME_OVER == true || GAME_OVER == undefined)) {
+    } else if(event.keyCode == enter_key && GAME_OVER != true && !waiting_for_start_button_release) {
+      togglePauseMenu()
+      enter_key_down = true
+      waiting_for_start_button_release = true
+    } else if(event.keyCode == enter_key && GAME_OVER != true && !waiting_for_start_button_release) {
       
-    } else if(event.keyCode == enter_key && GAME_OVER != true) {
-      // TODO: Write pause game logic
-      console.log("Cannot reset game while unpaused.")
     }
   
-    if(keys_enabled) {
+    if(keys_enabled && !GAME_PAUSED) {
       if(GAME_OVER != true){
         // Drop and Rotate logic
         if(event.keyCode == z_key || event.keyCode == space_key) {
@@ -127,7 +129,7 @@ window.addEventListener('keydown', (event) => {
 })
 
 function keyboardButtonFrameUpdate() {
-  if(keys_enabled && (GAME_OVER != true && GAME_OVER != undefined)) {
+  if(keys_enabled && (GAME_OVER != true && GAME_OVER != undefined) && !GAME_PAUSED) {
     if(key_state[left_key] || key_state[right_key] || key_state[j_key] || key_state[l_key]) {
       // Move continuously according to the frame rate declared below.
       if (key_state[left_key] || key_state[j_key]) {

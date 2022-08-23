@@ -63,6 +63,40 @@ function moveChooseLevelCursor(direction_of_movement) {
   choose_level_container.innerHTML = level_to_adjust
 }
 
+function togglePauseMenu() {
+  if(GAME_PAUSED) {
+    GAME_PAUSED = false
+  } else {
+    GAME_PAUSED = true
+  }
+
+  var pause_screen = document.getElementById("pause_screen")
+  if(pause_screen.style.visibility == "hidden" || pause_screen.style.visibility == '') {
+    pause_screen.style.visibility = "visible"
+  } else {
+    pause_screen.style.visibility = "hidden"
+  }
+}
+
+function movePauseScreenCursor(direction_of_movement) {
+  var pause_screen = document.getElementById("pause_screen")
+  var option_to_change = document.get
+
+  if(direction_of_movement == "up") {
+    level_to_adjust += 1
+  } else if (direction_of_movement == "down") {
+    level_to_adjust -= 1
+  }
+
+  if(level_to_adjust > 12) {
+    return 0
+  } else if (level_to_adjust < 1) {
+    return 0
+  }
+
+  choose_level_container.innerHTML = level_to_adjust
+}
+
 
 function returnToTitleScreen() {
   // TODO: Move this to next to generateFlareStarUI

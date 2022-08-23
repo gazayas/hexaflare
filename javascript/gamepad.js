@@ -81,13 +81,14 @@ function gamepadHandler(event, connecting) {
         start_button_down = true
         waiting_for_start_button_release = true
       } else if(gp.buttons[9].pressed && (GAME_OVER == true || GAME_OVER == undefined) && start_button_down == false && ON_TITLE_SCREEN) {
-        
-      } else if (gp.buttons[9].pressed && GAME_OVER == false) {
-        // TODO: Add a pause screen
-        console.log("Can't reset while playing")
+        // TODO: Remove this else if
+      } else if (gp.buttons[9].pressed && GAME_OVER == false && !start_button_down && !waiting_for_start_button_release) {
+        togglePauseMenu()
+        start_button_down = true
+        waiting_for_start_button_release = true
       }
   
-      if(keys_enabled) {
+      if(keys_enabled && !GAME_PAUSED) {
         if(gp.buttons[4].pressed && !moving_left_with_gamepad) {
           moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
           moving_left_with_gamepad = true
@@ -112,7 +113,7 @@ function gamepadHandler(event, connecting) {
 
   setInterval(function(){
     var gp = navigator.getGamepads()[event.gamepad.index]
-    if(keys_enabled && GAME_OVER != true && GAME_OVER != undefined) {
+    if(keys_enabled && GAME_OVER != true && GAME_OVER != undefined && !GAME_PAUSED) {
       if (gp.buttons[14].pressed) {
         moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
       } else if (gp.buttons[15].pressed) {
@@ -126,7 +127,7 @@ function gamepadHandler(event, connecting) {
   }, 65)
 
   setInterval(function() {
-    if(keys_enabled && GAME_OVER != true) {
+    if(keys_enabled && GAME_OVER != true && !GAME_PAUSED) {
       var gp = navigator.getGamepads()[event.gamepad.index]
       if (gp.buttons[y_button].pressed) {
         if(current_button != y_button) {

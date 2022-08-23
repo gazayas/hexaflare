@@ -5,7 +5,7 @@ var current_progress = progress_bar.style.width
 
 let current_prog = parseFloat(progress_bar.style.width.replace(/%/, ""))
 function processTimerEvents() {
-  if(GAME_OVER == false) {
+  if(GAME_OVER == false && !GAME_PAUSED) {
     var timer_speed = 0.2 + (0.08 * CURRENT_LEVEL)
     if(UPDATE_TIMER == true) { current_prog -= timer_speed }
   }
