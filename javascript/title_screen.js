@@ -5,6 +5,16 @@ function initializeTitleScreenCursor() {
   start_button.style.color = "white"
 }
 
+function getTitleScreenOption() {
+  var title_screen_buttons = document.getElementsByClassName("title_screen_button")
+  var currently_highlighted_button
+  for(var i = 0; i < title_screen_buttons.length; i ++) {
+    if(title_screen_buttons[i].dataset["highlighted"] == "true") {
+      return title_screen_buttons[i].id
+    }
+  }
+}
+
 // Highlight the next option, unhighlight the previous option
 function moveTitleScreenCursor(direction_of_movement) {
   var title_screen_buttons = document.getElementsByClassName("title_screen_button")
@@ -44,6 +54,13 @@ function displayChooseLevelContainer() {
   CHOOSING_LEVEL = true
 }
 
+function displayHowToPlayScreen() {
+  document.getElementById("title_screen").style.visibility = "hidden"
+  document.getElementById("how_to_play").style.visibility = "visible"
+  ON_TITLE_SCREEN = false
+  VIEWING_HOW_TO_PLAY = true
+}
+
 function moveChooseLevelCursor(direction_of_movement) {
   var choose_level_container = document.getElementById("choose_level_container")
   var level_to_adjust = parseInt(choose_level_container.innerHTML)
@@ -80,7 +97,6 @@ function togglePauseMenu() {
 
 function movePauseScreenCursor(direction_of_movement) {
   var pause_screen = document.getElementById("pause_screen")
-  var option_to_change = document.get
 
   if(direction_of_movement == "up") {
     level_to_adjust += 1
@@ -107,6 +123,9 @@ function returnToTitleScreen() {
   document.getElementById("score_container").style.visibility = "hidden"
   document.getElementById("flare_count_container").style.visibility = "hidden"
 
+  var how_to_play_div = document.getElementById("how_to_play")
+  how_to_play_div.style.visibility = "hidden"
+
   // Showing in resetFlareStar and the hiding here, is that ok?
   document.getElementsByClassName("timer")[0].style.visibility = "hidden"
 
@@ -114,6 +133,7 @@ function returnToTitleScreen() {
   var flare_star_to_hide = document.getElementsByClassName("flare_star")[0]
   flare_star_to_hide.style.visibility = "hidden"
 
+  VIEWING_HOW_TO_PLAY = false
   ON_TITLE_SCREEN = true
 }
 

@@ -15,14 +15,51 @@
 
       <div id="title_screen_buttons">
         <div class="title_screen_button" id="start_game_button" data-highlighted="false">start game</div>
-        <div class="title_screen_button" id="options_button" data-highlighted="false">options</div>
         <div class="title_screen_button" id="how_to_play_button" data-full="false">how to play</div>
+        <!--div class="title_screen_button" id="exit_button" data-full="false">exit</div-->
       </div>
     </div>
 
     <div id="choose_level_information">
       <p>choose which level to start from (1-12)</p>
       <span id="choose_level_container">1</span>
+    </div>
+
+    <div id="how_to_play">
+      <h3>Controls</h3>
+      <span>
+        arrow keys: move left/right<br/>
+        i or k: move left/right
+      </span><br/>
+      <span>
+        z or space: drop the star cluster
+      </span><br/>
+      <span>
+        x or c: rotate clockwise/counter-clockwise
+      </span>
+      <h3>Controls (tip)</h3>
+      <span>
+        Use s and d (or the bumpers on a controller) to move the star cluster along the flare star one block at a time for more precise movements.<br/>
+      </span>
+      <h3>flare star</h3>
+      <span>
+        The main playing field. It has a strong gravitational pull, so all star clusters dropped
+        into it will gravitate towards the center (the core).
+      </p>
+      <h3>star clusters</h3>
+      <p>
+        Blocks the players drops consisting of four hexagons a piece.
+      </p>
+      <h3>flare</h3>
+      <p>
+        Occurs each time star clusters develop a ring inside the flare star. Star clusters that gather in the form of a ring
+        release energy, resulting in a flare. The flared stars will dissipate, and the remaining stars will gravitate towards the center.
+      </p>
+      <h3>Corona</h3>
+      <p>
+        The outer portion of the flare star on which star clusters move along. The game will finish if you
+        drop a star cluster and it lands outside of the main flare star's field of gravity and into the corona,
+      </p>
     </div>
 
     <div id="pause_screen">
@@ -117,6 +154,7 @@
       var ON_TITLE_SCREEN = true
       var CHOOSING_LEVEL = false
       var GAME_PAUSED = false
+      var VIEWING_HOW_TO_PLAY = false
 
       // TODO: Make these uppercase
       var flare_star

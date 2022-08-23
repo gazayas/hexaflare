@@ -58,13 +58,26 @@ var down_key_down = false
 var waiting_for_start_button_release = false
 
 window.addEventListener('keydown', (event) => {
-  if(ON_TITLE_SCREEN) {
+  if(VIEWING_HOW_TO_PLAY) {
+    if(event.keyCode == enter_key && !enter_key_down && !waiting_for_start_button_release) {
+      returnToTitleScreen()
+      waiting_for_start_button_release = true
+    }
+  } else if(ON_TITLE_SCREEN) {
     if(event.keyCode == up_key || event.keyCode == i_key) {
       moveTitleScreenCursor("up")
     } else if(event.keyCode == down_key || event.keyCode == k_key) {
       moveTitleScreenCursor("down")
     } else if(event.keyCode == enter_key && !enter_key_down) {
-      displayChooseLevelContainer()
+      var option_chosen_on_title_screen = getTitleScreenOption()
+      switch(option_chosen_on_title_screen) {
+        case "start_game_button":
+          displayChooseLevelContainer()
+          break
+        case "how_to_play_button":
+          displayHowToPlayScreen()
+          break
+      }
       waiting_for_start_button_release = true
     }
   }
@@ -83,7 +96,7 @@ window.addEventListener('keydown', (event) => {
     }
   }
 
-  if(!ON_TITLE_SCREEN && !CHOOSING_LEVEL) {
+  if(!ON_TITLE_SCREEN && !CHOOSING_LEVEL && !VIEWING_HOW_TO_PLAY) {
     if(event.keyCode == enter_key && GAME_OVER == true && !enter_key_down) {
       returnToTitleScreen()
       enter_key_down = true
