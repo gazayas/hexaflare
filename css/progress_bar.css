@@ -3,10 +3,22 @@
   display: inline-block;
   width: 500px;
   height: 10px;
-  top: 50%;
+
   right: -99px;
   -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
   transform: rotate(-90deg);
+}
+
+@media screen and (min-width: 480px) and (max-width: 1400px){
+  .vertical {
+    top: 55%;
+  }
+}
+
+@media screen and (min-width: 1400px) and (max-width: 2000px) {
+  .vertical {
+    top: 50%;
+  }
 }
 
 .vertical {
