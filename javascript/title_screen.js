@@ -6,7 +6,7 @@ function initializeTitleScreenCursor() {
 }
 
 // Highlight the next option, unhighlight the previous option
-function moveTitleScreenCursor(direction_of_movement = "down") {
+function moveTitleScreenCursor(direction_of_movement) {
   var title_screen_buttons = document.getElementsByClassName("title_screen_button")
 
   // TODO: Change this to "button_to_change"
@@ -35,6 +35,32 @@ function moveTitleScreenCursor(direction_of_movement = "down") {
   currently_highlighted_button.style.color = "#52565F"
   title_screen_buttons[current_button_idx].style.color = "white"
   title_screen_buttons[current_button_idx].dataset["highlighted"] = "true"
+}
+
+function displayChooseLevelContainer() {
+  document.getElementById("title_screen").style.visibility = "hidden"
+  document.getElementById("choose_level_information").style.visibility = "visible"
+  ON_TITLE_SCREEN = false
+  CHOOSING_LEVEL = true
+}
+
+function moveChooseLevelCursor(direction_of_movement) {
+  var choose_level_container = document.getElementById("choose_level_container")
+  var level_to_adjust = parseInt(choose_level_container.innerHTML)
+
+  if(direction_of_movement == "up") {
+    level_to_adjust += 1
+  } else if (direction_of_movement == "down") {
+    level_to_adjust -= 1
+  }
+
+  if(level_to_adjust > 12) {
+    return 0
+  } else if (level_to_adjust < 1) {
+    return 0
+  }
+
+  choose_level_container.innerHTML = level_to_adjust
 }
 
 
@@ -79,5 +105,3 @@ function resetFlareStar() {
 function onTitleScreen() {
   return document.getElementById("title_screen").style.visibility == "visible"
 }
-
-

@@ -25,6 +25,7 @@ var moving_right_with_gamepad = false
 var rotating_clockwise_with_gamepad = false
 var rotating_counter_clockwise_with_gamepad = false
 
+var b_button_down = false
 var left_button_down = false
 var right_button_down = false
 var up_button_down = false
@@ -32,6 +33,8 @@ var down_button_down = false
 var reset_left_button = false
 var reset_right_button = false
 var start_button_down = false
+
+var waiting_for_start_button_release = false
 
 // `gp` needs to be declared in each setInterval loop here because
 // its state is renewed by the time each loop is run
@@ -49,36 +52,62 @@ function gamepadHandler(event, connecting) {
       } else if(gp.buttons[13].pressed && !down_button_down) {
         moveTitleScreenCursor("down")
         down_button_down = true
+      } else if(gp.buttons[9].pressed && !up_button_down && !waiting_for_start_button_release) {
+        displayChooseLevelContainer()
+        waiting_for_start_button_release = true
+      }
+    }
+
+    if(CHOOSING_LEVEL) {
+      if(gp.buttons[12].pressed && !up_button_down) {
+        moveChooseLevelCursor("up")
+        up_button_down = true
+      } else if(gp.buttons[13].pressed && !down_button_down) {
+        moveChooseLevelCursor("down")
+        down_button_down = true
       }
 
-      if(!gp.buttons[12].pressed) { up_button_down = false }
-      if(!gp.buttons[13].pressed) { down_button_down = false }
-    }
-
-    if(gp.buttons[9].pressed && GAME_OVER == true && !onTitleScreen() && start_button_down == false) {
-      returnToTitleScreen()
-      start_button_down = true
-    } else if(gp.buttons[9].pressed && (GAME_OVER == true || GAME_OVER == undefined) && start_button_down == false) {
-      startGame()
-      start_button_down = true
-    } else if (gp.buttons[9].pressed && GAME_OVER == false) {
-      // TODO: Add a pause screen
-      console.log("Can't reset while playing")
-    }
-
-    if(keys_enabled) {
-      if(gp.buttons[4].pressed && !moving_left_with_gamepad) {
-        moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
-        moving_left_with_gamepad = true
-      } else if (gp.buttons[5].pressed && !moving_right_with_gamepad) {
-        moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
-        moving_right_with_gamepad = true
+      if(gp.buttons[9].pressed && (GAME_OVER == true || GAME_OVER == undefined) && !start_button_down && !waiting_for_start_button_release) {
+        var level_to_start_with = document.getElementById("choose_level_container").innerHTML
+        startGame(level_to_start_with)
+        CHOOSING_LEVEL = false
+        start_button_down = true
       }
-
-      if(!gp.buttons[4].pressed) { moving_left_with_gamepad = false }
-      if(!gp.buttons[5].pressed) { moving_right_with_gamepad = false }
-      if(!gp.buttons[9].pressed) { start_button_down = false }
     }
+
+    if(!CHOOSING_LEVEL && !ON_TITLE_SCREEN) {
+      if(gp.buttons[9].pressed && GAME_OVER == true && !onTitleScreen() && !start_button_down && !waiting_for_start_button_release) {
+        returnToTitleScreen()
+        start_button_down = true
+        waiting_for_start_button_release = true
+      } else if(gp.buttons[9].pressed && (GAME_OVER == true || GAME_OVER == undefined) && start_button_down == false && ON_TITLE_SCREEN) {
+        
+      } else if (gp.buttons[9].pressed && GAME_OVER == false) {
+        // TODO: Add a pause screen
+        console.log("Can't reset while playing")
+      }
+  
+      if(keys_enabled) {
+        if(gp.buttons[4].pressed && !moving_left_with_gamepad) {
+          moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+          moving_left_with_gamepad = true
+        } else if (gp.buttons[5].pressed && !moving_right_with_gamepad) {
+          moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
+          moving_right_with_gamepad = true
+        }
+  
+        
+      }
+      if(!gp.buttons[b_button].pressed) { b_button_down = false}
+    }
+
+    if(!gp.buttons[4].pressed) { moving_left_with_gamepad = false }
+    if(!gp.buttons[5].pressed) { moving_right_with_gamepad = false }
+    if(!gp.buttons[9].pressed) { start_button_down = false }
+    if(!gp.buttons[12].pressed) { up_button_down = false }
+    if(!gp.buttons[13].pressed) { down_button_down = false }
+
+    if(!gp.buttons[9].pressed) { waiting_for_start_button_release = false }
   }, 1)
 
   setInterval(function(){

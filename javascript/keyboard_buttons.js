@@ -55,6 +55,7 @@ var i_key_down = false
 var k_key_down = false
 var up_key_down = false
 var down_key_down = false
+var waiting_for_start_button_release = false
 
 window.addEventListener('keydown', (event) => {
   if(ON_TITLE_SCREEN) {
@@ -62,50 +63,67 @@ window.addEventListener('keydown', (event) => {
       moveTitleScreenCursor("up")
     } else if(event.keyCode == down_key || event.keyCode == k_key) {
       moveTitleScreenCursor("down")
+    } else if(event.keyCode == enter_key && !enter_key_down) {
+      displayChooseLevelContainer()
+      waiting_for_start_button_release = true
     }
   }
 
-  if(event.keyCode == enter_key && GAME_OVER == true && !enter_key_down && !onTitleScreen()) {
-    returnToTitleScreen()
-    enter_key_down = true
-  } else if(event.keyCode == enter_key && (GAME_OVER == true || GAME_OVER == undefined)) {
-    startGame()
-    enter_key_down = true
-  } else if(event.keyCode == enter_key && GAME_OVER != true) {
-    // TODO: Write pause game logic
-    console.log("Cannot reset game while unpaused.")
+  if(CHOOSING_LEVEL) {
+    if(event.keyCode == up_key || event.keyCode == i_key) {
+      moveChooseLevelCursor("up")
+    } else if (event.keyCode == down_key || event.keyCode == k_key) {
+      moveChooseLevelCursor("down")
+    } else if(event.keyCode == enter_key && !waiting_for_start_button_release) {
+      var level_to_start_with = document.getElementById("choose_level_container").innerHTML
+      startGame(level_to_start_with)
+      CHOOSING_LEVEL = false
+      enter_key_down = true
+    }
   }
 
-  if(keys_enabled) {
-    if(GAME_OVER != true){
-      // Drop and Rotate logic
-      if(event.keyCode == z_key || event.keyCode == space_key) {
-        UPDATE_TIMER = false
-        drop(floating_cluster)
-        // current_prog = 100
-      } else {
-        // TODO: Switch case.
-        if(event.keyCode == x_key && !rotating_counter_clockwise) {
-          rotate("counter-clockwise", floating_cluster, star_cluster_name)
-          rotating_counter_clockwise = true
-        } else if (event.keyCode == c_key && !rotating_clockwise) {
-          rotate("clockwise", floating_cluster, star_cluster_name)
-          rotating_clockwise = true
-        } else if ((event.keyCode == s_key) && !moving_left) {
-          moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
-          moving_left = true
-        } else if ((event.keyCode == d_key) && !moving_right) {
-          moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
-          moving_right = true
+  if(!ON_TITLE_SCREEN && !CHOOSING_LEVEL) {
+    if(event.keyCode == enter_key && GAME_OVER == true && !enter_key_down && !onTitleScreen()) {
+      returnToTitleScreen()
+      enter_key_down = true
+    } else if(event.keyCode == enter_key && (GAME_OVER == true || GAME_OVER == undefined)) {
+      
+    } else if(event.keyCode == enter_key && GAME_OVER != true) {
+      // TODO: Write pause game logic
+      console.log("Cannot reset game while unpaused.")
+    }
+  
+    if(keys_enabled) {
+      if(GAME_OVER != true){
+        // Drop and Rotate logic
+        if(event.keyCode == z_key || event.keyCode == space_key) {
+          UPDATE_TIMER = false
+          drop(floating_cluster)
+          // current_prog = 100
+        } else {
+          // TODO: Switch case.
+          if(event.keyCode == x_key && !rotating_counter_clockwise) {
+            rotate("counter-clockwise", floating_cluster, star_cluster_name)
+            rotating_counter_clockwise = true
+          } else if (event.keyCode == c_key && !rotating_clockwise) {
+            rotate("clockwise", floating_cluster, star_cluster_name)
+            rotating_clockwise = true
+          } else if ((event.keyCode == s_key) && !moving_left) {
+            moveAlongCorona("counter-clockwise", floating_cluster, star_cluster_name)
+            moving_left = true
+          } else if ((event.keyCode == d_key) && !moving_right) {
+            moveAlongCorona("clockwise", floating_cluster, star_cluster_name)
+            moving_right = true
+          }
+  
+          resetPreviewClusterToStarCluster(floating_cluster)
+          var preview_cluster = document.getElementsByClassName("preview_cluster")
+          drop(preview_cluster, true)
         }
-
-        resetPreviewClusterToStarCluster(floating_cluster)
-        var preview_cluster = document.getElementsByClassName("preview_cluster")
-        drop(preview_cluster, true)
       }
     }
-    
   }
+ 
 })
 
 function keyboardButtonFrameUpdate() {
@@ -139,5 +157,6 @@ window.onkeyup = function(event) {
     rotating_clockwise = false
   } else if (event.keyCode != enter_key) {
     enter_key_down = false
+    waiting_for_start_button_release = false
   }
 }

@@ -20,6 +20,11 @@
       </div>
     </div>
 
+    <div id="choose_level_information">
+      <p>choose which level to start from (1-12)</p>
+      <span id="choose_level_container">1</span>
+    </div>
+
     <div id="hexaflare">
       <!--   (ToT) 🌠
       <div class="space stars1"></div>
@@ -103,6 +108,7 @@
 
       var GAME_OVER
       var ON_TITLE_SCREEN = true
+      var CHOOSING_LEVEL = false
 
       // TODO: Make these uppercase
       var flare_star
@@ -136,12 +142,15 @@
         // TODO: Maybe put this somewhere else, like in the function it's originally called from.
         // Change screens
         ON_TITLE_SCREEN = false
-        document.getElementById("title_screen").style.visibility = "hidden"
+        CHOOSING_LEVEL = false
+
         document.getElementById("level_container").style.visibility = "visible"
         document.getElementById("score_container").style.visibility = "visible"
         document.getElementById("flare_count_container").style.visibility = "visible"
 
         resetFlareStar()
+        document.getElementById("choose_level_information").style.visibility = "hidden"
+        document.getElementById("choose_level_container").innerHTML = 1
 
         // TODO: Maybe put this in resetFlareStar()
         // Reset stats

@@ -61,6 +61,18 @@ body {
   font-family: "STF_POLYGON WINDOW (FILL)";
 }
 
+#choose_level_information {
+  font-family: "STF_POLYGON WINDOW (FILL)";
+  visibility: hidden;
+
+  position: absolute;
+  top: 35%;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-size: 60px;
+}
+
 
 
 /* https://twitter.com/adiig7/status/1502546767505551361 */
