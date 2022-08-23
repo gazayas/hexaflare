@@ -157,6 +157,9 @@ window.onkeyup = function(event) {
     rotating_clockwise = false
   } else if (event.keyCode != enter_key) {
     enter_key_down = false
+  }
+
+  if(event.keyCode == enter_key) {
     waiting_for_start_button_release = false
   }
 }
