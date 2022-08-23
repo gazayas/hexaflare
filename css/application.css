@@ -72,8 +72,13 @@ body {
   color: white;
 }
 
+/* Center pause screen text */
 #pause_screen_options {
-  padding-top: 175px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translateY(-50%) translateX(-50%);
+  transform: translateY(-50%) translateX(-50%);
 }
 
 
