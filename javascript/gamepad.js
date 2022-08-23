@@ -45,7 +45,12 @@ function gamepadHandler(event, connecting) {
   setInterval(function() {
     var gp = navigator.getGamepads()[event.gamepad.index]
 
-    if(ON_TITLE_SCREEN) {
+    if(VIEWING_HOW_TO_PLAY) {
+      if(gp.buttons[9].pressed && !up_button_down && !waiting_for_start_button_release) {
+        returnToTitleScreen()
+        waiting_for_start_button_release = true
+      }
+    } else if(ON_TITLE_SCREEN) {
       if(gp.buttons[12].pressed && !up_button_down) {
         moveTitleScreenCursor("up")
         up_button_down = true
@@ -53,7 +58,16 @@ function gamepadHandler(event, connecting) {
         moveTitleScreenCursor("down")
         down_button_down = true
       } else if(gp.buttons[9].pressed && !up_button_down && !waiting_for_start_button_release) {
-        displayChooseLevelContainer()
+        // displayChooseLevelContainer()
+        var option_chosen_on_title_screen = getTitleScreenOption()
+        switch(option_chosen_on_title_screen) {
+          case "start_game_button":
+            displayChooseLevelContainer()
+            break
+          case "how_to_play_button":
+            displayHowToPlayScreen()
+            break
+        }
         waiting_for_start_button_release = true
       }
     }
