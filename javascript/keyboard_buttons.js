@@ -68,7 +68,7 @@ window.addEventListener('keydown', (event) => {
       moveTitleScreenCursor("up")
     } else if(event.keyCode == down_key || event.keyCode == k_key) {
       moveTitleScreenCursor("down")
-    } else if(event.keyCode == enter_key && !enter_key_down) {
+    } else if(event.keyCode == enter_key && !waiting_for_start_button_release) {
       var option_chosen_on_title_screen = getTitleScreenOption()
       switch(option_chosen_on_title_screen) {
         case "start_game_button":
