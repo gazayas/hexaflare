@@ -73,6 +73,9 @@ async function processStarsAfterDrop(preview_cluster_option = false) {
 
 // 💫🔥
 function flare(flare_star_ring) {
+  FLARE_SOUND.play()
+  FLARE_SOUND.currentTime = 0
+
   var background_hexagons = flare_star_ring.children
   for (var i = 0; i < background_hexagons.length; i++) {
     var hex_x = background_hexagons[i].dataset["x"]

@@ -1,8 +1,10 @@
 async function drop(star_cluster, preview_cluster_option = false) {
   keys_enabled = false
   if(!preview_cluster_option) {
-    DROP_SOUND.play()
-    DROP_SOUND.currentTime = 0
+    if(!ON_TITLE_SCREEN && !CHOOSING_LEVEL) {
+      DROP_SOUND.play()
+      DROP_SOUND.currentTime = 0
+    }
     UPDATE_TIMER = false
   }
 
