@@ -164,6 +164,11 @@
       var preview_cluster
       var star_cluster_name
 
+      // Sounds and Music
+      var MOVE_SOUND = new Audio('../audio/move.wav')
+      var DROP_SOUND = new Audio('../audio/drop.wav')
+      MOVE_SOUND.volume = 0.3
+
       // Hide the timer at first, then display it on startGame()
       document.getElementsByClassName("timer")[0].style.visibility = "hidden"
 

@@ -93,6 +93,9 @@ function generateStarsfromData(star_cluster_data, star_cluster_type, reference_d
 }
 
 function moveAlongCorona(direction, star_cluster, star_cluster_type) {
+  MOVE_SOUND.play()
+  MOVE_SOUND.currentTime = 0
+
   var cursor = document.getElementsByClassName("cursor")[0]
   var old_corner_position = cursor.dataset["corner_position"]
 
@@ -128,6 +131,9 @@ function moveAlongCorona(direction, star_cluster, star_cluster_type) {
 }
 
 function rotate(direction, star_cluster, star_cluster_type) {
+  MOVE_SOUND.play()
+  MOVE_SOUND.currentTime = 0
+
   var data = getData(star_cluster_type)
   var cursor = document.getElementsByClassName("cursor")[0]
   var current_cursor_corner_position = cursor.dataset["corner_position"]
