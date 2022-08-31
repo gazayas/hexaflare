@@ -165,10 +165,13 @@
       var star_cluster_name
 
       // Sounds and Music
+      var HEXAFLARE_MUSIC = new Audio('../audio/hexaflare_music.wav')
       var MOVE_SOUND = new Audio('../audio/move.wav')
       var DROP_SOUND = new Audio('../audio/drop.wav')
       var FLARE_SOUND = new Audio('../audio/flare.wav')
-      MOVE_SOUND.volume = 0.7
+      HEXAFLARE_MUSIC.volume = 0.6
+      MOVE_SOUND.volume = 0.5
+      DROP_SOUND.volume = 0.7
       FLARE_SOUND.volume = 0.7
 
       // Hide the timer at first, then display it on startGame()
@@ -188,10 +191,22 @@
 
         if(keys_enabled) { UPDATE_TIMER = true }
 
+        if(HEXAFLARE_MUSIC.currentTime >= 335.77) {
+          HEXAFLARE_MUSIC.currentTime = 47.89
+        }
+
+        console.log(HEXAFLARE_MUSIC.currentTime)
+
         window.requestAnimationFrame(animate)
       }
 
       function startGame(starting_level = 1) {
+        // Cue the music!
+        if(HEXAFLARE_MUSIC.paused) {
+          HEXAFLARE_MUSIC.currentTime = 0
+          HEXAFLARE_MUSIC.play()
+        }
+
         // TODO: Maybe put this somewhere else, like in the function it's originally called from.
         // Change screens
         ON_TITLE_SCREEN = false
