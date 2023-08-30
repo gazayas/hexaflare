@@ -1,2 +1,2 @@
 # How to Deploy
-https://github.com/fly-apps/hello-static
+https://fly.io/docs/languages-and-frameworks/static/
