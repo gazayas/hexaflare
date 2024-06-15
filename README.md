@@ -4,4 +4,4 @@ There are a lot of issues with this code, mainly because this is a prototype of 
 
 However, this was really fun project to work on, and it was so cool to have an idea and make it a reality, so I want to keep it up on GitHub so the code doesn't get completely lost.
 
-If you're interested, check out the steps I went through to develop Hexaflare in [this article]()!
+If you're interested, check out the steps I went through to develop Hexaflare in [this article](https://dev.to/gazayas/hexaflare-exploring-data-structures-1ond).
